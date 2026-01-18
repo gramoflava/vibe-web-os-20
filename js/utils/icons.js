@@ -169,6 +169,81 @@ const Icons = {
   `,
 
   /**
+   * Safari - Compass icon
+   */
+  safari: `
+    <svg viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <defs>
+        <linearGradient id="safariGradient" x1="0%" y1="0%" x2="0%" y2="100%">
+          <stop offset="0%" style="stop-color:#6FB8FF;stop-opacity:1" />
+          <stop offset="100%" style="stop-color:#0088FF;stop-opacity:1" />
+        </linearGradient>
+      </defs>
+      <!-- Outer circle -->
+      <circle cx="32" cy="32" r="24" fill="url(#safariGradient)" stroke="#0066CC" stroke-width="2"/>
+      <!-- Inner circle -->
+      <circle cx="32" cy="32" r="18" fill="white" opacity="0.2" stroke="#0066CC" stroke-width="1"/>
+      <!-- Compass needle -->
+      <path d="M32 16L28 32L32 48L36 32Z" fill="#FF3B30" stroke="#CC0000" stroke-width="1.5"/>
+      <path d="M32 16L36 32L32 48L28 32Z" fill="white" stroke="#0066CC" stroke-width="1.5"/>
+      <!-- Center dot -->
+      <circle cx="32" cy="32" r="3" fill="#333"/>
+      <!-- Cardinal points -->
+      <circle cx="32" cy="12" r="1.5" fill="white"/>
+      <circle cx="32" cy="52" r="1.5" fill="white"/>
+      <circle cx="12" cy="32" r="1.5" fill="white"/>
+      <circle cx="52" cy="32" r="1.5" fill="white"/>
+    </svg>
+  `,
+
+  /**
+   * Preview - Image/Eye icon
+   */
+  preview: `
+    <svg viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <defs>
+        <linearGradient id="previewGradient" x1="0%" y1="0%" x2="0%" y2="100%">
+          <stop offset="0%" style="stop-color:#A855F7;stop-opacity:1" />
+          <stop offset="100%" style="stop-color:#7C3AED;stop-opacity:1" />
+        </linearGradient>
+      </defs>
+      <rect x="10" y="16" width="44" height="32" rx="4" fill="url(#previewGradient)" stroke="#6D28D9" stroke-width="2"/>
+      <circle cx="20" cy="26" r="3" fill="white" opacity="0.8"/>
+      <path d="M10 38L20 28L30 38L44 24L54 34V44C54 46.2091 52.2091 48 50 48H14C11.7909 48 10 46.2091 10 44V38Z" fill="white" opacity="0.3"/>
+    </svg>
+  `,
+
+  /**
+   * CodeEdit - Code brackets icon
+   */
+  codeedit: `
+    <svg viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <defs>
+        <linearGradient id="codeGradient" x1="0%" y1="0%" x2="0%" y2="100%">
+          <stop offset="0%" style="stop-color:#34D399;stop-opacity:1" />
+          <stop offset="100%" style="stop-color:#10B981;stop-opacity:1" />
+        </linearGradient>
+      </defs>
+      <rect x="12" y="12" width="40" height="40" rx="4" fill="url(#codeGradient)" stroke="#059669" stroke-width="2"/>
+      <!-- Code symbols -->
+      <path d="M22 26L18 32L22 38" stroke="white" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+      <path d="M42 26L46 32L42 38" stroke="white" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+      <line x1="34" y1="24" x2="30" y2="40" stroke="white" stroke-width="2.5" stroke-linecap="round"/>
+    </svg>
+  `,
+
+  /**
+   * Help icon
+   */
+  help: `
+    <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="2" fill="none"/>
+      <path d="M12 17V16.5C12 15.5 13 15 13.5 14C14 13 15 12.5 15 11C15 9.34315 13.6569 8 12 8C10.3431 8 9 9.34315 9 11" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+      <circle cx="12" cy="19" r="0.5" fill="currentColor"/>
+    </svg>
+  `,
+
+  /**
    * Get icon HTML
    */
   get(iconName) {

@@ -101,6 +101,9 @@ Apple Notes-style app with sidebar. Create multiple notes with auto-save, smart 
 ### 🖼️ Preview
 View images from your files. Supports PNG, JPG, GIF, WebP, and SVG.
 
+### 🧭 Safari
+Browse the old internet! Experience websites from the 1990s via Wayback Machine. Click 🎲 for random retro sites.
+
 ### 💀 DOOM
 Play the classic 1993 FPS game right in your browser! Click the 💀 icon in the dock.
 

@@ -35,6 +35,7 @@ const CACHE_URLS = [
   './js/apps/notes.js',
   './js/apps/settings.js',
   './js/apps/preview.js',
+  './js/apps/safari.js',
   './js/apps/doom.js',
   './js/main.js'
 ];

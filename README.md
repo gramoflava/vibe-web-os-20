@@ -85,6 +85,16 @@ A browser-based operating system inspired by macOS, built following Apple's Huma
 - Clean, distraction-free viewing
 - Automatic file detection from Finder
 
+#### 🧭 Safari
+
+- **Old Internet Browser** powered by Wayback Machine
+- Browse websites from the 1990s and early 2000s
+- Default snapshots from 1997 (Web 1.0 golden age)
+- Random old website button (Yahoo, Google, Amazon, Apple, etc.)
+- Full navigation controls (back, forward, refresh)
+- Experience the internet as it was decades ago
+- See original designs, content, and functionality
+
 #### 💀 DOOM
 - **Classic FPS game from 1993** running in your browser!
 - Powered by [js-dos](https://js-dos.com/) emulator
@@ -183,6 +193,7 @@ vibe-web-os-2/
 │   │   ├── notes.js
 │   │   ├── settings.js
 │   │   ├── preview.js
+│   │   ├── safari.js
 │   │   └── doom.js
 │   └── main.js             # Entry point
 └── assets/
