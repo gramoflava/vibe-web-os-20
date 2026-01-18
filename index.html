@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="A browser-based operating system following Apple's Human Interface Guidelines">
+    <title>Vibe Web OS 2.0</title>
+
+    <!-- CSS -->
+    <link rel="stylesheet" href="css/variables.css">
+    <link rel="stylesheet" href="css/base.css">
+    <link rel="stylesheet" href="css/layout.css">
+    <link rel="stylesheet" href="css/components/window.css">
+    <link rel="stylesheet" href="css/components/menubar.css">
+    <link rel="stylesheet" href="css/components/dock.css">
+    <link rel="stylesheet" href="css/components/spotlight.css">
+    <link rel="stylesheet" href="css/components/notifications.css">
+    <link rel="stylesheet" href="css/components/context-menu.css">
+    <link rel="stylesheet" href="css/utilities.css">
+
+    <!-- Favicon -->
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🍎</text></svg>">
+</head>
+<body>
+    <!-- Boot Screen -->
+    <div id="boot-screen" class="boot-screen">
+        <div class="boot-content">
+            <div class="boot-logo">
+                <svg viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg" style="width: 80px; height: 80px;">
+                    <path d="M42 10C42 10 40 8 38 8C36 8 34 10 32 10C30 10 28 8 26 8C24 8 22 10 22 10C22 10 18 12 18 18C18 24 22 32 24 36C26 40 28 42 30 42C32 42 32 40 34 40C36 40 36 42 38 42C40 42 42 40 44 36C46 32 50 24 50 18C50 12 46 10 42 10Z"
+                        fill="white"/>
+                    <path d="M36 8C36 8 36 4 32 4C28 4 28 8 28 8"
+                        stroke="white" stroke-width="2" fill="none" stroke-linecap="round"/>
+                </svg>
+            </div>
+            <div class="boot-progress-container">
+                <div id="boot-progress" class="boot-progress"></div>
+            </div>
+            <div id="boot-text" class="boot-text">Initializing...</div>
+        </div>
+    </div>
+
+    <!-- Desktop -->
+    <div id="desktop" class="desktop" style="display: none;">
+        <!-- Menu Bar -->
+        <div id="menubar" class="menubar">
+            <div class="menubar-left">
+                <button class="menubar-item apple-menu" aria-label="Apple menu">
+                    <svg viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg" style="width: 16px; height: 16px;">
+                        <path d="M42 10C42 10 40 8 38 8C36 8 34 10 32 10C30 10 28 8 26 8C24 8 22 10 22 10C22 10 18 12 18 18C18 24 22 32 24 36C26 40 28 42 30 42C32 42 32 40 34 40C36 40 36 42 38 42C40 42 42 40 44 36C46 32 50 24 50 18C50 12 46 10 42 10Z"
+                            fill="currentColor"/>
+                        <path d="M36 8C36 8 36 4 32 4C28 4 28 8 28 8"
+                            stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round"/>
+                    </svg>
+                </button>
+                <span id="menubar-app-name" class="menubar-app-name">Finder</span>
+            </div>
+            <div class="menubar-right">
+                <button id="spotlight-trigger" class="menubar-item" aria-label="Spotlight Search" title="⌘Space">
+                    🔍
+                </button>
+                <button id="notifications-trigger" class="menubar-item" aria-label="Notifications">
+                    🔔
+                </button>
+                <span id="menubar-clock" class="menubar-clock">12:00</span>
+            </div>
+        </div>
+
+        <!-- Desktop Content Area -->
+        <div id="desktop-content" class="desktop-content">
+            <!-- Windows will be inserted here -->
+        </div>
+
+        <!-- Dock -->
+        <div id="dock-container" class="dock-container">
+            <div id="dock" class="dock">
+                <!-- Dock icons will be inserted here -->
+            </div>
+        </div>
+
+        <!-- Spotlight Search Overlay -->
+        <div id="spotlight-overlay" class="spotlight-overlay" style="display: none;">
+            <div class="spotlight-modal">
+                <input
+                    type="text"
+                    id="spotlight-input"
+                    class="spotlight-input"
+                    placeholder="Spotlight Search"
+                    autocomplete="off"
+                    spellcheck="false"
+                />
+                <div id="spotlight-results" class="spotlight-results">
+                    <!-- Search results will appear here -->
+                </div>
+            </div>
+        </div>
+
+        <!-- Notifications Container -->
+        <div id="notifications-container" class="notifications-container">
+            <!-- Toast notifications will appear here -->
+        </div>
+
+        <!-- Context Menu -->
+        <div id="context-menu" class="context-menu" style="display: none;">
+            <!-- Context menu items will be inserted here -->
+        </div>
+    </div>
+
+    <!-- Utilities -->
+    <script src="js/utils/icons.js"></script>
+
+    <!-- Core JavaScript -->
+    <script src="js/core/bus.js"></script>
+    <script src="js/core/fs.js"></script>
+    <script src="js/core/window-manager.js"></script>
+    <script src="js/core/app-registry.js"></script>
+    <script src="js/core/menubar.js"></script>
+    <script src="js/core/dock.js"></script>
+    <script src="js/core/spotlight.js"></script>
+    <script src="js/core/notifications.js"></script>
+    <script src="js/core/shell.js"></script>
+    <script src="js/core/boot.js"></script>
+
+    <!-- Applications -->
+    <script src="js/apps/finder.js"></script>
+    <script src="js/apps/textedit.js"></script>
+    <script src="js/apps/codeedit.js"></script>
+    <script src="js/apps/notes.js"></script>
+    <script src="js/apps/settings.js"></script>
+    <script src="js/apps/preview.js"></script>
+    <script src="js/apps/doom.js"></script>
+
+    <!-- Main initialization -->
+    <script src="js/main.js"></script>
+</body>
+</html>

@@ -1,0 +1,288 @@
+/* ============================================
+   Window Component
+   Glassmorphic windows with Apple-style design
+   ============================================ */
+
+.window {
+  position: absolute;
+  display: flex;
+  flex-direction: column;
+  min-width: var(--window-min-width);
+  min-height: var(--window-min-height);
+  background: var(--glass-light);
+  backdrop-filter: var(--backdrop-window);
+  border: 1px solid var(--border-light);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-window);
+  overflow: hidden;
+  transition: box-shadow var(--duration-base) var(--ease-out);
+  will-change: transform;
+}
+
+.window.focused {
+  box-shadow: var(--shadow-window-active);
+  border-color: var(--border-medium);
+  z-index: calc(var(--z-window-base) + 1);
+}
+
+.window.minimizing {
+  animation: minimizeToDoc k var(--duration-slow) var(--ease-in-out) forwards;
+}
+
+@keyframes minimizeToDock {
+  to {
+    transform: scale(0.1);
+    opacity: 0;
+  }
+}
+
+.window.maximized {
+  top: var(--menubar-height) !important;
+  left: 0 !important;
+  right: 0 !important;
+  bottom: calc(var(--dock-height) + var(--space-2)) !important;
+  width: auto !important;
+  height: auto !important;
+  border-radius: 0;
+}
+
+/* Window Titlebar */
+.window-titlebar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: var(--window-titlebar-height);
+  padding: 0 var(--space-4);
+  background: var(--glass-dark);
+  border-bottom: 1px solid var(--border-light);
+  cursor: grab;
+  -webkit-user-select: none;
+  user-select: none;
+}
+
+.window-titlebar:active {
+  cursor: grabbing;
+}
+
+.window.focused .window-titlebar {
+  background: var(--glass-medium);
+}
+
+/* Traffic Lights (macOS-style buttons) */
+.window-controls {
+  display: flex;
+  gap: var(--space-2);
+  align-items: center;
+  height: 100%;
+}
+
+.window-control-btn {
+  width: 12px;
+  height: 12px;
+  border-radius: var(--radius-full);
+  border: none;
+  padding: 0;
+  cursor: pointer;
+  transition: all var(--duration-fast) var(--ease-out);
+  position: relative;
+  flex-shrink: 0;
+}
+
+/* Close button - Red */
+.window-control-btn.close {
+  background: #ff5f57;
+}
+
+.window-control-btn.close:hover {
+  background: #ff4136;
+}
+
+/* Minimize button - Yellow */
+.window-control-btn.minimize {
+  background: #ffbd2e;
+}
+
+.window-control-btn.minimize:hover {
+  background: #ffaa00;
+}
+
+/* Maximize button - Green */
+.window-control-btn.maximize {
+  background: #28c840;
+}
+
+.window-control-btn.maximize:hover {
+  background: #1aad2f;
+}
+
+/* Show symbols on hover (optional enhancement) */
+.window:hover .window-control-btn::before {
+  opacity: 1;
+}
+
+.window-control-btn::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  opacity: 0;
+  transition: opacity var(--duration-fast) var(--ease-out);
+  font-size: 8px;
+  color: rgba(0, 0, 0, 0.6);
+}
+
+.window-control-btn.close::before {
+  content: '×';
+  font-size: 14px;
+  font-weight: bold;
+}
+
+.window-control-btn.minimize::before {
+  content: '−';
+  font-size: 12px;
+  font-weight: bold;
+}
+
+.window-control-btn.maximize::before {
+  content: '+';
+  font-size: 12px;
+  font-weight: bold;
+}
+
+/* Window Title */
+.window-title {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: var(--text-sm);
+  font-weight: var(--weight-semibold);
+  color: var(--text-primary);
+  pointer-events: none;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 50%;
+}
+
+/* Spacer for layout balance */
+.window-spacer {
+  width: 68px; /* Same as controls width */
+}
+
+/* Window Content */
+.window-content {
+  flex: 1;
+  overflow: auto;
+  padding: var(--space-4);
+  background: var(--glass-dark);
+}
+
+/* Window Toolbar (optional) */
+.window-toolbar {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  padding: var(--space-2) var(--space-4);
+  background: var(--glass-dark);
+  border-bottom: 1px solid var(--border-light);
+  min-height: 44px;
+}
+
+.window-toolbar-item {
+  padding: var(--space-1) var(--space-3);
+  border-radius: var(--radius-md);
+  background: var(--glass-light);
+  font-size: var(--text-sm);
+  transition: all var(--duration-fast) var(--ease-out);
+}
+
+.window-toolbar-item:hover {
+  background: var(--glass-medium);
+}
+
+/* Window Resize Handle */
+.window-resize-handle {
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  width: 20px;
+  height: 20px;
+  cursor: nwse-resize;
+  z-index: 10;
+}
+
+.window-resize-handle::after {
+  content: '';
+  position: absolute;
+  bottom: 2px;
+  right: 2px;
+  width: 12px;
+  height: 12px;
+  background: linear-gradient(
+    135deg,
+    transparent 0%,
+    transparent 45%,
+    var(--text-tertiary) 45%,
+    var(--text-tertiary) 47%,
+    transparent 47%,
+    transparent 52%,
+    var(--text-tertiary) 52%,
+    var(--text-tertiary) 54%,
+    transparent 54%
+  );
+  opacity: 0.5;
+  border-radius: 0 0 var(--radius-lg) 0;
+}
+
+/* Window Sidebar (for apps like Finder) */
+.window-sidebar {
+  width: 200px;
+  background: var(--glass-darker);
+  border-right: 1px solid var(--border-light);
+  padding: var(--space-4);
+  overflow-y: auto;
+}
+
+.window-main {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+/* Window with sidebar layout */
+.window-with-sidebar {
+  display: flex;
+  flex-direction: row;
+}
+
+.window-with-sidebar .window-content {
+  padding: 0;
+}
+
+/* Window States */
+.window[data-state="minimized"] {
+  display: none;
+}
+
+.window[data-state="hidden"] {
+  opacity: 0;
+  pointer-events: none;
+}
+
+/* Snap indicators (shown while dragging) */
+.snap-indicator {
+  position: fixed;
+  background: var(--accent-blue);
+  opacity: 0.2;
+  border: 2px solid var(--accent-blue);
+  border-radius: var(--radius-md);
+  pointer-events: none;
+  z-index: calc(var(--z-window-base) - 1);
+  transition: all var(--duration-fast) var(--ease-out);
+}
+
+.snap-indicator.active {
+  opacity: 0.3;
+}
