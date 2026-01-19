@@ -152,26 +152,32 @@ const Dock = (() => {
     const menuItems = [
       {
         label: 'Open',
-        icon: '▶️',
+        icon: `<svg viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg" style="width: 16px; height: 16px;">
+                <path d="M3.33333 2L12.6667 8L3.33333 14V2Z" fill="currentColor" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>`,
         action: () => Apps.open(appId),
         disabled: isRunning
       },
       {
         label: 'Quit',
-        icon: '⏹️',
+        icon: `<svg viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg" style="width: 16px; height: 16px;">
+                <rect x="4" y="4" width="8" height="8" rx="1.5" fill="currentColor" stroke="currentColor" stroke-width="1.5"/>
+              </svg>`,
         action: () => quitApp(appId),
         disabled: !isRunning
       },
       { divider: true },
       {
         label: app.keepInDock ? 'Remove from Dock' : 'Keep in Dock',
-        icon: '📌',
+        icon: `<svg viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg" style="width: 16px; height: 16px;">
+                <path d="M10.6667 2V4.66667C10.6667 5.33333 11.3333 6 12 6H12.6667C13 6 13.3333 6.13333 13.6 6.4C13.8667 6.66667 14 7 14 7.33333C14 7.66667 13.8667 8 13.6 8.26667C13.3333 8.53333 13 8.66667 12.6667 8.66667H3.33333C3 8.66667 2.66667 8.53333 2.4 8.26667C2.13333 8 2 7.66667 2 7.33333C2 7 2.13333 6.66667 2.4 6.4C2.66667 6.13333 3 6 3.33333 6H4C4.66667 6 5.33333 5.33333 5.33333 4.66667V2" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                <path d="M8 8.66667V14" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+              </svg>`,
         action: () => toggleKeepInDock(appId)
       }
     ];
 
-    // TODO: Show context menu
-    console.log('Dock context menu:', menuItems);
+    ContextMenu.show(menuItems, x, y);
   }
 
   /**

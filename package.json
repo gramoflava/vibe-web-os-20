@@ -1,0 +1,23 @@
+{
+  "name": "vibe-web-os-20",
+  "version": "2.0.0",
+  "description": "A browser-based operating system following Apple's Human Interface Guidelines",
+  "scripts": {
+    "lint": "eslint js/**/*.js",
+    "lint:fix": "eslint js/**/*.js --fix",
+    "format": "prettier --write \"**/*.{js,css,html,md}\"",
+    "format:check": "prettier --check \"**/*.{js,css,html,md}\""
+  },
+  "keywords": [
+    "web-os",
+    "browser-os",
+    "vanilla-js",
+    "glassmorphism"
+  ],
+  "author": "",
+  "license": "MIT",
+  "devDependencies": {
+    "eslint": "^8.57.0",
+    "prettier": "^3.2.5"
+  }
+}

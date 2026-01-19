@@ -155,17 +155,18 @@
     if (currentPath !== '/root') {
       html += `
         <div class="finder-item" data-path=".." style="display: flex; flex-direction: column; align-items: center; gap: var(--space-2); padding: var(--space-3); border-radius: var(--radius-md); cursor: pointer; transition: all var(--duration-fast) var(--ease-out);">
-          <div style="font-size: 48px;">📁</div>
+          <div style="width: 48px; height: 48px; color: var(--accent-blue);">${Icons.folder}</div>
           <div style="font-size: var(--text-sm); text-align: center; word-break: break-word;">..</div>
         </div>
       `;
     }
 
     items.forEach(item => {
-      const icon = item.isDirectory ? '📁' : FS.getIcon(item.name);
+      const icon = item.isDirectory ? Icons.folder : FS.getIcon(item.name);
+      const iconColor = item.isDirectory ? 'var(--accent-blue)' : 'currentColor';
       html += `
         <div class="finder-item" data-path="${item.path}" data-is-dir="${item.isDirectory}" style="display: flex; flex-direction: column; align-items: center; gap: var(--space-2); padding: var(--space-3); border-radius: var(--radius-md); cursor: pointer; transition: all var(--duration-fast) var(--ease-out);">
-          <div style="font-size: 48px;">${icon}</div>
+          <div style="width: 48px; height: 48px; color: ${iconColor};">${icon}</div>
           <div style="font-size: var(--text-sm); text-align: center; word-break: break-word;">${item.name}</div>
         </div>
       `;

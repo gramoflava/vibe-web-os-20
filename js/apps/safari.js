@@ -29,14 +29,33 @@
           />
 
           <button id="safari-go" class="btn btn-primary" style="padding: var(--space-2) var(--space-4); font-size: var(--text-sm);">Go</button>
-          <button id="safari-random" class="btn" style="padding: var(--space-2) var(--space-3); font-size: var(--text-sm);" title="Random old website">🎲</button>
+          <button id="safari-random" class="btn" style="padding: var(--space-2) var(--space-3); font-size: var(--text-sm); display: flex; align-items: center; gap: 4px;" title="Random old website">
+            <svg viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg" style="width: 14px; height: 14px;">
+              <rect x="2" y="2" width="12" height="12" rx="2" stroke="currentColor" stroke-width="1.5" fill="none"/>
+              <circle cx="4.67" cy="4.67" r="1" fill="currentColor"/>
+              <circle cx="11.33" cy="4.67" r="1" fill="currentColor"/>
+              <circle cx="8" cy="8" r="1" fill="currentColor"/>
+              <circle cx="4.67" cy="11.33" r="1" fill="currentColor"/>
+              <circle cx="11.33" cy="11.33" r="1" fill="currentColor"/>
+            </svg>
+          </button>
         </div>
 
         <!-- Info Bar -->
         <div id="safari-info" style="padding: var(--space-2) var(--space-3); background: var(--glass-light); border-bottom: 1px solid var(--border-light); font-size: var(--text-xs); color: var(--text-secondary); display: flex; align-items: center; gap: var(--space-2);">
-          <span>🕰️</span>
+          <svg viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg" style="width: 14px; height: 14px; flex-shrink: 0;">
+            <circle cx="8" cy="8" r="6" stroke="currentColor" stroke-width="1.5" fill="none"/>
+            <path d="M8 4V8H11" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+          </svg>
           <span>Browsing the Old Internet via Wayback Machine</span>
-          <button id="safari-help" style="margin-left: auto; background: transparent; border: none; color: var(--accent-blue); cursor: pointer; font-size: var(--text-xs);">ℹ️ Help</button>
+          <button id="safari-help" style="margin-left: auto; background: transparent; border: none; color: var(--accent-blue); cursor: pointer; font-size: var(--text-xs); display: flex; align-items: center; gap: 4px;">
+            <svg viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg" style="width: 12px; height: 12px;">
+              <circle cx="8" cy="8" r="6" stroke="currentColor" stroke-width="1.5" fill="none"/>
+              <path d="M8 11.33V10.83C8 10.33 8.67 10 9 9.33C9.33 8.67 10 8.33 10 7.33C10 6.22876 9.10457 5.33333 8 5.33333C6.89543 5.33333 6 6.22876 6 7.33333" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+              <circle cx="8" cy="12.67" r="0.33" fill="currentColor"/>
+            </svg>
+            Help
+          </button>
         </div>
 
         <!-- Browser Frame -->

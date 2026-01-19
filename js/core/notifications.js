@@ -6,12 +6,31 @@
 const Notifications = (() => {
   const container = document.getElementById('notifications-container');
   let notificationId = 0;
+  let notificationHistory = [];
 
   /**
    * Show a notification
    */
-  function show({ title, body, icon = '📄', type = 'info', duration = 5000, actions = [] }) {
+  function show({ title, body, icon, type = 'info', duration = 5000, actions = [] }) {
+    // Default icon if not provided
+    if (!icon) {
+      icon = `<svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" style="width: 24px; height: 24px;">
+                <path d="M7 2H14L19 7V20C19 21.1046 18.1046 22 17 22H7C5.89543 22 5 21.1046 5 20V4C5 2.89543 5.89543 2 7 2Z" fill="currentColor" opacity="0.3"/>
+                <path d="M14 2V7H19" stroke="currentColor" stroke-width="1.5" fill="none"/>
+              </svg>`;
+    }
     const id = ++notificationId;
+
+    // Add to history
+    notificationHistory.unshift({
+      id,
+      title,
+      body,
+      icon,
+      type,
+      timestamp: new Date(),
+      read: false
+    });
 
     const notification = document.createElement('div');
     notification.className = `notification ${type}`;
@@ -102,28 +121,82 @@ const Notifications = (() => {
    * Show success notification
    */
   function success(title, body) {
-    return show({ title, body, icon: '✅', type: 'success' });
+    const icon = `<svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" style="width: 24px; height: 24px; color: var(--success);">
+                    <path d="M20 6L9 17L4 12" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                  </svg>`;
+    return show({ title, body, icon, type: 'success' });
   }
 
   /**
    * Show error notification
    */
   function error(title, body) {
-    return show({ title, body, icon: '❌', type: 'error' });
+    const icon = `<svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" style="width: 24px; height: 24px; color: var(--error);">
+                    <path d="M18 6L6 18M6 6L18 18" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                  </svg>`;
+    return show({ title, body, icon, type: 'error' });
   }
 
   /**
    * Show warning notification
    */
   function warning(title, body) {
-    return show({ title, body, icon: '⚠️', type: 'warning' });
+    const icon = `<svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" style="width: 24px; height: 24px; color: var(--warning);">
+                    <path d="M12 2L2 20H22L12 2Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+                    <path d="M12 9V13" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                    <circle cx="12" cy="17" r="0.5" fill="currentColor" stroke="currentColor"/>
+                  </svg>`;
+    return show({ title, body, icon, type: 'warning' });
   }
 
   /**
    * Show info notification
    */
   function info(title, body) {
-    return show({ title, body, icon: 'ℹ️', type: 'info' });
+    const icon = `<svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" style="width: 24px; height: 24px; color: var(--accent-blue);">
+                    <circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="2" fill="none"/>
+                    <path d="M12 16V12" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                    <circle cx="12" cy="8" r="0.5" fill="currentColor" stroke="currentColor"/>
+                  </svg>`;
+    return show({ title, body, icon, type: 'info' });
+  }
+
+  /**
+   * Get notification history
+   */
+  function getHistory() {
+    return notificationHistory;
+  }
+
+  /**
+   * Mark notification as read
+   */
+  function markAsRead(id) {
+    const notification = notificationHistory.find(n => n.id === id);
+    if (notification) {
+      notification.read = true;
+    }
+  }
+
+  /**
+   * Mark all notifications as read
+   */
+  function markAllAsRead() {
+    notificationHistory.forEach(n => n.read = true);
+  }
+
+  /**
+   * Get unread count
+   */
+  function getUnreadCount() {
+    return notificationHistory.filter(n => !n.read).length;
+  }
+
+  /**
+   * Clear history
+   */
+  function clearHistory() {
+    notificationHistory = [];
   }
 
   return {
@@ -133,6 +206,11 @@ const Notifications = (() => {
     success,
     error,
     warning,
-    info
+    info,
+    getHistory,
+    markAsRead,
+    markAllAsRead,
+    getUnreadCount,
+    clearHistory
   };
 })();

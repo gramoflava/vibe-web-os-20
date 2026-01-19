@@ -94,7 +94,13 @@
     // Handle errors
     iframe.addEventListener('error', () => {
       loading.innerHTML = `
-        <div style="font-size: 48px; margin-bottom: var(--space-4);">⚠️</div>
+        <div style="margin-bottom: var(--space-4);">
+          <svg viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg" style="width: 48px; height: 48px; color: var(--error);">
+            <path d="M32 4L4 53.33H60L32 4Z" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+            <path d="M32 20V34.67" stroke="currentColor" stroke-width="3" stroke-linecap="round"/>
+            <circle cx="32" cy="45.33" r="1" fill="currentColor" stroke="currentColor"/>
+          </svg>
+        </div>
         <div style="font-size: var(--text-xl); font-weight: var(--weight-semibold); margin-bottom: var(--space-2); color: var(--error);">Failed to Load DOOM</div>
         <div style="font-size: var(--text-sm); color: rgba(255,255,255,0.6); margin-bottom: var(--space-4);">
           Unable to connect to js-dos server

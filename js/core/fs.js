@@ -399,34 +399,35 @@ const FS = (() => {
    * Get file icon based on extension
    */
   function getIcon(filename) {
-    if (!filename) return '📄';
+    const defaultIcon = Icons.document;
+    if (!filename) return defaultIcon;
 
     const ext = filename.split('.').pop().toLowerCase();
     const iconMap = {
-      txt: '📄',
-      md: '📝',
-      pdf: '📕',
-      doc: '📘',
-      docx: '📘',
-      jpg: '🖼️',
-      jpeg: '🖼️',
-      png: '🖼️',
-      gif: '🖼️',
-      svg: '🖼️',
-      mp4: '🎬',
-      mov: '🎬',
-      avi: '🎬',
-      mp3: '🎵',
-      wav: '🎵',
-      js: '📜',
-      html: '🌐',
-      css: '🎨',
-      json: '⚙️',
-      zip: '📦',
-      folder: '📁'
+      txt: Icons.document,
+      md: Icons.document,
+      pdf: Icons.document,
+      doc: Icons.document,
+      docx: Icons.document,
+      jpg: Icons.picture,
+      jpeg: Icons.picture,
+      png: Icons.picture,
+      gif: Icons.picture,
+      svg: Icons.picture,
+      mp4: Icons.video,
+      mov: Icons.video,
+      avi: Icons.video,
+      mp3: Icons.music,
+      wav: Icons.music,
+      js: Icons.document,
+      html: Icons.globe,
+      css: Icons.palette,
+      json: Icons.gear,
+      zip: Icons.package,
+      folder: Icons.folder
     };
 
-    return iconMap[ext] || '📄';
+    return iconMap[ext] || defaultIcon;
   }
 
   // Initialize on load

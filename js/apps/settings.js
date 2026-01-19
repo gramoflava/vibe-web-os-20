@@ -32,8 +32,13 @@
         <div class="card" style="margin-bottom: var(--space-6);">
           <h3 style="margin-bottom: var(--space-4); font-size: var(--text-lg);">Wallpaper</h3>
 
-          <div style="margin-bottom: var(--space-3); padding: var(--space-3); background: var(--glass-light); border-radius: var(--radius-md); font-size: var(--text-xs); color: var(--text-secondary); border-left: 3px solid var(--accent-blue);">
-            <strong style="color: var(--text-primary);">ℹ️ Note:</strong> Due to limited localStorage (5-10MB), only online wallpapers are available at this time. Images are loaded from external URLs and not stored locally.
+          <div style="margin-bottom: var(--space-3); padding: var(--space-3); background: var(--glass-light); border-radius: var(--radius-md); font-size: var(--text-xs); color: var(--text-secondary); border-left: 3px solid var(--accent-blue); display: flex; gap: var(--space-2);">
+            <svg viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg" style="width: 16px; height: 16px; flex-shrink: 0; color: var(--accent-blue);">
+              <circle cx="8" cy="8" r="6" stroke="currentColor" stroke-width="1.5" fill="none"/>
+              <path d="M8 10.67V8" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+              <circle cx="8" cy="5.33" r="0.33" fill="currentColor" stroke="currentColor"/>
+            </svg>
+            <div><strong style="color: var(--text-primary);">Note:</strong> Due to limited localStorage (5-10MB), only online wallpapers are available at this time. Images are loaded from external URLs and not stored locally.</div>
           </div>
 
           <div style="margin-bottom: var(--space-4);">
@@ -55,9 +60,30 @@
           <div style="margin-top: var(--space-4); padding: var(--space-3); background: var(--glass-dark); border-radius: var(--radius-md); font-size: var(--text-xs); color: var(--text-secondary);">
             <div style="margin-bottom: var(--space-2);"><strong>Suggested wallpapers:</strong></div>
             <div style="display: flex; flex-direction: column; gap: var(--space-1);">
-              <button class="wallpaper-preset" data-url="https://picsum.photos/1920/1080" style="text-align: left; padding: var(--space-1); background: transparent; border: none; color: var(--accent-blue); cursor: pointer; font-size: var(--text-xs);">🖼️ Random landscape (Picsum)</button>
-              <button class="wallpaper-preset" data-url="https://source.unsplash.com/1920x1080/?nature" style="text-align: left; padding: var(--space-1); background: transparent; border: none; color: var(--accent-blue); cursor: pointer; font-size: var(--text-xs);">🌲 Nature (Unsplash)</button>
-              <button class="wallpaper-preset" data-url="https://source.unsplash.com/1920x1080/?space" style="text-align: left; padding: var(--space-1); background: transparent; border: none; color: var(--accent-blue); cursor: pointer; font-size: var(--text-xs);">🌌 Space (Unsplash)</button>
+              <button class="wallpaper-preset" data-url="https://picsum.photos/1920/1080" style="text-align: left; padding: var(--space-1); background: transparent; border: none; color: var(--accent-blue); cursor: pointer; font-size: var(--text-xs); display: flex; align-items: center; gap: 4px;">
+                <svg viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg" style="width: 12px; height: 12px;">
+                  <rect x="2" y="2" width="12" height="12" rx="1.5" fill="currentColor" opacity="0.3"/>
+                  <circle cx="5.67" cy="5.67" r="1.33" fill="currentColor" opacity="0.6"/>
+                  <path d="M2 10L5.33 6.67L8.67 10L12 6.67L14 8.67" stroke="currentColor" stroke-width="1" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+                Random landscape (Picsum)
+              </button>
+              <button class="wallpaper-preset" data-url="https://source.unsplash.com/1920x1080/?nature" style="text-align: left; padding: var(--space-1); background: transparent; border: none; color: var(--accent-blue); cursor: pointer; font-size: var(--text-xs); display: flex; align-items: center; gap: 4px;">
+                <svg viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg" style="width: 12px; height: 12px;">
+                  <rect x="2" y="2" width="12" height="12" rx="1.5" fill="currentColor" opacity="0.3"/>
+                  <circle cx="5.67" cy="5.67" r="1.33" fill="currentColor" opacity="0.6"/>
+                  <path d="M2 10L5.33 6.67L8.67 10L12 6.67L14 8.67" stroke="currentColor" stroke-width="1" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+                Nature (Unsplash)
+              </button>
+              <button class="wallpaper-preset" data-url="https://source.unsplash.com/1920x1080/?space" style="text-align: left; padding: var(--space-1); background: transparent; border: none; color: var(--accent-blue); cursor: pointer; font-size: var(--text-xs); display: flex; align-items: center; gap: 4px;">
+                <svg viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg" style="width: 12px; height: 12px;">
+                  <rect x="2" y="2" width="12" height="12" rx="1.5" fill="currentColor" opacity="0.3"/>
+                  <circle cx="5.67" cy="5.67" r="1.33" fill="currentColor" opacity="0.6"/>
+                  <path d="M2 10L5.33 6.67L8.67 10L12 6.67L14 8.67" stroke="currentColor" stroke-width="1" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+                Space (Unsplash)
+              </button>
             </div>
           </div>
         </div>
@@ -92,8 +118,13 @@
             <p style="margin-bottom: var(--space-3); font-size: var(--text-xs); color: var(--text-secondary); line-height: var(--leading-relaxed);">
               Reset Vibe Web OS to its original state. This will permanently delete all files, notes, settings, and preferences. The OS will reload with default settings.
             </p>
-            <button id="factory-reset" class="btn" style="background: var(--error); color: white; border: 1px solid var(--error-hover);">
-              ⚠️ Factory Reset
+            <button id="factory-reset" class="btn" style="background: var(--error); color: white; border: 1px solid var(--error-hover); display: flex; align-items: center; gap: var(--space-2);">
+              <svg viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg" style="width: 16px; height: 16px;">
+                <path d="M8 1.33L1.33 13.33H14.67L8 1.33Z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+                <path d="M8 6V8.67" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+                <circle cx="8" cy="11.33" r="0.33" fill="currentColor" stroke="currentColor"/>
+              </svg>
+              Factory Reset
             </button>
           </div>
         </div>

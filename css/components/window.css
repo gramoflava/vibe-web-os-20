@@ -116,38 +116,39 @@
 }
 
 /* Show symbols on hover (optional enhancement) */
-.window:hover .window-control-btn::before {
+.window:hover .window-control-btn svg {
   opacity: 1;
 }
 
-.window-control-btn::before {
-  content: '';
+.window-control-btn {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.window-control-btn svg {
   position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
+  width: 6px;
+  height: 6px;
   opacity: 0;
   transition: opacity var(--duration-fast) var(--ease-out);
-  font-size: 8px;
-  color: rgba(0, 0, 0, 0.6);
+  pointer-events: none;
 }
 
-.window-control-btn.close::before {
-  content: '×';
-  font-size: 14px;
-  font-weight: bold;
+.window-control-btn.close svg {
+  width: 7px;
+  height: 7px;
 }
 
-.window-control-btn.minimize::before {
-  content: '−';
-  font-size: 12px;
-  font-weight: bold;
+.window-control-btn.maximize svg {
+  width: 6px;
+  height: 6px;
 }
 
-.window-control-btn.maximize::before {
-  content: '+';
-  font-size: 12px;
-  font-weight: bold;
+.window-control-btn.minimize svg {
+  width: 6px;
+  height: 2px;
 }
 
 /* Window Title */
@@ -285,4 +286,28 @@
 
 .snap-indicator.active {
   opacity: 0.3;
+}
+
+/* Window snap indicator (visual feedback when dragging near edges) */
+.window-snap-indicator {
+  position: fixed;
+  background: var(--accent-blue);
+  opacity: 0.25;
+  border: 3px solid var(--accent-blue);
+  border-radius: var(--radius-lg);
+  pointer-events: none;
+  z-index: calc(var(--z-window-base) - 1);
+  display: none;
+  animation: snapIndicatorFadeIn var(--duration-fast) var(--ease-out);
+}
+
+@keyframes snapIndicatorFadeIn {
+  from {
+    opacity: 0;
+    transform: scale(0.98);
+  }
+  to {
+    opacity: 0.25;
+    transform: scale(1);
+  }
 }

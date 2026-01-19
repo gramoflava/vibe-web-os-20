@@ -36,13 +36,29 @@
               <span style="font-size: var(--text-xs); font-weight: var(--weight-semibold); color: var(--text-tertiary); text-transform: uppercase; letter-spacing: 0.05em;">Project</span>
               <span id="codeedit-project-name-${instanceId}" style="font-size: var(--text-sm); font-weight: var(--weight-medium); color: var(--text-primary); overflow: hidden; text-overflow: ellipsis; white-space: nowrap;" title="${currentProject}">${currentProject.split('/').pop()}</span>
             </div>
-            <button id="codeedit-project-menu-${instanceId}" class="window-toolbar-item" title="Project menu" style="padding: var(--space-1);">⚙️</button>
+            <button id="codeedit-project-menu-${instanceId}" class="window-toolbar-item" title="Project menu" style="padding: var(--space-1);">
+              <svg viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg" style="width: 14px; height: 14px;">
+                <circle cx="8" cy="8" r="2" stroke="currentColor" stroke-width="1.5" fill="none"/>
+                <path d="M8 0.67V2.67M8 13.33V15.33M2.81 2.81L4.23 4.23M11.77 11.77L13.19 13.19M0.67 8H2.67M13.33 8H15.33M2.81 13.19L4.23 11.77M11.77 4.23L13.19 2.81" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+              </svg>
+            </button>
           </div>
 
           <!-- File tree toolbar -->
           <div style="padding: var(--space-2); border-bottom: 1px solid var(--border-light); display: flex; gap: var(--space-1);">
-            <button id="codeedit-new-file-${instanceId}" class="window-toolbar-item" title="New File" style="flex: 1;">📄 New</button>
-            <button id="codeedit-new-folder-${instanceId}" class="window-toolbar-item" title="New Folder" style="flex: 1;">📁 Folder</button>
+            <button id="codeedit-new-file-${instanceId}" class="window-toolbar-item" title="New File" style="flex: 1; display: flex; align-items: center; justify-content: center; gap: 4px;">
+              <svg viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg" style="width: 12px; height: 12px;">
+                <path d="M4.67 1.33H9.33L12.67 4.67V13.33C12.67 13.687 12.5262 14.0261 12.2761 14.2761C12.0261 14.5262 11.687 14.6667 11.3333 14.6667H4.67C4.31304 14.6667 3.97391 14.5262 3.72386 14.2761C3.47381 14.0261 3.33333 13.687 3.33333 13.33V2.67C3.33333 2.31304 3.47381 1.97391 3.72386 1.72386C3.97391 1.47381 4.31304 1.33333 4.67 1.33333Z" fill="currentColor" opacity="0.3"/>
+                <path d="M9.33 1.33V4.67H12.67" stroke="currentColor" stroke-width="1" fill="none"/>
+              </svg>
+              New
+            </button>
+            <button id="codeedit-new-folder-${instanceId}" class="window-toolbar-item" title="New Folder" style="flex: 1; display: flex; align-items: center; justify-content: center; gap: 4px;">
+              <svg viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg" style="width: 12px; height: 12px;">
+                <path d="M2 4.67C2 3.93 2.597 3.33 3.33 3.33H6L7.33 4.67H12.67C13.403 4.67 14 5.267 14 6V11.33C14 12.063 13.403 12.67 12.67 12.67H3.33C2.597 12.67 2 12.063 2 11.33V4.67Z" fill="currentColor" opacity="0.3" stroke="currentColor" stroke-width="1.5"/>
+              </svg>
+              Folder
+            </button>
           </div>
 
           <!-- File tree -->
@@ -66,8 +82,20 @@
           <!-- Editor Toolbar -->
           <div class="window-toolbar" style="background: var(--bg-secondary); border-bottom: 1px solid var(--border-light);">
             <span id="codeedit-filename-${instanceId}" style="font-size: var(--text-sm); font-weight: var(--weight-medium); color: var(--text-secondary); margin-right: var(--space-4);">No file open</span>
-            <button id="codeedit-save-${instanceId}" class="window-toolbar-item btn-primary" disabled>💾 Save</button>
-            <button id="codeedit-run-${instanceId}" class="window-toolbar-item" title="Run code">▶️ Run</button>
+            <button id="codeedit-save-${instanceId}" class="window-toolbar-item btn-primary" disabled style="display: flex; align-items: center; gap: 4px;">
+              <svg viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg" style="width: 14px; height: 14px;">
+                <path d="M12.67 14H3.33C2.597 14 2 13.403 2 12.67V3.33C2 2.597 2.597 2 3.33 2H10.67L14 5.33V12.67C14 13.403 13.403 14 12.67 14Z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+                <path d="M11.33 14V8.67H4.67V14" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                <path d="M4.67 2V5.33H10" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+              Save
+            </button>
+            <button id="codeedit-run-${instanceId}" class="window-toolbar-item" title="Run code" style="display: flex; align-items: center; gap: 4px;">
+              <svg viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg" style="width: 14px; height: 14px;">
+                <path d="M3.33 2L12.67 8L3.33 14V2Z" fill="currentColor" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+              Run
+            </button>
             <span id="codeedit-status-${instanceId}" style="margin-left: auto; font-size: var(--text-xs); color: var(--text-tertiary);"></span>
           </div>
 
@@ -424,7 +452,8 @@ main();`
     if (!node) return '';
 
     const indent = depth * 16;
-    const icon = node.isDirectory ? '📁' : getFileIcon(node.name);
+    const icon = node.isDirectory ? Icons.folder : getFileIcon(node.name);
+    const iconColor = node.isDirectory ? 'var(--accent-blue)' : 'currentColor';
 
     let html = '';
 
@@ -447,7 +476,7 @@ main();`
             transition: background var(--duration-fast) var(--ease-out);
           "
         >
-          <span>${icon}</span>
+          <span style="width: 16px; height: 16px; display: flex; align-items: center; color: ${iconColor};">${icon}</span>
           <span style="flex: 1; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">${node.name}</span>
           ${!node.isDirectory ? `<button class="codeedit-delete-btn" data-path="${node.path}" style="opacity: 0; padding: 0 var(--space-1); font-size: var(--text-xs); background: var(--error); border: none; border-radius: var(--radius-sm); color: white; cursor: pointer;" title="Delete">×</button>` : ''}
         </div>
@@ -538,23 +567,23 @@ main();`
   function getFileIcon(filename) {
     const ext = filename.split('.').pop().toLowerCase();
     const iconMap = {
-      'js': '📜',
-      'ts': '📘',
-      'cpp': '⚙️',
-      'c': '⚙️',
-      'h': '📋',
-      'hpp': '📋',
-      'py': '🐍',
-      'java': '☕',
-      'html': '🌐',
-      'css': '🎨',
-      'json': '📊',
-      'xml': '📄',
-      'md': '📝',
-      'txt': '📄'
+      'js': Icons.document,
+      'ts': Icons.document,
+      'cpp': Icons.gear,
+      'c': Icons.gear,
+      'h': Icons.document,
+      'hpp': Icons.document,
+      'py': Icons.document,
+      'java': Icons.document,
+      'html': Icons.globe,
+      'css': Icons.palette,
+      'json': Icons.chart,
+      'xml': Icons.document,
+      'md': Icons.document,
+      'txt': Icons.document
     };
 
-    return iconMap[ext] || '📄';
+    return iconMap[ext] || Icons.document;
   }
 
   // Register app

@@ -10,8 +10,9 @@ const WindowManager = (() => {
   let activeWindow = null;
   let dragState = null;
   let resizeState = null;
+  let snapIndicator = null;
 
-  const SNAP_THRESHOLD = 30; // pixels from edge to trigger snap
+  const SNAP_THRESHOLD = 50; // pixels from edge to trigger snap
   const MIN_WIDTH = 320;
   const MIN_HEIGHT = 200;
 
@@ -43,9 +44,21 @@ const WindowManager = (() => {
     windowEl.innerHTML = `
       <div class="window-titlebar">
         <div class="window-controls">
-          <button class="window-control-btn close" data-action="close" aria-label="Close"></button>
-          <button class="window-control-btn minimize" data-action="minimize" aria-label="Minimize"></button>
-          <button class="window-control-btn maximize" data-action="maximize" aria-label="Maximize"></button>
+          <button class="window-control-btn close" data-action="close" aria-label="Close">
+            <svg viewBox="0 0 8 8" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M1 1L7 7M7 1L1 7" stroke="rgba(0,0,0,0.7)" stroke-width="1.5" stroke-linecap="round"/>
+            </svg>
+          </button>
+          <button class="window-control-btn minimize" data-action="minimize" aria-label="Minimize">
+            <svg viewBox="0 0 8 8" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M1 4H7" stroke="rgba(0,0,0,0.7)" stroke-width="1.5" stroke-linecap="round"/>
+            </svg>
+          </button>
+          <button class="window-control-btn maximize" data-action="maximize" aria-label="Maximize">
+            <svg viewBox="0 0 8 8" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M4 1V7M1 4H7" stroke="rgba(0,0,0,0.7)" stroke-width="1.5" stroke-linecap="round"/>
+            </svg>
+          </button>
         </div>
         <span class="window-title">${title}</span>
         <div class="window-spacer"></div>
@@ -120,9 +133,29 @@ const WindowManager = (() => {
    */
   function startDrag(id, e) {
     const windowData = windows.get(id);
-    if (!windowData || windowData.state === 'maximized') return;
+    if (!windowData) return;
 
     const windowEl = windowData.element;
+
+    // If window is maximized or snapped, restore it first
+    if (windowData.state === 'maximized' || windowData.state.startsWith('snapped')) {
+      // Restore to saved bounds
+      if (windowData.savedBounds) {
+        windowEl.classList.remove('maximized');
+        windowEl.style.width = `${windowData.savedBounds.width}px`;
+        windowEl.style.height = `${windowData.savedBounds.height}px`;
+
+        // Position window under cursor, centered horizontally
+        const newX = e.clientX - windowData.savedBounds.width / 2;
+        const newY = e.clientY - 20; // 20px below cursor (roughly titlebar height)
+
+        windowEl.style.left = `${newX}px`;
+        windowEl.style.top = `${newY}px`;
+
+        windowData.state = 'normal';
+      }
+    }
+
     const rect = windowEl.getBoundingClientRect();
 
     dragState = {
@@ -175,6 +208,9 @@ const WindowManager = (() => {
     // Apply snap if in zone
     applySnap(e.clientX, e.clientY, windowData);
 
+    // Hide snap indicator
+    hideSnapIndicator();
+
     dragState = null;
 
     document.removeEventListener('mousemove', handleDrag);
@@ -185,8 +221,13 @@ const WindowManager = (() => {
    * Check if cursor is in snap zone
    */
   function checkSnapZones(x, y) {
-    // TODO: Show visual snap indicators
     const snapZone = getSnapZone(x, y);
+
+    if (snapZone) {
+      showSnapIndicator(snapZone);
+    } else {
+      hideSnapIndicator();
+    }
   }
 
   /**
@@ -208,6 +249,49 @@ const WindowManager = (() => {
     }
 
     return null;
+  }
+
+  /**
+   * Show snap indicator overlay
+   */
+  function showSnapIndicator(zone) {
+    if (!snapIndicator) {
+      snapIndicator = document.createElement('div');
+      snapIndicator.className = 'window-snap-indicator';
+      document.getElementById('desktop-content').appendChild(snapIndicator);
+    }
+
+    const menubarHeight = 28;
+    const dockHeight = 70;
+
+    // Position indicator based on zone
+    if (zone === 'maximize') {
+      snapIndicator.style.left = '0';
+      snapIndicator.style.top = `${menubarHeight}px`;
+      snapIndicator.style.width = '100%';
+      snapIndicator.style.height = `calc(100% - ${menubarHeight + dockHeight}px)`;
+    } else if (zone === 'left') {
+      snapIndicator.style.left = '0';
+      snapIndicator.style.top = `${menubarHeight}px`;
+      snapIndicator.style.width = '50%';
+      snapIndicator.style.height = `calc(100% - ${menubarHeight + dockHeight}px)`;
+    } else if (zone === 'right') {
+      snapIndicator.style.left = '50%';
+      snapIndicator.style.top = `${menubarHeight}px`;
+      snapIndicator.style.width = '50%';
+      snapIndicator.style.height = `calc(100% - ${menubarHeight + dockHeight}px)`;
+    }
+
+    snapIndicator.style.display = 'block';
+  }
+
+  /**
+   * Hide snap indicator
+   */
+  function hideSnapIndicator() {
+    if (snapIndicator) {
+      snapIndicator.style.display = 'none';
+    }
   }
 
   /**

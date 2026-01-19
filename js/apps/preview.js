@@ -29,7 +29,11 @@
       <div style="display: flex; flex-direction: column; height: 100%; background: var(--bg-primary);">
         <div class="window-toolbar" style="background: var(--bg-secondary);">
           <div style="display: flex; align-items: center; gap: var(--space-2);">
-            <span style="font-size: var(--text-lg);">🖼️</span>
+            <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" style="width: 18px; height: 18px; color: var(--accent-blue);">
+              <rect x="3" y="3" width="18" height="18" rx="2" fill="currentColor" opacity="0.3"/>
+              <circle cx="8.5" cy="8.5" r="2" fill="currentColor" opacity="0.6"/>
+              <path d="M3 15L8 10L13 15L18 10L21 13" stroke="currentColor" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
             <span style="font-weight: var(--weight-semibold);">${fileName}</span>
           </div>
           <div style="margin-left: auto; display: flex; gap: var(--space-2); align-items: center;">
@@ -58,7 +62,7 @@
     WindowManager.create({
       id: windowId,
       title: fileName,
-      icon: '🖼️',
+      icon: Icons.picture,
       content,
       width: 800,
       height: 600
@@ -160,7 +164,7 @@
   Apps.register({
     id: 'preview',
     name: 'Preview',
-    icon: '🖼️',
+    icon: Icons.picture,
     description: 'Image viewer',
     category: 'utilities',
     keepInDock: false,
