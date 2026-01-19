@@ -6,7 +6,9 @@
 .context-menu {
   position: fixed;
   min-width: 200px;
-  background: var(--glass-medium);
+  background:
+    linear-gradient(180deg, var(--surface-cool), transparent 70%),
+    var(--glass-medium);
   backdrop-filter: var(--blur-lg);
   border: 1px solid var(--border-light);
   border-radius: var(--radius-md);

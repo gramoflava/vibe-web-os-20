@@ -13,7 +13,9 @@
   align-items: center;
   justify-content: space-between;
   padding: 0 var(--space-4);
-  background: var(--glass-dark);
+  background:
+    linear-gradient(180deg, var(--surface-cool), transparent 70%),
+    var(--glass-dark);
   backdrop-filter: var(--backdrop-menubar);
   border-bottom: 1px solid var(--border-medium);
   box-shadow: 0 1px 0 0 rgba(255, 255, 255, 0.05);
@@ -50,7 +52,9 @@
 }
 
 .menubar-item:hover {
-  background: var(--glass-light);
+  background:
+    linear-gradient(180deg, var(--surface-cool), transparent 70%),
+    var(--glass-light);
 }
 
 .menubar-item:active {

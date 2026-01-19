@@ -21,7 +21,9 @@
   align-items: flex-start;
   gap: var(--space-3);
   padding: var(--space-4);
-  background: var(--glass-medium);
+  background:
+    linear-gradient(180deg, var(--surface-cool), transparent 70%),
+    var(--glass-medium);
   backdrop-filter: var(--backdrop-modal);
   border: 1px solid var(--border-light);
   border-radius: var(--radius-lg);
@@ -55,7 +57,9 @@
 }
 
 .notification:hover {
-  background: var(--glass-darker);
+  background:
+    linear-gradient(180deg, var(--surface-cool), transparent 70%),
+    var(--glass-darker);
   box-shadow: var(--shadow-xl);
 }
 
@@ -172,21 +176,21 @@
 
 /* Notification Types */
 .notification.success .notification-icon {
-  background: rgba(52, 199, 89, 0.2);
+  background: var(--surface-emerald);
   color: var(--success);
 }
 
 .notification.warning .notification-icon {
-  background: rgba(255, 159, 10, 0.2);
+  background: var(--surface-warm);
   color: var(--warning);
 }
 
 .notification.error .notification-icon {
-  background: rgba(255, 59, 48, 0.2);
+  background: var(--surface-rose);
   color: var(--error);
 }
 
 .notification.info .notification-icon {
-  background: rgba(0, 122, 255, 0.2);
+  background: var(--tint-blue);
   color: var(--accent-blue);
 }

@@ -28,6 +28,13 @@
   --accent-blue: #007aff;
   --accent-blue-hover: #0051d5;
   --accent-blue-active: #004bb8;
+  --accent-cool: #5ac8fa;
+  --accent-warm: #ff9f0a;
+
+  /* Accent tints */
+  --tint-blue: rgba(0, 122, 255, 0.12);
+  --tint-cool: rgba(90, 200, 250, 0.12);
+  --tint-warm: rgba(255, 159, 10, 0.12);
 
   /* Semantic colors */
   --success: #34c759;
@@ -41,6 +48,13 @@
   --border-light: rgba(255, 255, 255, 0.1);
   --border-medium: rgba(255, 255, 255, 0.2);
   --separator: rgba(255, 255, 255, 0.08);
+  --focus-ring: rgba(0, 122, 255, 0.2);
+
+  /* Surface tints */
+  --surface-cool: rgba(90, 200, 250, 0.08);
+  --surface-warm: rgba(255, 159, 10, 0.06);
+  --surface-emerald: rgba(52, 199, 89, 0.08);
+  --surface-rose: rgba(255, 59, 48, 0.08);
 
   /* ==================== Shadows ==================== */
 
@@ -65,6 +79,22 @@
   --blur-md: blur(20px);
   --blur-lg: blur(30px);
   --blur-xl: blur(40px);
+
+  /* ==================== System Colors ==================== */
+  --system-black: #000000;
+  --system-white: #ffffff;
+
+  /* Window controls */
+  --control-close: #ff5f57;
+  --control-close-hover: #ff4136;
+  --control-minimize: #ffbd2e;
+  --control-minimize-hover: #ffaa00;
+  --control-maximize: #28c840;
+  --control-maximize-hover: #1aad2f;
+
+  /* Overlays */
+  --overlay-scrim: rgba(0, 0, 0, 0.5);
+  --overlay-scrim-strong: rgba(0, 0, 0, 0.6);
 
   /* ==================== Typography ==================== */
 
@@ -201,6 +231,18 @@
   --border-light: rgba(0, 0, 0, 0.1);
   --border-medium: rgba(0, 0, 0, 0.2);
   --separator: rgba(0, 0, 0, 0.08);
+  --focus-ring: rgba(0, 122, 255, 0.2);
+
+  /* Accent tints */
+  --tint-blue: rgba(0, 122, 255, 0.12);
+  --tint-cool: rgba(90, 200, 250, 0.12);
+  --tint-warm: rgba(255, 159, 10, 0.1);
+
+  /* Surface tints */
+  --surface-cool: rgba(90, 200, 250, 0.08);
+  --surface-warm: rgba(255, 159, 10, 0.06);
+  --surface-emerald: rgba(52, 199, 89, 0.08);
+  --surface-rose: rgba(255, 59, 48, 0.08);
 
   /* Shadows (lighter in light mode) */
   --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.08);

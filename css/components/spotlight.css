@@ -6,7 +6,7 @@
 .spotlight-overlay {
   position: fixed;
   inset: 0;
-  background: rgba(0, 0, 0, 0.5);
+  background: var(--overlay-scrim);
   backdrop-filter: var(--blur-sm);
   z-index: var(--z-spotlight);
   display: flex;
@@ -31,9 +31,11 @@
   max-height: 70vh;
   display: flex;
   flex-direction: column;
-  background: var(--glass-medium);
+  background:
+    linear-gradient(180deg, var(--surface-cool), transparent 70%),
+    var(--glass-medium);
   backdrop-filter: var(--backdrop-modal);
-  border: 1px solid var(--border-medium);
+  border: 1px solid color-mix(in srgb, var(--border-medium) 80%, var(--accent-cool) 20%);
   border-radius: var(--radius-xl);
   box-shadow: var(--shadow-xl);
   overflow: hidden;
@@ -118,7 +120,9 @@
 }
 
 .spotlight-item.selected {
-  background: var(--accent-blue);
+  background:
+    linear-gradient(180deg, var(--tint-blue), transparent 60%),
+    var(--accent-blue);
 }
 
 .spotlight-item.selected .spotlight-item-title,
@@ -140,7 +144,7 @@
 }
 
 .spotlight-item.selected .spotlight-item-icon {
-  background: rgba(255, 255, 255, 0.2);
+  background: var(--tint-cool);
 }
 
 /* Result Text */
@@ -181,7 +185,7 @@
 }
 
 .spotlight-item.selected .spotlight-item-shortcut {
-  background: rgba(255, 255, 255, 0.2);
+  background: var(--tint-cool);
   color: white;
 }
 

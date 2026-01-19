@@ -29,7 +29,7 @@
 }
 
 .window.minimizing {
-  animation: minimizeToDoc k var(--duration-slow) var(--ease-in-out) forwards;
+  animation: minimizeToDock var(--duration-slow) var(--ease-in-out) forwards;
 }
 
 @keyframes minimizeToDock {
@@ -56,7 +56,9 @@
   justify-content: space-between;
   height: var(--window-titlebar-height);
   padding: 0 var(--space-4);
-  background: var(--glass-dark);
+  background:
+    linear-gradient(90deg, var(--surface-cool), transparent 60%),
+    var(--glass-dark);
   border-bottom: 1px solid var(--border-medium);
   cursor: grab;
   -webkit-user-select: none;
@@ -69,7 +71,9 @@
 }
 
 .window.focused .window-titlebar {
-  background: var(--glass-medium);
+  background:
+    linear-gradient(90deg, var(--tint-blue), transparent 60%),
+    var(--glass-medium);
   border-bottom-color: var(--border-medium);
 }
 
@@ -95,29 +99,29 @@
 
 /* Close button - Red */
 .window-control-btn.close {
-  background: #ff5f57;
+  background: var(--control-close);
 }
 
 .window-control-btn.close:hover {
-  background: #ff4136;
+  background: var(--control-close-hover);
 }
 
 /* Minimize button - Yellow */
 .window-control-btn.minimize {
-  background: #ffbd2e;
+  background: var(--control-minimize);
 }
 
 .window-control-btn.minimize:hover {
-  background: #ffaa00;
+  background: var(--control-minimize-hover);
 }
 
 /* Maximize button - Green */
 .window-control-btn.maximize {
-  background: #28c840;
+  background: var(--control-maximize);
 }
 
 .window-control-btn.maximize:hover {
-  background: #1aad2f;
+  background: var(--control-maximize-hover);
 }
 
 /* Show symbols on hover (optional enhancement) */
