@@ -15,7 +15,10 @@
   border-radius: var(--radius-lg);
   box-shadow: var(--shadow-window);
   overflow: hidden;
-  transition: box-shadow var(--duration-base) var(--ease-out);
+  transition:
+    box-shadow var(--duration-base) var(--ease-smooth),
+    border-color var(--duration-fast) var(--ease-out),
+    transform var(--duration-base) var(--ease-smooth);
   will-change: transform;
 }
 
@@ -54,10 +57,11 @@
   height: var(--window-titlebar-height);
   padding: 0 var(--space-4);
   background: var(--glass-dark);
-  border-bottom: 1px solid var(--border-light);
+  border-bottom: 1px solid var(--border-medium);
   cursor: grab;
   -webkit-user-select: none;
   user-select: none;
+  box-shadow: 0 1px 0 0 rgba(255, 255, 255, 0.05);
 }
 
 .window-titlebar:active {
@@ -66,6 +70,7 @@
 
 .window.focused .window-titlebar {
   background: var(--glass-medium);
+  border-bottom-color: var(--border-medium);
 }
 
 /* Traffic Lights (macOS-style buttons) */
@@ -159,6 +164,7 @@
   font-size: var(--text-sm);
   font-weight: var(--weight-semibold);
   color: var(--text-primary);
+  letter-spacing: var(--tracking-tight);
   pointer-events: none;
   white-space: nowrap;
   overflow: hidden;
@@ -175,8 +181,9 @@
 .window-content {
   flex: 1;
   overflow: auto;
-  padding: var(--space-4);
+  padding: var(--space-5);
   background: var(--glass-dark);
+  line-height: var(--leading-relaxed);
 }
 
 /* Window Toolbar (optional) */
@@ -186,8 +193,9 @@
   gap: var(--space-2);
   padding: var(--space-2) var(--space-4);
   background: var(--glass-dark);
-  border-bottom: 1px solid var(--border-light);
+  border-bottom: 1px solid var(--border-medium);
   min-height: 44px;
+  box-shadow: 0 1px 0 0 rgba(255, 255, 255, 0.05);
 }
 
 .window-toolbar-item {
@@ -195,11 +203,17 @@
   border-radius: var(--radius-md);
   background: var(--glass-light);
   font-size: var(--text-sm);
-  transition: all var(--duration-fast) var(--ease-out);
+  transition:
+    background-color var(--duration-fast) var(--ease-smooth),
+    transform var(--duration-fast) var(--ease-out);
 }
 
 .window-toolbar-item:hover {
   background: var(--glass-medium);
+}
+
+.window-toolbar-item:active {
+  transform: scale(0.96);
 }
 
 /* Window Resize Handle */
@@ -239,8 +253,8 @@
 /* Window Sidebar (for apps like Finder) */
 .window-sidebar {
   width: 200px;
-  background: var(--glass-darker);
-  border-right: 1px solid var(--border-light);
+  background: rgba(0, 0, 0, 0.25);
+  border-right: 1px solid var(--border-medium);
   padding: var(--space-4);
   overflow-y: auto;
 }

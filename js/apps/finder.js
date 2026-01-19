@@ -21,7 +21,7 @@
       <div class="window-with-sidebar">
         <div class="window-sidebar">
           <div style="padding: var(--space-4) 0; display: flex; flex-direction: column; height: 100%;">
-            <div style="flex: 1;">
+            <div style="flex: 1; margin-bottom: var(--space-8);">
               <div style="font-size: var(--text-xs); font-weight: var(--weight-semibold); color: var(--text-tertiary); text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: var(--space-2);">Favorites</div>
               <button class="btn finder-sidebar-btn" data-path="/root/Desktop" style="width: 100%; justify-content: flex-start; margin-bottom: var(--space-1); gap: var(--space-2);">
                 <span style="width: 16px; height: 16px; opacity: 0.7;">${Icons.get('desktop')}</span>

@@ -22,11 +22,14 @@
   padding: var(--space-2) var(--space-4);
   background: var(--glass-medium);
   backdrop-filter: var(--backdrop-dock);
-  border: 1px solid var(--border-light);
+  border: 1px solid var(--border-medium);
   border-radius: var(--radius-xl);
-  box-shadow: var(--shadow-xl);
+  box-shadow:
+    0 20px 60px rgba(0, 0, 0, 0.4),
+    0 40px 100px rgba(0, 0, 0, 0.3),
+    0 0 0 0.5px rgba(255, 255, 255, 0.1) inset;
   pointer-events: auto;
-  transition: all var(--duration-base) var(--ease-out);
+  transition: all var(--duration-base) var(--ease-smooth);
   height: calc(var(--dock-icon-size) + var(--space-4));
 }
 
@@ -50,8 +53,10 @@
   justify-content: center;
   background: var(--glass-light);
   border-radius: var(--radius-lg);
-  border: 1px solid var(--border-light);
-  box-shadow: var(--shadow-md);
+  border: 1px solid var(--border-medium);
+  box-shadow:
+    0 4px 12px rgba(0, 0, 0, 0.2),
+    0 0 0 0.5px rgba(255, 255, 255, 0.1) inset;
   transition: all var(--duration-base) var(--ease-spring);
   position: relative;
   overflow: hidden;
@@ -81,7 +86,10 @@
 
 .dock-icon-wrapper:hover .dock-icon {
   transform: scale(1.25);
-  box-shadow: var(--shadow-lg);
+  box-shadow:
+    0 8px 24px rgba(0, 0, 0, 0.3),
+    0 16px 48px rgba(0, 0, 0, 0.2),
+    0 0 0 0.5px rgba(255, 255, 255, 0.15) inset;
 }
 
 /* Bounce animation when app launches */
