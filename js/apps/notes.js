@@ -74,25 +74,25 @@
     }
 
     const content = `
-      <div style="display: flex; height: 100%; padding: var(--space-3); padding-top: 0; gap: var(--space-3);">
+      <div class="window-with-sidebar" style="height: 100%;">
         <!-- Sidebar -->
-        <div style="width: 220px; background: var(--bg-secondary); border: 1px solid var(--border-light); border-radius: var(--radius-inset-lg); display: flex; flex-direction: column; overflow: hidden; margin-top: var(--space-3);">
+        <div class="window-sidebar" style="width: 220px;">
           <!-- Sidebar header -->
-          <div style="padding: var(--space-3); border-bottom: 1px solid var(--border-light); display: flex; align-items: center; justify-content: space-between;">
+          <div style="padding: var(--space-2) 0; display: flex; align-items: center; justify-content: space-between; margin-bottom: var(--space-2);">
             <span style="font-size: var(--text-sm); font-weight: var(--weight-semibold); color: var(--text-primary);">Notes</span>
             <button id="notes-new" class="window-toolbar-item" title="New Note" style="padding: var(--space-1) var(--space-2);">+</button>
           </div>
 
           <!-- Notes list -->
-          <div id="notes-list" style="flex: 1; overflow-y: auto;">
+          <div id="notes-list" style="flex: 1; overflow-y: auto; margin: 0 calc(-1 * var(--space-4));">
             <!-- Notes will be inserted here -->
           </div>
         </div>
 
-        <!-- Editor -->
-        <div style="flex: 1; display: flex; flex-direction: column; gap: var(--space-3); margin-top: var(--space-3);">
+        <!-- Editor Main Area -->
+        <div class="window-main">
           <!-- Toolbar -->
-          <div class="window-toolbar" style="background: var(--bg-secondary); border: 1px solid var(--border-light); border-radius: var(--radius-inset-md); margin: 0;">
+          <div class="window-toolbar">
             <button id="notes-delete" class="window-toolbar-item" title="Delete Note">
               <svg viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg" style="width: 14px; height: 14px;">
                 <path d="M2 4H3.33333H14" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
@@ -103,11 +103,13 @@
           </div>
 
           <!-- Content -->
-          <textarea
-            id="notes-content"
-            style="flex: 1; width: 100%; padding: var(--space-4); background: var(--bg-secondary); border: 1px solid var(--border-light); border-radius: var(--radius-inset-lg); color: var(--text-primary); font-size: var(--text-base); line-height: var(--leading-relaxed); resize: none; outline: none; box-sizing: border-box;"
-            placeholder="Start typing..."
-          ></textarea>
+          <div class="window-content" style="padding: 0;">
+            <textarea
+              id="notes-content"
+              style="width: 100%; height: 100%; padding: var(--space-4); background: transparent; border: none; color: var(--text-primary); font-size: var(--text-base); line-height: var(--leading-relaxed); resize: none; outline: none; box-sizing: border-box;"
+              placeholder="Start typing..."
+            ></textarea>
+          </div>
         </div>
       </div>
     `;
