@@ -12,7 +12,7 @@ const WindowManager = (() => {
   let resizeState = null;
   let snapIndicator = null;
 
-  const SNAP_THRESHOLD = 50; // pixels from edge to trigger snap
+  const SNAP_THRESHOLD = 17; // pixels from edge to trigger snap (reduced 3x)
   const MIN_WIDTH = 320;
   const MIN_HEIGHT = 200;
 
@@ -156,14 +156,18 @@ const WindowManager = (() => {
       }
     }
 
-    const rect = windowEl.getBoundingClientRect();
+    // Get current window position from style (document-relative)
+    const currentLeft = parseInt(windowEl.style.left) || 0;
+    const currentTop = parseInt(windowEl.style.top) || 0;
+
+    // Calculate offset from click position to window origin
+    const offsetX = e.clientX - currentLeft;
+    const offsetY = e.clientY - currentTop;
 
     dragState = {
       id,
-      startX: e.clientX,
-      startY: e.clientY,
-      initialX: rect.left,
-      initialY: rect.top
+      offsetX,
+      offsetY
     };
 
     focus(id);
@@ -180,11 +184,9 @@ const WindowManager = (() => {
   function handleDrag(e) {
     if (!dragState) return;
 
-    const deltaX = e.clientX - dragState.startX;
-    const deltaY = e.clientY - dragState.startY;
-
-    let newX = dragState.initialX + deltaX;
-    let newY = dragState.initialY + deltaY;
+    // Calculate new position based on mouse position minus the click offset
+    let newX = e.clientX - dragState.offsetX;
+    let newY = e.clientY - dragState.offsetY;
 
     const windowData = windows.get(dragState.id);
     const windowEl = windowData.element;
