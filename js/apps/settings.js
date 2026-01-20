@@ -12,8 +12,8 @@
     const currentTheme = Shell.getTheme();
 
     const content = `
-      <div style="padding: var(--space-6);">
-        <h2 style="margin-bottom: var(--space-6);">System Preferences</h2>
+      <div style="padding: var(--space-4);">
+        <h2 style="margin-bottom: var(--space-4);">System Preferences</h2>
 
         <!-- Appearance Section -->
         <div class="card" style="margin-bottom: var(--space-6);">

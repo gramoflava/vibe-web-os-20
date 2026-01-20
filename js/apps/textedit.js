@@ -18,14 +18,14 @@
     let hasUnsavedChanges = false;
 
     const content = `
-      <div style="display: flex; flex-direction: column; height: 100%;">
-        <div class="window-toolbar">
+      <div style="display: flex; flex-direction: column; height: 100%; padding: var(--space-3); padding-top: 0; gap: var(--space-3);">
+        <div class="window-toolbar" style="margin: 0; margin-top: var(--space-3); background: var(--bg-secondary); border: 1px solid var(--border-light); border-radius: var(--radius-inset-md);">
           <input
             id="textedit-filename-${instanceId}"
             type="text"
             placeholder="Untitled.txt"
             value="${currentFile ? currentFile.split('/').pop() : ''}"
-            style="flex: 1; max-width: 300px; padding: var(--space-1) var(--space-3); background: var(--glass-light); border: 1px solid var(--border-light); border-radius: var(--radius-md); font-size: var(--text-sm);"
+            style="flex: 1; max-width: 300px; padding: var(--space-1) var(--space-3); background: var(--glass-light); border: 1px solid var(--border-light); border-radius: var(--radius-sm); font-size: var(--text-sm);"
           />
           <button id="textedit-save-${instanceId}" class="window-toolbar-item btn-primary">Save</button>
           <button id="textedit-saveas-${instanceId}" class="window-toolbar-item">Save As...</button>
@@ -33,7 +33,7 @@
         </div>
         <textarea
           id="textedit-content-${instanceId}"
-          style="flex: 1; width: 100%; padding: var(--space-4); background: var(--bg-secondary); border: none; color: var(--text-primary); font-family: var(--font-mono); font-size: var(--text-sm); line-height: var(--leading-relaxed); resize: none; outline: none;"
+          style="flex: 1; width: 100%; padding: var(--space-4); background: var(--bg-secondary); border: 1px solid var(--border-light); border-radius: var(--radius-inset-lg); color: var(--text-primary); font-family: var(--font-mono); font-size: var(--text-sm); line-height: var(--leading-relaxed); resize: none; outline: none; box-sizing: border-box;"
           placeholder="Start typing..."
         >${initialContent}</textarea>
       </div>

@@ -74,9 +74,9 @@
     }
 
     const content = `
-      <div style="display: flex; height: 100%;">
+      <div style="display: flex; height: 100%; padding: var(--space-3); padding-top: 0; gap: var(--space-3);">
         <!-- Sidebar -->
-        <div style="width: 220px; background: var(--bg-secondary); border-right: 1px solid var(--border-light); display: flex; flex-direction: column;">
+        <div style="width: 220px; background: var(--bg-secondary); border: 1px solid var(--border-light); border-radius: var(--radius-inset-lg); display: flex; flex-direction: column; overflow: hidden; margin-top: var(--space-3);">
           <!-- Sidebar header -->
           <div style="padding: var(--space-3); border-bottom: 1px solid var(--border-light); display: flex; align-items: center; justify-content: space-between;">
             <span style="font-size: var(--text-sm); font-weight: var(--weight-semibold); color: var(--text-primary);">Notes</span>
@@ -90,9 +90,9 @@
         </div>
 
         <!-- Editor -->
-        <div style="flex: 1; display: flex; flex-direction: column;">
+        <div style="flex: 1; display: flex; flex-direction: column; gap: var(--space-3); margin-top: var(--space-3);">
           <!-- Toolbar -->
-          <div class="window-toolbar" style="background: var(--bg-secondary); border-bottom: 1px solid var(--border-light);">
+          <div class="window-toolbar" style="background: var(--bg-secondary); border: 1px solid var(--border-light); border-radius: var(--radius-inset-md); margin: 0;">
             <button id="notes-delete" class="window-toolbar-item" title="Delete Note">
               <svg viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg" style="width: 14px; height: 14px;">
                 <path d="M2 4H3.33333H14" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
@@ -105,7 +105,7 @@
           <!-- Content -->
           <textarea
             id="notes-content"
-            style="flex: 1; width: 100%; padding: var(--space-4); background: var(--bg-primary); border: none; color: var(--text-primary); font-size: var(--text-base); line-height: var(--leading-relaxed); resize: none; outline: none;"
+            style="flex: 1; width: 100%; padding: var(--space-4); background: var(--bg-secondary); border: 1px solid var(--border-light); border-radius: var(--radius-inset-lg); color: var(--text-primary); font-size: var(--text-base); line-height: var(--leading-relaxed); resize: none; outline: none; box-sizing: border-box;"
             placeholder="Start typing..."
           ></textarea>
         </div>

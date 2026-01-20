@@ -12,9 +12,9 @@
     const initialUrl = args.url || 'https://web.archive.org/web/19961112235908/http://yahoo.com/';
 
     const content = `
-      <div style="display: flex; flex-direction: column; height: 100%;">
+      <div style="display: flex; flex-direction: column; height: 100%; padding: var(--space-3); padding-top: 0; gap: var(--space-3);">
         <!-- Address Bar -->
-        <div style="padding: var(--space-3); background: var(--bg-secondary); border-bottom: 1px solid var(--border-light); display: flex; gap: var(--space-2); align-items: center;">
+        <div style="padding: var(--space-3); background: var(--bg-secondary); border: 1px solid var(--border-light); border-radius: var(--radius-inset-md); display: flex; gap: var(--space-2); align-items: center; margin-top: var(--space-3);">
           <button id="safari-back" class="btn" style="padding: var(--space-1) var(--space-2); font-size: var(--text-sm);" title="Back">←</button>
           <button id="safari-forward" class="btn" style="padding: var(--space-1) var(--space-2); font-size: var(--text-sm);" title="Forward">→</button>
           <button id="safari-refresh" class="btn" style="padding: var(--space-1) var(--space-2); font-size: var(--text-sm);" title="Refresh">↻</button>
@@ -41,43 +41,43 @@
           </button>
         </div>
 
-        <!-- Info Bar -->
-        <div id="safari-info" style="padding: var(--space-2) var(--space-3); background: var(--glass-light); border-bottom: 1px solid var(--border-light); font-size: var(--text-xs); color: var(--text-secondary); display: flex; align-items: center; gap: var(--space-2);">
-          <svg viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg" style="width: 14px; height: 14px; flex-shrink: 0;">
-            <circle cx="8" cy="8" r="6" stroke="currentColor" stroke-width="1.5" fill="none"/>
-            <path d="M8 4V8H11" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
-          </svg>
-          <span>Browsing the Old Internet via Wayback Machine</span>
-          <button id="safari-help" style="margin-left: auto; background: transparent; border: none; color: var(--accent-blue); cursor: pointer; font-size: var(--text-xs); display: flex; align-items: center; gap: 4px;">
-            <svg viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg" style="width: 12px; height: 12px;">
-              <circle cx="8" cy="8" r="6" stroke="currentColor" stroke-width="1.5" fill="none"/>
-              <path d="M8 11.33V10.83C8 10.33 8.67 10 9 9.33C9.33 8.67 10 8.33 10 7.33C10 6.22876 9.10457 5.33333 8 5.33333C6.89543 5.33333 6 6.22876 6 7.33333" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
-              <circle cx="8" cy="12.67" r="0.33" fill="currentColor"/>
-            </svg>
-            Help
-          </button>
-        </div>
-
         <!-- Browser Frame -->
-        <div style="flex: 1; position: relative; background: var(--bg-primary);">
+        <div style="flex: 1; position: relative; background: var(--bg-secondary); border: 1px solid var(--border-light); border-radius: var(--radius-inset-lg); overflow: hidden;">
+          <!-- Info Bar -->
+          <div id="safari-info" style="padding: var(--space-2) var(--space-3); background: var(--glass-light); border-bottom: 1px solid var(--border-light); font-size: var(--text-xs); color: var(--text-secondary); display: flex; align-items: center; gap: var(--space-2);">
+            <svg viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg" style="width: 14px; height: 14px; flex-shrink: 0;">
+              <circle cx="8" cy="8" r="6" stroke="currentColor" stroke-width="1.5" fill="none"/>
+              <path d="M8 4V8H11" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+            </svg>
+            <span>Browsing the Old Internet via Wayback Machine</span>
+            <button id="safari-help" style="margin-left: auto; background: transparent; border: none; color: var(--accent-blue); cursor: pointer; font-size: var(--text-xs); display: flex; align-items: center; gap: 4px;">
+              <svg viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg" style="width: 12px; height: 12px;">
+                <circle cx="8" cy="8" r="6" stroke="currentColor" stroke-width="1.5" fill="none"/>
+                <path d="M8 11.33V10.83C8 10.33 8.67 10 9 9.33C9.33 8.67 10 8.33 10 7.33C10 6.22876 9.10457 5.33333 8 5.33333C6.89543 5.33333 6 6.22876 6 7.33333" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+                <circle cx="8" cy="12.67" r="0.33" fill="currentColor"/>
+              </svg>
+              Help
+            </button>
+          </div>
+
           <iframe
             id="safari-frame"
             sandbox="allow-same-origin allow-scripts allow-forms allow-popups"
-            style="width: 100%; height: 100%; border: none; background: white;"
+            style="width: 100%; height: calc(100% - 50px); border: none; background: white;"
             src="${initialUrl}"
           ></iframe>
 
           <!-- Loading Overlay -->
-          <div id="safari-loading" style="display: none; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); background: var(--glass-dark); backdrop-filter: var(--blur-md); padding: var(--space-6); border-radius: var(--radius-lg); text-align: center;">
+          <div id="safari-loading" style="display: none; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); background: var(--glass-dark); backdrop-filter: var(--blur-md); padding: var(--space-6); border-radius: var(--radius-inset-md); text-align: center;">
             <div style="font-size: var(--text-2xl); margin-bottom: var(--space-2);">⏳</div>
             <div style="font-size: var(--text-sm); color: var(--text-secondary);">Loading archived page...</div>
           </div>
-        </div>
 
-        <!-- Status Bar -->
-        <div style="padding: var(--space-1) var(--space-3); background: var(--bg-secondary); border-top: 1px solid var(--border-light); font-size: var(--text-xs); color: var(--text-tertiary); display: flex; justify-content: space-between;">
-          <span id="safari-status">Ready</span>
-          <span id="safari-timestamp"></span>
+          <!-- Status Bar -->
+          <div style="position: absolute; bottom: 0; left: 0; right: 0; padding: var(--space-1) var(--space-3); background: var(--bg-secondary); border-top: 1px solid var(--border-light); font-size: var(--text-xs); color: var(--text-tertiary); display: flex; justify-content: space-between;">
+            <span id="safari-status">Ready</span>
+            <span id="safari-timestamp"></span>
+          </div>
         </div>
       </div>
     `;

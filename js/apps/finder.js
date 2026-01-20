@@ -18,9 +18,9 @@
     windowId = 'finder-' + Date.now();
 
     const content = `
-      <div class="window-with-sidebar">
-        <div class="window-sidebar">
-          <div style="padding: var(--space-4) 0; display: flex; flex-direction: column; height: 100%;">
+      <div class="window-with-sidebar" style="padding: var(--space-3); padding-top: 0; gap: var(--space-3);">
+        <div class="window-sidebar" style="border-radius: var(--radius-inset-lg); margin-top: var(--space-3); overflow: hidden;">
+          <div style="padding: var(--space-4) var(--space-3); display: flex; flex-direction: column; height: 100%;">
             <div style="flex: 1; margin-bottom: var(--space-8);">
               <div style="font-size: var(--text-xs); font-weight: var(--weight-semibold); color: var(--text-tertiary); text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: var(--space-2);">Favorites</div>
               <button class="btn finder-sidebar-btn" data-path="/root/Desktop" style="width: 100%; justify-content: flex-start; margin-bottom: var(--space-1); gap: var(--space-2);">
@@ -46,7 +46,7 @@
             </div>
 
             <!-- Storage Info -->
-            <div id="finder-storage-info" style="margin-top: auto; padding: var(--space-3); background: var(--glass-light); border-radius: var(--radius-md); border: 1px solid var(--border-light);">
+            <div id="finder-storage-info" style="margin-top: auto; padding: var(--space-3); background: var(--glass-light); border-radius: var(--radius-inset-md); border: 1px solid var(--border-light);">
               <div style="font-size: var(--text-xs); font-weight: var(--weight-semibold); color: var(--text-tertiary); margin-bottom: var(--space-2);">Storage</div>
               <div id="finder-storage-bar" style="height: 6px; background: var(--bg-tertiary); border-radius: var(--radius-full); overflow: hidden; margin-bottom: var(--space-2);">
                 <div id="finder-storage-fill" style="height: 100%; background: var(--accent-blue); border-radius: var(--radius-full); transition: width 0.3s ease;"></div>
@@ -55,8 +55,8 @@
             </div>
           </div>
         </div>
-        <div class="window-main">
-          <div class="window-toolbar">
+        <div class="window-main" style="gap: var(--space-3); margin-top: var(--space-3);">
+          <div class="window-toolbar" style="border-radius: var(--radius-inset-md); border: 1px solid var(--border-light); margin: 0;">
             <button id="finder-back" class="window-toolbar-item" title="Back">←</button>
             <button id="finder-forward" class="window-toolbar-item" title="Forward">→</button>
             <span id="finder-path" style="flex: 1; font-size: var(--text-sm); color: var(--text-secondary); margin: 0 var(--space-4);"></span>
@@ -65,7 +65,7 @@
             <button id="finder-new-file" class="window-toolbar-item">+ File</button>
             <input type="file" id="finder-file-input" multiple style="display: none;">
           </div>
-          <div id="finder-content" class="window-content" style="padding: var(--space-6); display: grid; grid-template-columns: repeat(auto-fill, minmax(100px, 1fr)); gap: var(--space-4); align-content: start;">
+          <div id="finder-content" class="window-content" style="padding: var(--space-4); display: grid; grid-template-columns: repeat(auto-fill, minmax(100px, 1fr)); gap: var(--space-4); align-content: start; border-radius: var(--radius-inset-lg); border: 1px solid var(--border-light); background: var(--bg-secondary);">
             <!-- File grid will be rendered here -->
           </div>
         </div>

@@ -185,9 +185,16 @@
 .window-content {
   flex: 1;
   overflow: auto;
-  padding: var(--space-5);
+  padding: var(--space-4);
   background: var(--glass-dark);
   line-height: var(--leading-relaxed);
+}
+
+/* Inset content area styling */
+.window-content-inset {
+  background: var(--bg-secondary);
+  border: 1px solid var(--border-light);
+  border-radius: var(--radius-inset-lg);
 }
 
 /* Window Toolbar (optional) */
@@ -258,7 +265,7 @@
 .window-sidebar {
   width: 200px;
   background: rgba(0, 0, 0, 0.25);
-  border-right: 1px solid var(--border-medium);
+  border: 1px solid var(--border-light);
   padding: var(--space-4);
   overflow-y: auto;
 }

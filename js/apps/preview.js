@@ -26,8 +26,8 @@
     }
 
     const content = `
-      <div style="display: flex; flex-direction: column; height: 100%; background: var(--bg-primary);">
-        <div class="window-toolbar" style="background: var(--bg-secondary);">
+      <div style="display: flex; flex-direction: column; height: 100%; padding: var(--space-3); padding-top: 0; gap: var(--space-3);">
+        <div class="window-toolbar" style="background: var(--bg-secondary); border: 1px solid var(--border-light); border-radius: var(--radius-inset-md); margin: 0; margin-top: var(--space-3);">
           <div style="display: flex; align-items: center; gap: var(--space-2);">
             <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" style="width: 18px; height: 18px; color: var(--accent-blue);">
               <rect x="3" y="3" width="18" height="18" rx="2" fill="currentColor" opacity="0.3"/>
@@ -43,17 +43,17 @@
             <button id="preview-zoom-fit" class="window-toolbar-item" title="Fit to Window">Fit</button>
           </div>
         </div>
-        <div style="flex: 1; display: flex; align-items: center; justify-content: center; overflow: auto; padding: var(--space-4);">
+        <div style="flex: 1; display: flex; align-items: center; justify-content: center; overflow: auto; padding: var(--space-4); background: var(--bg-secondary); border: 1px solid var(--border-light); border-radius: var(--radius-inset-lg);">
           <div id="preview-image-container" style="display: flex; align-items: center; justify-content: center;">
             <img
               id="preview-image"
               src="${fileContent}"
               alt="${fileName}"
-              style="max-width: 100%; max-height: 100%; object-fit: contain; transition: transform 0.2s ease; cursor: grab; user-select: none;"
+              style="max-width: 100%; max-height: 100%; object-fit: contain; transition: transform 0.2s ease; cursor: grab; user-select: none; border-radius: var(--radius-sm);"
             />
           </div>
         </div>
-        <div style="padding: var(--space-2) var(--space-4); background: var(--bg-secondary); border-top: 1px solid var(--border-light); font-size: var(--text-xs); color: var(--text-tertiary); text-align: center;">
+        <div style="padding: var(--space-2) var(--space-4); background: var(--bg-secondary); border: 1px solid var(--border-light); border-radius: var(--radius-inset-md); font-size: var(--text-xs); color: var(--text-tertiary); text-align: center;">
           ${fileName} • ${FS.formatSize(fileContent.length)}
         </div>
       </div>

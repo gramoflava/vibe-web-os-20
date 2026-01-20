@@ -158,6 +158,11 @@
   --radius-2xl: 24px;
   --radius-full: 9999px;
 
+  /* Inset radii for nested elements (outer_radius - padding) */
+  --radius-inset-lg: 10px;   /* For elements inside lg containers with ~4px padding */
+  --radius-inset-md: 6px;    /* For elements inside md containers */
+  --radius-inset-sm: 4px;    /* For elements inside sm containers */
+
   /* ==================== Animation ==================== */
 
   /* Durations */

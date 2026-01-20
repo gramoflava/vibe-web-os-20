@@ -27,9 +27,9 @@
     }
 
     const content = `
-      <div style="display: flex; height: 100%;">
+      <div style="display: flex; height: 100%; padding: var(--space-3); padding-top: 0; gap: var(--space-3);">
         <!-- File Tree Sidebar -->
-        <div style="width: 240px; background: var(--bg-secondary); border-right: 1px solid var(--border-light); display: flex; flex-direction: column;">
+        <div style="width: 240px; background: var(--bg-secondary); border: 1px solid var(--border-light); border-radius: var(--radius-inset-lg); display: flex; flex-direction: column; margin-top: var(--space-3); overflow: hidden;">
           <!-- Project header -->
           <div style="padding: var(--space-3); border-bottom: 1px solid var(--border-light); display: flex; align-items: center; justify-content: space-between;">
             <div style="display: flex; flex-direction: column; gap: var(--space-1); flex: 1; min-width: 0;">
@@ -78,9 +78,9 @@
         </div>
 
         <!-- Editor Area -->
-        <div style="flex: 1; display: flex; flex-direction: column;">
+        <div style="flex: 1; display: flex; flex-direction: column; gap: var(--space-3); margin-top: var(--space-3);">
           <!-- Editor Toolbar -->
-          <div class="window-toolbar" style="background: var(--bg-secondary); border-bottom: 1px solid var(--border-light);">
+          <div class="window-toolbar" style="background: var(--bg-secondary); border: 1px solid var(--border-light); border-radius: var(--radius-inset-md); margin: 0;">
             <span id="codeedit-filename-${instanceId}" style="font-size: var(--text-sm); font-weight: var(--weight-medium); color: var(--text-secondary); margin-right: var(--space-4);">No file open</span>
             <button id="codeedit-save-${instanceId}" class="window-toolbar-item btn-primary" disabled style="display: flex; align-items: center; gap: 4px;">
               <svg viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg" style="width: 14px; height: 14px;">
@@ -100,7 +100,7 @@
           </div>
 
           <!-- Editor -->
-          <div style="flex: 1; display: flex; flex-direction: column; position: relative;">
+          <div style="flex: 1; display: flex; flex-direction: column; position: relative; background: var(--bg-secondary); border: 1px solid var(--border-light); border-radius: var(--radius-inset-lg); overflow: hidden;">
             <div style="display: flex; background: var(--bg-tertiary); padding: var(--space-2) var(--space-4); font-size: var(--text-xs); color: var(--text-tertiary); border-bottom: 1px solid var(--border-light); font-family: var(--font-mono);">
               <span id="codeedit-language-${instanceId}">Plain Text</span>
               <span style="margin-left: auto;">
@@ -111,7 +111,7 @@
             <textarea
               id="codeedit-content-${instanceId}"
               spellcheck="false"
-              style="flex: 1; width: 100%; padding: var(--space-4); background: var(--bg-primary); border: none; color: var(--text-primary); font-family: var(--font-mono); font-size: var(--text-sm); line-height: 1.6; resize: none; outline: none; tab-size: 2; -moz-tab-size: 2;"
+              style="flex: 1; width: 100%; padding: var(--space-4); background: var(--bg-primary); border: none; color: var(--text-primary); font-family: var(--font-mono); font-size: var(--text-sm); line-height: 1.6; resize: none; outline: none; tab-size: 2; -moz-tab-size: 2; box-sizing: border-box;"
               placeholder="Select a file from the project tree or create a new one..."
             ></textarea>
           </div>
