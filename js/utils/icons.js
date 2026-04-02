@@ -40,6 +40,21 @@ const Icons = {
             <path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"></path>
         </svg>`,
         
+        'minesweeper': `<svg viewBox="0 0 24 24" fill="none" stroke="#EF4444" stroke-width="2">
+            <circle cx="12" cy="12" r="8"></circle>
+            <path d="M12 2v2"></path><path d="M12 20v2"></path>
+            <path d="M4.93 4.93l1.41 1.41"></path><path d="M17.66 17.66l1.41 1.41"></path>
+            <path d="M2 12h2"></path><path d="M20 12h2"></path>
+            <path d="M6.34 17.66l-1.41 1.41"></path><path d="M19.07 4.93l-1.41 1.41"></path>
+        </svg>`,
+        
+        'colorlines': `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <circle cx="6" cy="12" r="3" fill="#3B82F6" stroke="none"></circle>
+            <circle cx="12" cy="12" r="3" fill="#10B981" stroke="none"></circle>
+            <circle cx="18" cy="12" r="3" fill="#EC4899" stroke="none"></circle>
+            <path d="M3 12h18" stroke-dasharray="2 4"></path>
+        </svg>`,
+
         'game2048': `<svg viewBox="0 0 24 24" fill="none" stroke="#8B5CF6" stroke-width="2">
             <rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect>
             <line x1="3" y1="9" x2="21" y2="9"></line>

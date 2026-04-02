@@ -15,10 +15,92 @@ class WindowManagerClass {
         this.panStartX = 0;
         this.panStartY = 0;
 
+        // Off-screen indicators
+        this.indicatorsContainer = document.createElement('div');
+        this.indicatorsContainer.id = 'window-indicators';
+        this.indicatorsContainer.style.position = 'absolute';
+        this.indicatorsContainer.style.top = '0';
+        this.indicatorsContainer.style.left = '0';
+        this.indicatorsContainer.style.width = '100%';
+        this.indicatorsContainer.style.height = '100%';
+        this.indicatorsContainer.style.pointerEvents = 'none';
+        this.indicatorsContainer.style.zIndex = '8000';
+        document.getElementById('desktop').appendChild(this.indicatorsContainer);
+
         // Space Background parallax
         this.backgroundLayer = document.getElementById('nova-background');
         
+        this.desktopContentStyle = getComputedStyle(document.getElementById('desktop'));
         this.initCanvasControls();
+        this.startIndicatorsLoop();
+    }
+
+    startIndicatorsLoop() {
+        const loop = () => {
+            this.indicatorsContainer.innerHTML = '';
+            
+            const vW = window.innerWidth;
+            const vH = window.innerHeight;
+
+            this.windows.forEach(w => {
+                const wx = parseFloat(w.el.dataset.x);
+                const wy = parseFloat(w.el.dataset.y);
+                const ww = parseFloat(w.el.style.width);
+                const wh = parseFloat(w.el.style.height);
+                
+                const screenX = this.cameraX + wx * this.cameraZ;
+                const screenY = this.cameraY + wy * this.cameraZ;
+                const screenW = ww * this.cameraZ;
+                const screenH = wh * this.cameraZ;
+
+                // Check if completely off-screen
+                if (screenX + screenW < 0 || screenX > vW || screenY + screenH < 0 || screenY > vH) {
+                    const centerX = screenX + screenW/2;
+                    const centerY = screenY + screenH/2;
+                    const scX = vW / 2;
+                    const scY = vH / 2;
+                    const dx = centerX - scX;
+                    const dy = centerY - scY;
+                    
+                    let edgeX = scX;
+                    let edgeY = scY;
+                    const slope = dy / dx;
+                    const maxDX = vW/2 - 20;
+                    const maxDY = vH/2 - 20;
+                    
+                    if (Math.abs(slope) < maxDY / maxDX) {
+                        edgeX = dx > 0 ? vW - 20 : 20;
+                        edgeY = scY + (edgeX - scX) * slope;
+                    } else {
+                        edgeY = dy > 0 ? vH - 20 : 20;
+                        edgeX = scX + (edgeY - scY) / slope;
+                    }
+
+                    const ind = document.createElement('div');
+                    ind.style.position = 'absolute';
+                    ind.style.left = edgeX + 'px';
+                    ind.style.top = edgeY + 'px';
+                    ind.style.width = '6px';
+                    ind.style.height = '6px';
+                    ind.style.background = 'var(--text-primary)';
+                    ind.style.boxShadow = '0 0 12px var(--text-primary)';
+                    ind.style.borderRadius = '50%';
+                    ind.style.transform = 'translate(-50%, -50%)';
+                    ind.style.transition = 'opacity 0.2s';
+                    
+                    // Slightly point the diamond shape
+                    if(w.appId === 'game2048' || w.appId === 'minesweeper' || w.appId === 'colorlines') {
+                        ind.style.background = 'var(--accent-primary)';
+                        ind.style.boxShadow = '0 0 12px var(--accent-primary)';
+                    }
+                    
+                    this.indicatorsContainer.appendChild(ind);
+                }
+            });
+
+            requestAnimationFrame(loop);
+        };
+        requestAnimationFrame(loop);
     }
 
     initCanvasControls() {

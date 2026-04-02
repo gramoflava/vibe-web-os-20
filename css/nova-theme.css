@@ -68,6 +68,8 @@ body {
     z-index: 0;
     background: var(--surface-base);
     overflow: hidden;
+    -webkit-mask-image: radial-gradient(ellipse at center, black 40%, transparent 95%);
+    mask-image: radial-gradient(ellipse at center, black 40%, transparent 95%);
 }
 
 /* Glowing orbs for the mesh gradient effect */
