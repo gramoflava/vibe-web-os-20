@@ -72,6 +72,29 @@ body {
     mask-image: radial-gradient(ellipse at center, black 40%, transparent 95%);
 }
 
+.stars-overlay {
+    position: absolute;
+    top: -50%; left: -50%; right: -50%; bottom: -50%;
+    background-image: 
+        radial-gradient(1.5px 1.5px at 20px 30px, rgba(255,255,255,0.8), rgba(0,0,0,0)),
+        radial-gradient(2px 2px at 50px 80px, rgba(255,255,255,1), rgba(0,0,0,0)),
+        radial-gradient(1px 1px at 90px 40px, rgba(255,255,255,0.6), rgba(0,0,0,0)),
+        radial-gradient(2.5px 2.5px at 160px 120px, rgba(160,180,255,0.9), rgba(0,0,0,0)),
+        radial-gradient(1px 1px at 200px 50px, rgba(255,200,200,0.8), rgba(0,0,0,0)),
+        radial-gradient(1.5px 1.5px at 270px 170px, rgba(255,255,255,0.7), rgba(0,0,0,0)),
+        radial-gradient(3px 3px at 320px 90px, rgba(255,255,255,1), rgba(0,0,0,0));
+    background-repeat: repeat;
+    background-size: 400px 400px;
+    z-index: -1;
+    pointer-events: none;
+    animation: slowStarDrift 100s linear infinite;
+}
+
+@keyframes slowStarDrift {
+    from { transform: translateY(0); }
+    to { transform: translateY(400px); }
+}
+
 /* Glowing orbs for the mesh gradient effect */
 .blob {
     position: absolute;
@@ -181,5 +204,9 @@ body {
     
     .blob {
         opacity: 0.3;
+    }
+    
+    .stars-overlay {
+        display: none; /* Stars don't make sense in light mode usually */
     }
 }

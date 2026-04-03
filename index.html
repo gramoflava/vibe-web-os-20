@@ -15,6 +15,7 @@
     <link rel="stylesheet" href="css/nova-theme.css">
     <link rel="stylesheet" href="css/nova-layout.css">
     <link rel="stylesheet" href="css/nova-window.css">
+    <link rel="stylesheet" href="css/nova-effects.css">
 
     <!-- Favicon -->
     <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><circle cx='50' cy='50' r='40' fill='%236366F1'/></svg>">
@@ -22,6 +23,7 @@
 <body>
     <!-- Nova Background -->
     <div id="nova-background">
+        <div class="stars-overlay"></div>
         <!-- Fluid meshes/blobs injected via CSS -->
         <div class="blob blob-1"></div>
         <div class="blob blob-2"></div>
@@ -64,6 +66,9 @@
                     <button class="island-btn" id="btn-search" aria-label="Search">
                         <svg viewBox="0 0 24 24" width="16" height="16" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
                     </button>
+                    <button class="island-btn" id="btn-mute" aria-label="Audio Toggle">
+                        <svg viewBox="0 0 24 24" width="16" height="16" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon><path d="M19.07 4.93a10 10 0 0 1 0 14.14M15.54 8.46a5 5 0 0 1 0 7.07"></path></svg>
+                    </button>
                     <button class="island-btn" id="btn-notify" aria-label="Notifications">
                          <svg viewBox="0 0 24 24" width="16" height="16" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"></path><path d="M13.73 21a2 2 0 0 1-3.46 0"></path></svg>
                     </button>
@@ -102,6 +107,7 @@
     <script src="js/utils/icons.js"></script>
 
     <!-- Core OS Logic -->
+    <script src="js/core/audio.js"></script>
     <script src="js/core/bus.js"></script>
     <script src="js/core/fs.js"></script>
     <script src="js/core/scores.js"></script>
@@ -113,6 +119,9 @@
     <script src="js/core/shell.js"></script>
     <script src="js/core/boot.js"></script>
 
+    <!-- Shared/Subsystems Apps -->
+    <script src="js/apps/scores.js"></script>
+
     <!-- Apps -->
     <script src="js/apps/finder.js"></script>
     <script src="js/apps/settings.js"></script>
@@ -121,7 +130,6 @@
     <script src="js/apps/minesweeper.js"></script>
     <script src="js/apps/colorlines.js"></script>
     <script src="js/apps/textedit.js"></script>
-    <script src="js/apps/codeedit.js"></script>
     <script src="js/apps/notes.js"></script>
 
     <!-- Main Initialization -->

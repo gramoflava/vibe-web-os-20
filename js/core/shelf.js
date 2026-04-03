@@ -7,6 +7,7 @@ class Shelf {
         Bus.on('app:registered', (app) => this.render());
         Bus.on('app:launching', (appId) => this.render());
         Bus.on('app:closed', (appId) => this.render());
+        window.ShelfInstance = this;
     }
 
     render() {
@@ -32,7 +33,12 @@ class Shelf {
                     const winArray = Array.from(WindowManager.windows.values());
                     const appWindows = winArray.filter(w => w.appId === app.id);
                     if (appWindows.length > 0) {
-                        WindowManager.focus(appWindows[appWindows.length - 1].id);
+                        const lastWin = appWindows[appWindows.length - 1];
+                        if (lastWin.el.dataset.minimized === 'true') {
+                            WindowManager.restore(lastWin.id);
+                        } else {
+                            WindowManager.focus(lastWin.id);
+                        }
                     } else {
                         // Recalculate
                         Apps.launch(app.id);

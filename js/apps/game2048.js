@@ -35,7 +35,6 @@ Apps.register({
                 <div style="display:flex; justify-content: space-between; align-items: flex-end; width: 100%; max-width: 320px; margin-bottom: 24px;">
                     <div>
                         <div style="font-size: 24px; font-weight: 700; color: var(--text-primary);">2048</div>
-                        <button class="leaderboard-btn" id="lb-btn-${winId}" style="margin-top: 8px;">Leaderboard</button>
                     </div>
                     <div style="background: rgba(128,128,128,0.1); padding: 4px 12px; border-radius: 6px; font-variant-numeric: tabular-nums; text-align: right;">
                         <div style="font-size: 10px; color: var(--text-secondary); text-transform: uppercase;">Score</div>
@@ -58,10 +57,6 @@ Apps.register({
             height: 520,
             content: html
         });
-
-        document.getElementById(`lb-btn-${winId}`).onclick = () => {
-            Scores.showLeaderboard('2048', 'game2048');
-        };
 
         let activeTiles = [];
         let nextId = 0;
@@ -129,11 +124,12 @@ Apps.register({
              if(!hasWon && activeTiles.some(t => !t.deleted && t.val === 2048)) {
                  hasWon = true;
                  isGameOver = true;
+                 if (window.AudioMng) AudioMng.play('win');
                  Scores.showScorePrompt('game2048', score, true, () => {
                      activeTiles.forEach(t => t.deleted = true); render();
                      score = 0; isGameOver = false; hasWon = false;
                      addRandom(); addRandom(); render();
-                 });
+                 }, winId);
                  return;
              }
              if(getEmpty().length > 0) return;
@@ -149,11 +145,12 @@ Apps.register({
 
              // Game over
              isGameOver = true;
+             if (window.AudioMng) AudioMng.play('lose');
              Scores.showScorePrompt('game2048', score, false, () => {
                  activeTiles.forEach(t => t.deleted = true); render();
                  score = 0; isGameOver = false; hasWon = false;
                  addRandom(); addRandom(); render();
-             });
+             }, winId);
         };
 
         const getLine = (i, dir) => {
@@ -173,6 +170,7 @@ Apps.register({
 
         const move = (dir) => {
             if(isGameOver) return;
+            if (window.AudioMng) AudioMng.play('click');
             let moved = false;
             activeTiles.forEach(t => t.mergedThisTurn = false);
             

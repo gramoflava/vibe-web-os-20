@@ -13,7 +13,7 @@ Abandoning traditional rigid window boundaries and the standard "dock and top-ba
 ### 🌌 Infinite Space Canvas
 - **Limitless Desktop:** No more window clustering. Click and drag globally on the desktop to pan your workspace around infinitely.
 - **Mac-Native Controls:** Panning and pinch-to-zoom is supported natively through smooth trackpad gestures.
-- **Auto Placement:** Applications smartly locate free space on the canvas to unfold without overlapping, automatically centering your camera.
+- **Cosmic Layout & Interactive Physics:** The environment feels alive with gravity and mass. Apps deploy via organic chaotic scattering, and manipulate their surroundings dynamically. Maximizing a window aggressively pushes its neighbors out of bounds, while closing/minimizing creates a "black hole" effect that slides surrounding apps together to swiftly reclaim space.
 
 ### 🎨 Premium "Nova" Aesthetic
 - **Fluid & Responsive Elements:** A mesmerizing animated mesh background dynamically shifts under heavily frosted glass overlays.

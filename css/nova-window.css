@@ -85,29 +85,32 @@
     align-items: center;
     justify-content: center;
     cursor: pointer;
-    background: rgba(255, 255, 255, 0.15);
-    transition: background 0.2s ease, transform 0.2s var(--curve-spring);
-    color: transparent;
+    transition: transform 0.2s;
 }
+.window-btn.close { background: #EF4444; }
+.window-btn.minimize { background: #F59E0B; }
+.window-btn.maximize { background: #10B981; }
 
 .window-btn svg {
     width: 8px;
     height: 8px;
     stroke-width: 3;
+    opacity: 0;
+    transition: opacity 0.2s;
 }
 
-.window-layer:hover .window-btn {
-    color: rgba(255, 255, 255, 0.6);
+.nova-window:hover .window-btn svg {
+    color: rgba(0,0,0,0.6);
+    opacity: 1;
 }
 
 .window-btn:hover {
     transform: scale(1.1);
-    color: #fff;
 }
 
-.window-btn.close:hover { background: #EF4444; }
-.window-btn.minimize:hover { background: #F59E0B; }
-.window-btn.maximize:hover { background: #10B981; }
+.window-btn:hover svg {
+    color: rgba(0,0,0,0.9);
+}
 
 .window-title {
     font-weight: 600;

@@ -33,8 +33,12 @@ Apps.register({
                     <div>
                         <div style="font-size: 24px; font-weight: 700; color: var(--text-primary);">Mines</div>
                         <div style="display:flex; gap: 8px; margin-top: 8px;">
+                            <select id="ms-level-${winId}" class="ms-btn" style="outline: none;">
+                                <option value="easy">Beginner</option>
+                                <option value="medium">Intermed.</option>
+                                <option value="hard">Expert</option>
+                            </select>
                             <button class="ms-btn" id="ms-restart-${winId}">Restart</button>
-                            <button class="ms-btn" id="ms-lb-${winId}">Scores</button>
                         </div>
                     </div>
                     <div class="ms-stats">
@@ -62,9 +66,9 @@ Apps.register({
             content: html
         });
 
-        const rows = 9;
-        const cols = 9;
-        const totalMines = 10;
+        let rows = 9;
+        let cols = 9;
+        let totalMines = 10;
         let board = [];
         let minesLeft = totalMines;
         let time = 0;
@@ -76,9 +80,9 @@ Apps.register({
         const uiGrid = document.getElementById(`ms-grid-${winId}`);
         const uiTime = document.getElementById(`ms-time-${winId}`);
         const uiMines = document.getElementById(`ms-mines-${winId}`);
-        uiGrid.style.gridTemplateColumns = `repeat(${cols}, 1fr)`;
 
         const initBoard = () => {
+            uiGrid.style.gridTemplateColumns = `repeat(${cols}, 1fr)`;
             board = [];
             isGameOver = false;
             isFirstClick = true;
@@ -164,8 +168,10 @@ Apps.register({
             board[r][c].isRevealed = true;
             revealedCount++;
             updateCellUI(r, c);
+            if (window.AudioMng && board[r][c].neighborMines > 0) AudioMng.play('click');
 
             if(board[r][c].neighborMines === 0 && !board[r][c].isMine) {
+                if (window.AudioMng) AudioMng.play('click');
                 for(let rr=r-1; rr<=r+1; rr++) {
                     for(let cc=c-1; cc<=c+1; cc++) {
                         reveal(rr, cc);
@@ -223,15 +229,82 @@ Apps.register({
 
             const finalScore = win ? Math.max(0, 9999 - time * 10) : 0;
             if(win) {
-                Scores.showScorePrompt('minesweeper', finalScore, true, initBoard);
+                if (window.AudioMng) AudioMng.play('win');
+                const gridEL = document.getElementById(`ms-grid-${winId}`);
+                const numDots = Math.floor(Math.random() * 25) + 24; 
+                for (let i = 0; i < numDots; i++) {
+                    const wrapper = document.createElement('div');
+                    wrapper.style.position = 'absolute';
+                    wrapper.style.left = '50%';
+                    wrapper.style.top = '50%';
+                    wrapper.style.width = '0';
+                    wrapper.style.height = '0';
+                    wrapper.style.zIndex = '100';
+                    wrapper.style.transformStyle = 'preserve-3d';
+
+                    const part = document.createElement('div');
+                    part.style.position = 'absolute';
+                    const size = Math.random() * 8 + 4;
+                    part.style.width = size + 'px';
+                    part.style.height = size + 'px';
+                    part.style.marginTop = (-size/2) + 'px';
+                    part.style.marginLeft = (-size/2) + 'px';
+                    part.style.background = (Math.random() > 0.5) ? 'var(--accent-primary)' : 'var(--accent-secondary)';
+                    if (Math.random() > 0.8) part.style.background = '#fff';
+                    part.style.borderRadius = '50%';
+                    part.style.boxShadow = `0 0 ${size*2}px ${part.style.background}`;
+                    
+                    const angle = Math.random() * Math.PI * 2;
+                    const radius = Math.random() * 150 + 50;
+                    
+                    wrapper.appendChild(part);
+                    gridEL.appendChild(wrapper);
+                    
+                    part.animate([
+                        { transform: 'translate(0px, 0px) scale(0)' },
+                        { transform: `translate(${Math.cos(angle)*radius}px, ${Math.sin(angle)*radius}px) scale(1)` }
+                    ], { duration: 1000, easing: 'cubic-bezier(0.1, 0.9, 0.2, 1)', fill: 'forwards' });
+                    
+                    const rotX = (Math.random() - 0.5) * 60;
+                    const rotY = (Math.random() - 0.5) * 60;
+                    const dir = Math.random() > 0.5 ? 1 : -1;
+                    wrapper.animate([
+                        { transform: `rotateX(${rotX}deg) rotateY(${rotY}deg) rotateZ(0deg)` },
+                        { transform: `rotateX(${rotX}deg) rotateY(${rotY}deg) rotateZ(${360 * 3 * dir}deg)` }
+                    ], { duration: 12000, easing: 'linear' });
+
+                    const fade = part.animate([
+                        { opacity: 1, offset: 0 },
+                        { opacity: 1, offset: 0.75 }, 
+                        { opacity: 0, offset: 1 }    
+                    ], { duration: 12000, fill: 'forwards' });
+                    
+                    fade.onfinish = () => { if (wrapper.parentNode) wrapper.remove() };
+                }
+                setTimeout(() => Scores.showScorePrompt('minesweeper', finalScore, true, initBoard, winId), 3000);
             } else {
-                setTimeout(() => Scores.showScorePrompt('minesweeper', 0, false, initBoard), 1000);
+                if (window.AudioMng) AudioMng.play('lose');
+                setTimeout(() => Scores.showScorePrompt('minesweeper', 0, false, initBoard, winId), 1000);
             }
         };
 
         document.getElementById(`ms-restart-${winId}`).onclick = initBoard;
-        document.getElementById(`ms-lb-${winId}`).onclick = () => {
-            Scores.showLeaderboard('Minesweeper', 'minesweeper');
+
+        document.getElementById(`ms-level-${winId}`).onchange = (e) => {
+            const val = e.target.value;
+            const winEl = WindowManager.windows.get(winId).el;
+            if (val === 'easy') { rows=9; cols=9; totalMines=10; winEl.style.width='440px'; winEl.style.height='520px'; }
+            if (val === 'medium') { rows=16; cols=16; totalMines=40; winEl.style.width='650px'; winEl.style.height='720px'; }
+            if (val === 'hard') { rows=16; cols=30; totalMines=99; winEl.style.width='1100px'; winEl.style.height='720px'; }
+            
+            winEl.dataset.w = parseFloat(winEl.style.width);
+            winEl.dataset.h = parseFloat(winEl.style.height);
+            
+            if (window.WindowManager) {
+                WindowManager.pushWindowsOut(winId, { x: parseFloat(winEl.dataset.x), y: parseFloat(winEl.dataset.y), w: parseFloat(winEl.dataset.w), h: parseFloat(winEl.dataset.h) });
+            }
+            
+            initBoard();
         };
         
         const winObj = WindowManager.windows.get(winId);

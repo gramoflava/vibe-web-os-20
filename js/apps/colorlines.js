@@ -36,7 +36,6 @@ Apps.register({
                         <div style="font-size: 24px; font-weight: 700; color: var(--text-primary);">Lines</div>
                         <div style="display:flex; gap: 8px; margin-top: 8px;">
                             <button class="cl-btn" id="cl-restart-${winId}">Restart</button>
-                            <button class="cl-btn" id="cl-lb-${winId}">Scores</button>
                         </div>
                     </div>
                     <div style="background: rgba(128,128,128,0.1); padding: 4px 12px; border-radius: 6px; font-variant-numeric: tabular-nums; text-align: right;">
@@ -203,6 +202,7 @@ Apps.register({
             }
 
             if(toRemove.size > 0) {
+                if (window.AudioMng) AudioMng.play('win');
                 score += (toRemove.size * 2) + ((toRemove.size - 5) * 5);
                 
                 // Add pop out animation
@@ -224,6 +224,7 @@ Apps.register({
 
         const handleClick = (idx) => {
             if(isGameOver || isAnimating) return;
+            if(window.AudioMng) AudioMng.play('click');
 
             if(board[idx] !== -1) {
                 // Select ball
@@ -271,7 +272,8 @@ Apps.register({
 
         const gameOver = () => {
             isGameOver = true;
-            Scores.showScorePrompt('colorlines', score, false, initBoard);
+            if (window.AudioMng) AudioMng.play('lose');
+            Scores.showScorePrompt('colorlines', score, false, initBoard, winId);
         };
 
         const initBoard = () => {
@@ -285,9 +287,6 @@ Apps.register({
         };
 
         document.getElementById(`cl-restart-${winId}`).onclick = initBoard;
-        document.getElementById(`cl-lb-${winId}`).onclick = () => {
-            Scores.showLeaderboard('Color Lines', 'colorlines');
-        };
 
         initBoard();
     }
