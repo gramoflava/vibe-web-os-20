@@ -227,64 +227,16 @@ Apps.register({
                 }
             }
 
+            const levels = { 'easy': 'Beginner', 'medium': 'Intermediate', 'hard': 'Expert' };
+            const levelId = 'minesweeper-' + (document.getElementById(`ms-level-${winId}`).value || 'easy');
             const finalScore = win ? Math.max(0, 9999 - time * 10) : 0;
+            
             if(win) {
                 if (window.AudioMng) AudioMng.play('win');
-                const gridEL = document.getElementById(`ms-grid-${winId}`);
-                const numDots = Math.floor(Math.random() * 25) + 24; 
-                for (let i = 0; i < numDots; i++) {
-                    const wrapper = document.createElement('div');
-                    wrapper.style.position = 'absolute';
-                    wrapper.style.left = '50%';
-                    wrapper.style.top = '50%';
-                    wrapper.style.width = '0';
-                    wrapper.style.height = '0';
-                    wrapper.style.zIndex = '100';
-                    wrapper.style.transformStyle = 'preserve-3d';
-
-                    const part = document.createElement('div');
-                    part.style.position = 'absolute';
-                    const size = Math.random() * 8 + 4;
-                    part.style.width = size + 'px';
-                    part.style.height = size + 'px';
-                    part.style.marginTop = (-size/2) + 'px';
-                    part.style.marginLeft = (-size/2) + 'px';
-                    part.style.background = (Math.random() > 0.5) ? 'var(--accent-primary)' : 'var(--accent-secondary)';
-                    if (Math.random() > 0.8) part.style.background = '#fff';
-                    part.style.borderRadius = '50%';
-                    part.style.boxShadow = `0 0 ${size*2}px ${part.style.background}`;
-                    
-                    const angle = Math.random() * Math.PI * 2;
-                    const radius = Math.random() * 150 + 50;
-                    
-                    wrapper.appendChild(part);
-                    gridEL.appendChild(wrapper);
-                    
-                    part.animate([
-                        { transform: 'translate(0px, 0px) scale(0)' },
-                        { transform: `translate(${Math.cos(angle)*radius}px, ${Math.sin(angle)*radius}px) scale(1)` }
-                    ], { duration: 1000, easing: 'cubic-bezier(0.1, 0.9, 0.2, 1)', fill: 'forwards' });
-                    
-                    const rotX = (Math.random() - 0.5) * 60;
-                    const rotY = (Math.random() - 0.5) * 60;
-                    const dir = Math.random() > 0.5 ? 1 : -1;
-                    wrapper.animate([
-                        { transform: `rotateX(${rotX}deg) rotateY(${rotY}deg) rotateZ(0deg)` },
-                        { transform: `rotateX(${rotX}deg) rotateY(${rotY}deg) rotateZ(${360 * 3 * dir}deg)` }
-                    ], { duration: 12000, easing: 'linear' });
-
-                    const fade = part.animate([
-                        { opacity: 1, offset: 0 },
-                        { opacity: 1, offset: 0.75 }, 
-                        { opacity: 0, offset: 1 }    
-                    ], { duration: 12000, fill: 'forwards' });
-                    
-                    fade.onfinish = () => { if (wrapper.parentNode) wrapper.remove() };
-                }
-                setTimeout(() => Scores.showScorePrompt('minesweeper', finalScore, true, initBoard, winId), 3000);
+                setTimeout(() => Scores.showScorePrompt(levelId, finalScore, true, initBoard, winId), 500);
             } else {
                 if (window.AudioMng) AudioMng.play('lose');
-                setTimeout(() => Scores.showScorePrompt('minesweeper', 0, false, initBoard, winId), 1000);
+                setTimeout(() => Scores.showScorePrompt(levelId, 0, false, initBoard, winId), 1000);
             }
         };
 

@@ -19,7 +19,7 @@ Apps.register({
         const html = `
             <div class="scores-container" id="scores-container-${winId}">
                 <div class="scores-sidebar" id="scores-sidebar-${winId}">
-                    <div class="scores-menu-item active" data-game="minesweeper">Mines</div>
+                    <div class="scores-menu-item active" data-game="minesweeper-easy">Mines</div>
                     <div class="scores-menu-item" data-game="game2048">2048</div>
                     <div class="scores-menu-item" data-game="colorlines">Lines</div>
                 </div>
@@ -48,6 +48,7 @@ Apps.register({
         };
 
         const renderScores = (gameId) => {
+            const isMines = gameId.startsWith('minesweeper');
             const scoresList = window.Scores && window.Scores.getTopScores(gameId) || [];
             let listHtml = '';
             if (scoresList.length === 0) {
@@ -63,14 +64,35 @@ Apps.register({
                     `;
                 });
             }
+
+            const selectorHtml = isMines ? `
+                <div style="display: flex; background: rgba(128,128,128,0.1); padding: 4px; border-radius: 8px; margin-bottom: 16px;">
+                    <div class="ms-level-opt ${gameId === 'minesweeper-easy' ? 'active' : ''}" data-id="minesweeper-easy" style="flex: 1; text-align: center; font-size: 11px; padding: 6px; border-radius: 6px; cursor: pointer;">Easy</div>
+                    <div class="ms-level-opt ${gameId === 'minesweeper-medium' ? 'active' : ''}" data-id="minesweeper-medium" style="flex: 1; text-align: center; font-size: 11px; padding: 6px; border-radius: 6px; cursor: pointer;">Med</div>
+                    <div class="ms-level-opt ${gameId === 'minesweeper-hard' ? 'active' : ''}" data-id="minesweeper-hard" style="flex: 1; text-align: center; font-size: 11px; padding: 6px; border-radius: 6px; cursor: pointer;">Hard</div>
+                </div>
+            ` : '';
+
             content.innerHTML = `
+                <style>
+                    .ms-level-opt { transition: all 0.2s; color: var(--text-secondary); }
+                    .ms-level-opt:hover { background: rgba(128,128,128,0.1); color: var(--text-primary); }
+                    .ms-level-opt.active { background: var(--accent-primary); color: #fff; box-shadow: 0 4px 12px var(--accent-glow); }
+                </style>
                 <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px;">
-                    <h3 style="margin: 0;">${games[gameId]} Leaderboard</h3>
+                    <h3 style="margin: 0;">${games[gameId.split('-')[0]]} Leaderboard</h3>
                     <button class="scores-reset-btn" style="background: rgba(239,68,68,0.1); border: 1px solid rgba(239,68,68,0.3); color: #EF4444; padding: 4px 10px; border-radius: 6px; cursor: pointer; font-size: 12px; transition: all 0.2s;">Reset</button>
                 </div>
+                ${selectorHtml}
                 ${listHtml}
             `;
             
+            if (isMines) {
+                content.querySelectorAll('.ms-level-opt').forEach(opt => {
+                    opt.onclick = () => renderScores(opt.dataset.id);
+                });
+            }
+
             const resetBtn = content.querySelector('.scores-reset-btn');
             if (resetBtn) {
                 resetBtn.addEventListener('mouseenter', () => resetBtn.style.background = 'rgba(239,68,68,0.2)');
@@ -101,6 +123,6 @@ Apps.register({
             }
         });
 
-        renderScores('minesweeper');
+        renderScores('minesweeper-easy');
     }
 });

@@ -116,7 +116,7 @@ Apps.register({
             return empty;
         };
 
-        const spawnBalls = (num) => {
+        const spawnBalls = async (num) => {
             let empty = getEmpty();
             if(empty.length === 0) return false;
             
@@ -131,10 +131,10 @@ Apps.register({
                 render();
                 const cell = uiGrid.children[pos];
                 if(cell && cell.firstChild) {
-                    cell.firstChild.animate([{transform:'scale(0)'}, {transform:'scale(1)'}], {duration: 300, easing:'ease-out'});
+                    await cell.firstChild.animate([{transform:'scale(0)'}, {transform:'scale(1)'}], {duration: 300, easing:'ease-out'}).finished;
                 }
             }
-            return checkLines();
+            return await checkLines();
         };
 
         // Breadth First Search to find shortest path array
@@ -175,7 +175,7 @@ Apps.register({
             return path.reverse();
         };
 
-        const checkLines = () => {
+        const checkLines = async () => {
             let toRemove = new Set();
             
             const trace = (startR, startC, dR, dC) => {
@@ -202,27 +202,29 @@ Apps.register({
             }
 
             if(toRemove.size > 0) {
+                isAnimating = true;
                 if (window.AudioMng) AudioMng.play('win');
                 score += (toRemove.size * 2) + ((toRemove.size - 5) * 5);
                 
-                // Add pop out animation
-                toRemove.forEach(idx => {
+                const promises = Array.from(toRemove).map(idx => {
                     const cell = uiGrid.children[idx];
                     if(cell && cell.firstChild) {
-                        const anim = cell.firstChild.animate([{transform:'scale(1)'}, {transform:'scale(1.5)', opacity:0}], {duration: 250, easing:'ease-in'});
-                        anim.onfinish = () => board[idx] = -1;
-                    } else {
-                        board[idx] = -1;
+                        return cell.firstChild.animate([{transform:'scale(1)'}, {transform:'scale(1.5)', opacity:0}], {duration: 250, easing:'ease-in'}).finished;
                     }
+                    return Promise.resolve();
                 });
                 
-                setTimeout(render, 260); // render after animation finishes
+                await Promise.all(promises);
+                
+                toRemove.forEach(idx => board[idx] = -1);
+                render();
+                isAnimating = false;
                 return true;
             }
             return false;
         };
 
-        const handleClick = (idx) => {
+        const handleClick = async (idx) => {
             if(isGameOver || isAnimating) return;
             if(window.AudioMng) AudioMng.play('click');
 
@@ -253,37 +255,36 @@ Apps.register({
                     });
 
                     const timing = { duration: path.length * 35, easing: 'linear' };
-                    const anim = animBall.animate(keyframes, timing);
+                    await animBall.animate(keyframes, timing).finished;
                     
-                    anim.onfinish = () => {
-                        animBall.remove();
-                        board[idx] = startColorIdx;
-                        render();
-                        
-                        if(!checkLines()) {
-                            spawnBalls(3);
-                            if(getEmpty().length === 0) gameOver();
-                        }
-                        isAnimating = false;
-                    };
+                    animBall.remove();
+                    board[idx] = startColorIdx;
+                    render();
+                    
+                    if(!(await checkLines())) {
+                        await spawnBalls(3);
+                        if(getEmpty().length === 0) gameOver();
+                    }
+                    isAnimating = false;
                 }
             }
         };
 
         const gameOver = () => {
             isGameOver = true;
-            if (window.AudioMng) AudioMng.play('lose');
-            Scores.showScorePrompt('colorlines', score, false, initBoard, winId);
+            const isHighScore = Scores.isHighScore('colorlines', score);
+            if (window.AudioMng) AudioMng.play(isHighScore ? 'win' : 'lose');
+            Scores.showScorePrompt('colorlines', score, isHighScore, initBoard, winId);
         };
 
-        const initBoard = () => {
+        const initBoard = async () => {
             board = Array(size*size).fill(-1);
             score = 0;
             selectedIdx = -1;
             isGameOver = false;
             isAnimating = false;
             render();
-            spawnBalls(5);
+            await spawnBalls(5);
         };
 
         document.getElementById(`cl-restart-${winId}`).onclick = initBoard;
