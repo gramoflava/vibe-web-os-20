@@ -27,8 +27,8 @@ class Shell {
     }
 
     welcome() {
-        // Automatically open the Welcome text file
-        Apps.launch('textedit', { fileId: 'welcome' });
+        // Automatically open the Codex rulebook
+        Apps.launch('codex');
     }
 }
 

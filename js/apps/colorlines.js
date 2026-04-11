@@ -27,8 +27,11 @@ Apps.register({
             .color-5 { color: #EC4899; background: #EC4899; }
             .color-6 { color: #06B6D4; background: #06B6D4; }
             @keyframes pulseBall { from { transform: scale(1.1); filter: brightness(1.2); } to { transform: scale(1.2); filter: brightness(1.5); } }
-            .cl-preview-wrap { overflow: hidden; transition: width 0.3s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.3s ease, margin 0.3s ease; width: 104px; opacity: 1; display: flex; gap: 6px; align-items: center; margin-left: 4px; }
-            .cl-preview-wrap.collapsed { width: 0; opacity: 0; margin-left: 0; pointer-events: none; }
+            .cl-preview-group { display: flex; align-items: center; background: rgba(128,128,128,0.05); border: 1px solid var(--border-glass); border-radius: 6px; padding: 2px 4px; gap: 4px; transition: background 0.2s; }
+            .cl-preview-btn { background: transparent; border: none; color: var(--text-primary); cursor: pointer; display: flex; align-items: center; justify-content: center; padding: 4px; opacity: 0.6; transition: opacity 0.2s; }
+            .cl-preview-btn:hover { opacity: 1; }
+            .cl-preview-wrap { overflow: hidden; transition: width 0.3s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.3s ease; width: 94px; opacity: 1; display: flex; gap: 4px; align-items: center; }
+            .cl-preview-wrap.collapsed { width: 0; opacity: 0; pointer-events: none; }
             .cl-preview-cell { flex-shrink: 0; width: 26px; height: 26px; background: rgba(128,128,128,0.05); border-radius: 4px; position: relative; border: 1px solid rgba(128,128,128,0.1); }
             .cl-preview-cell .cl-ball { top: 3px; left: 3px; width: 18px; height: 18px; box-shadow: inset -2px -2px 4px rgba(0,0,0,0.5), 0 0 6px currentColor; }
         `;
@@ -40,10 +43,12 @@ Apps.register({
                         <div style="font-size: 24px; font-weight: 700; color: var(--text-primary);">Lines</div>
                         <div style="display:flex; gap: 8px; margin-top: 8px; align-items: center;">
                             <button class="cl-btn" id="cl-restart-${winId}">Restart</button>
-                            <button class="cl-btn" id="cl-toggle-preview-${winId}" style="padding: 4px 6px; display: flex; align-items: center;" title="Toggle Preview">
-                                <svg viewBox="0 0 24 24" width="14" height="14" stroke="currentColor" stroke-width="2" fill="none"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle></svg>
-                            </button>
-                            <div class="cl-preview-wrap ${localStorage.getItem('novaos_colorlines_preview') === 'false' ? 'collapsed' : ''}" id="cl-preview-${winId}"></div>
+                            <div class="cl-preview-group">
+                                <button class="cl-preview-btn" id="cl-toggle-preview-${winId}" title="Toggle Preview">
+                                    <!-- SVG handled dynamically by JS -->
+                                </button>
+                                <div class="cl-preview-wrap ${localStorage.getItem('novaos_colorlines_preview') === 'false' ? 'collapsed' : ''}" id="cl-preview-${winId}"></div>
+                            </div>
                         </div>
                     </div>
                     <div style="background: rgba(128,128,128,0.1); padding: 4px 12px; border-radius: 6px; font-variant-numeric: tabular-nums; text-align: right;">
@@ -74,9 +79,18 @@ Apps.register({
         let isAnimating = false;
         let isPreviewVisible = localStorage.getItem('novaos_colorlines_preview') !== 'false';
 
-        document.getElementById(`cl-toggle-preview-${winId}`).onclick = () => {
+        const svgEyeOpen = `<svg viewBox="0 0 24 24" width="16" height="16" stroke="currentColor" stroke-width="2" fill="none"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle></svg>`;
+        const svgEyeClosed = `<svg viewBox="0 0 24 24" width="16" height="16" stroke="currentColor" stroke-width="2" fill="none"><path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"></path><line x1="1" y1="1" x2="23" y2="23"></line></svg>`;
+
+        const toggleBtn = document.getElementById(`cl-toggle-preview-${winId}`);
+        toggleBtn.innerHTML = isPreviewVisible ? svgEyeOpen : svgEyeClosed;
+
+        toggleBtn.onclick = () => {
             isPreviewVisible = !isPreviewVisible;
             localStorage.setItem('novaos_colorlines_preview', isPreviewVisible);
+            
+            toggleBtn.innerHTML = isPreviewVisible ? svgEyeOpen : svgEyeClosed;
+            
             const wrap = document.getElementById(`cl-preview-${winId}`);
             if (isPreviewVisible) {
                 wrap.classList.remove('collapsed');

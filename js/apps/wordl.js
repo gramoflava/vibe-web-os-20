@@ -16,10 +16,10 @@ Apps.register({
             .wl-btn:hover { background: rgba(128,128,128,0.2); }
             .wl-score-wrap { background: rgba(128,128,128,0.1); padding: 4px 12px; border-radius: 6px; text-align: right; }
             
-            .wl-board-wrap { flex-grow: 1; display: flex; justify-content: center; align-items: center; overflow-y: auto; padding: 24px 16px; }
+            .wl-board-wrap { flex-grow: 1; display: flex; justify-content: center; align-items: center; overflow: hidden; padding: 16px; }
             .wl-board { display: grid; gap: 6px; }
             .wl-row { display: grid; gap: 6px; }
-            .wl-cell { width: 50px; height: 50px; border: 2px solid rgba(128,128,128,0.2); border-radius: 6px; display: flex; justify-content: center; align-items: center; font-size: 24px; font-weight: 700; text-transform: uppercase; transition: all 0.3s ease; }
+            .wl-cell { width: var(--cell-size, 50px); height: var(--cell-size, 50px); border: 2px solid rgba(128,128,128,0.2); border-radius: 6px; display: flex; justify-content: center; align-items: center; font-size: calc(var(--cell-size, 50px) * 0.45); font-weight: 700; text-transform: uppercase; transition: all 0.3s ease; }
             .wl-cell.filled { border-color: rgba(128,128,128,0.5); }
             .wl-cell.correct { background-color: #22C55E; border-color: #22C55E; color: #fff; }
             .wl-cell.present { background-color: #EAB308; border-color: #EAB308; color: #fff; }
@@ -165,6 +165,13 @@ Apps.register({
             startTime = Date.now();
             maxGuesses = wordLength + 1; // 5 -> 6 guesses, 6 -> 7 guesses
             
+            // Calculate optimal cell size
+            const maxW = 380; // Window width padding
+            const maxH = 380; // Available vertical space
+            const gap = 6;
+            const cellSize = Math.floor(Math.min((maxW - gap * (wordLength - 1)) / wordLength, (maxH - gap * (maxGuesses - 1)) / maxGuesses, 56));
+            uiBoard.style.setProperty('--cell-size', `${cellSize}px`);
+
             // Render Board structure
             uiBoard.style.gridTemplateRows = `repeat(${maxGuesses}, 1fr)`;
             uiBoard.innerHTML = '';
