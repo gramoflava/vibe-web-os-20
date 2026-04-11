@@ -70,6 +70,18 @@ const Icons = {
             <path d="M10 14.66V17c0 .55-.45 1-1 1H7v4h10v-4h-2c-.55 0-1-.45-1-1v-2.34"></path>
             <path d="M8 2h8a4 4 0 0 1 4 4v3a7 7 0 0 1-7 7h-2a7 7 0 0 1-7-7V6a4 4 0 0 1 4-4z"></path>
         </svg>`,
+
+        'wordl': `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+            <rect x="3" y="4" width="4" height="4" rx="1" stroke="#4B5563"></rect>
+            <rect x="10" y="4" width="4" height="4" rx="1" stroke="#4B5563"></rect>
+            <rect x="17" y="4" width="4" height="4" rx="1" stroke="#4B5563"></rect>
+            <rect x="3" y="10" width="4" height="4" rx="1" fill="#EAB308" stroke="none"></rect>
+            <rect x="10" y="10" width="4" height="4" rx="1" fill="#22C55E" stroke="none"></rect>
+            <rect x="17" y="10" width="4" height="4" rx="1" stroke="#4B5563"></rect>
+            <rect x="3" y="16" width="4" height="4" rx="1" fill="#22C55E" stroke="none"></rect>
+            <rect x="10" y="16" width="4" height="4" rx="1" fill="#22C55E" stroke="none"></rect>
+            <rect x="17" y="16" width="4" height="4" rx="1" fill="#22C55E" stroke="none"></rect>
+        </svg>`,
         
         // UI
         'close': `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>`,

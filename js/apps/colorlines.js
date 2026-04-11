@@ -27,6 +27,9 @@ Apps.register({
             .color-5 { color: #EC4899; background: #EC4899; }
             .color-6 { color: #06B6D4; background: #06B6D4; }
             @keyframes pulseBall { from { transform: scale(1.1); filter: brightness(1.2); } to { transform: scale(1.2); filter: brightness(1.5); } }
+            .cl-preview-wrap { overflow: hidden; transition: height 0.3s cubic-bezier(0.4, 0, 0.2, 1), margin 0.3s ease, opacity 0.3s ease; height: 40px; opacity: 1; display: flex; gap: 8px; justify-content: center; margin-bottom: 16px; }
+            .cl-preview-wrap.collapsed { height: 0; opacity: 0; margin-bottom: 0; pointer-events: none; }
+            .cl-preview-cell { width: 32px; height: 32px; background: rgba(128,128,128,0.05); border-radius: 6px; position: relative; border: 1px solid rgba(128,128,128,0.1); }
         `;
 
         const html = `
@@ -36,6 +39,7 @@ Apps.register({
                         <div style="font-size: 24px; font-weight: 700; color: var(--text-primary);">Lines</div>
                         <div style="display:flex; gap: 8px; margin-top: 8px;">
                             <button class="cl-btn" id="cl-restart-${winId}">Restart</button>
+                            <button class="cl-btn" id="cl-toggle-preview-${winId}">Preview</button>
                         </div>
                     </div>
                     <div style="background: rgba(128,128,128,0.1); padding: 4px 12px; border-radius: 6px; font-variant-numeric: tabular-nums; text-align: right;">
@@ -43,6 +47,7 @@ Apps.register({
                         <div id="cl-score-${winId}" style="font-weight: 600; font-size: 16px; color: var(--text-primary);">0</div>
                     </div>
                 </div>
+                <div class="cl-preview-wrap collapsed" id="cl-preview-${winId}"></div>
                 <div class="cl-grid" id="cl-grid-${winId}"></div>
             </div>
             <style>${style}</style>
@@ -64,6 +69,31 @@ Apps.register({
         let selectedIdx = -1;
         let isGameOver = false;
         let isAnimating = false;
+        let isPreviewVisible = false;
+        let nextBalls = [];
+
+        document.getElementById(`cl-toggle-preview-${winId}`).onclick = () => {
+            isPreviewVisible = !isPreviewVisible;
+            const wrap = document.getElementById(`cl-preview-${winId}`);
+            if (isPreviewVisible) {
+                wrap.classList.remove('collapsed');
+            } else {
+                wrap.classList.add('collapsed');
+            }
+        };
+
+        const renderPreview = () => {
+            const wrap = document.getElementById(`cl-preview-${winId}`);
+            wrap.innerHTML = '';
+            nextBalls.forEach(col => {
+                const cell = document.createElement('div');
+                cell.className = 'cl-preview-cell';
+                const ball = document.createElement('div');
+                ball.className = `cl-ball color-${col}`;
+                cell.appendChild(ball);
+                wrap.appendChild(cell);
+            });
+        };
 
         const uiGrid = document.getElementById(`cl-grid-${winId}`);
         const uiScore = document.getElementById(`cl-score-${winId}`);
@@ -124,7 +154,13 @@ Apps.register({
                 if(empty.length === 0) break;
                 const rIdx = Math.floor(Math.random() * empty.length);
                 const pos = empty.splice(rIdx, 1)[0];
-                const col = Math.floor(Math.random() * colors);
+                
+                let col;
+                if (nextBalls.length > 0) {
+                    col = nextBalls.shift();
+                } else {
+                    col = Math.floor(Math.random() * colors);
+                }
                 board[pos] = col;
                 
                 // Entrance animation
@@ -134,6 +170,12 @@ Apps.register({
                     await cell.firstChild.animate([{transform:'scale(0)'}, {transform:'scale(1)'}], {duration: 300, easing:'ease-out'}).finished;
                 }
             }
+            
+            while(nextBalls.length < 3) {
+                nextBalls.push(Math.floor(Math.random() * colors));
+            }
+            renderPreview();
+            
             return await checkLines();
         };
 
@@ -283,6 +325,11 @@ Apps.register({
             selectedIdx = -1;
             isGameOver = false;
             isAnimating = false;
+            nextBalls = [];
+            while(nextBalls.length < 3) {
+                nextBalls.push(Math.floor(Math.random() * colors));
+            }
+            renderPreview();
             render();
             await spawnBalls(5);
         };

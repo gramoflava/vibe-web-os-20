@@ -8,6 +8,7 @@ class WindowManagerClass {
         this.zIndexCounter = 100;
         this.activeBlackHoles = new Map();
         this.remnantCounter = 0;
+        this.activeRemnants = new Set();
         
         // Infinite Canvas properties
         this.cameraX = 0;
@@ -100,6 +101,21 @@ class WindowManagerClass {
                 }
             });
 
+            // Animate remnants
+            this.activeRemnants.forEach(rem => {
+                rem.currentDepth += (rem.targetDepth - rem.currentDepth) * 0.02;
+                rem.currentOpacity += (rem.targetOpacity - rem.currentOpacity) * 0.02;
+                
+                rem.el.style.opacity = Math.max(0, rem.currentOpacity);
+                const offsetFactor = -0.95 * rem.currentDepth;
+                rem.el.style.transform = `translate3d(${this.cameraX * offsetFactor}px, ${this.cameraY * offsetFactor}px, 0) scale(${1 - rem.currentDepth * 0.3})`;
+                
+                if (rem.targetOpacity <= 0 && rem.currentOpacity <= 0.01) {
+                    if (rem.el.parentNode) rem.el.remove();
+                    this.activeRemnants.delete(rem);
+                }
+            });
+
             requestAnimationFrame(loop);
         };
         requestAnimationFrame(loop);
@@ -178,6 +194,10 @@ class WindowManagerClass {
         if (this.backgroundLayer) {
             this.backgroundLayer.style.transform = `translate3d(${this.cameraX * 0.05}px, ${this.cameraY * 0.05}px, 0)`;
         }
+        this.activeRemnants.forEach(rem => {
+            const offsetFactor = -0.95 * rem.currentDepth;
+            rem.el.style.transform = `translate3d(${this.cameraX * offsetFactor}px, ${this.cameraY * offsetFactor}px, 0) scale(${1 - rem.currentDepth * 0.3})`;
+        });
     }
 
     animateCameraTo(targetX, targetY) {
@@ -459,8 +479,6 @@ class WindowManagerClass {
             // Spawn persistent wrapper immediately as explosion flashes
             const remContainer = document.createElement('div');
             remContainer.className = 'nova-remnant-wrap';
-            remContainer.dataset.opacity = '1.1'; // 1.1 so it takes 1 initial closing to hit 1.0!
-            remContainer.style.transition = 'opacity 3s ease';
             remContainer.style.position = 'absolute';
             remContainer.style.left = (box.x + box.w / 2) + 'px';
             remContainer.style.top = (box.y + box.h / 2) + 'px';
@@ -475,16 +493,19 @@ class WindowManagerClass {
             remContainer.appendChild(remnant);
             this.container.appendChild(remContainer);
             
+            this.activeRemnants.add({
+                el: remContainer,
+                targetOpacity: 1.1, // 1.1 so it takes 1 initial closing to hit 1.0
+                currentOpacity: 1.1,
+                targetDepth: -0.1,
+                currentDepth: -0.1
+            });
+            
             // Incrementally fade all active remnants by 10%
-            const allWrappers = this.container.querySelectorAll('.nova-remnant-wrap');
-            allWrappers.forEach(wrap => {
-                let op = parseFloat(wrap.dataset.opacity) - 0.1;
-                wrap.dataset.opacity = op.toString();
-                wrap.style.opacity = op;
-                
-                if (op <= 0) {
-                    setTimeout(() => { if (wrap.parentNode) wrap.remove(); }, 3000);
-                }
+            this.activeRemnants.forEach(rem => {
+                let op = rem.targetOpacity - 0.1;
+                rem.targetOpacity = op;
+                rem.targetDepth = 1 - Math.max(0, Math.min(1, op));
             });
             
             setTimeout(() => { explosion.remove(); }, 500);
