@@ -108,7 +108,7 @@ Apps.register({
             appId: 'wordl',
             title: 'Wordl',
             width: 480,
-            height: 640,
+            height: 720,
             content: html
         });
 
@@ -166,8 +166,8 @@ Apps.register({
             maxGuesses = wordLength + 1; // 5 -> 6 guesses, 6 -> 7 guesses
             
             // Calculate optimal cell size
-            const maxW = 380; // Window width padding
-            const maxH = 380; // Available vertical space
+            const maxW = 400; // Window width padding
+            const maxH = 420; // Available vertical space 
             const gap = 6;
             const cellSize = Math.floor(Math.min((maxW - gap * (wordLength - 1)) / wordLength, (maxH - gap * (maxGuesses - 1)) / maxGuesses, 56));
             uiBoard.style.setProperty('--cell-size', `${cellSize}px`);

@@ -133,8 +133,8 @@ Apps.register({
         });
 
         // Navigation bindings
-        const navItems = document.querySelectorAll(\`#cx-nav-\${winId} .cx-nav-item\`);
-        const contentBox = document.getElementById(\`cx-content-\${winId}\`);
+        const navItems = document.querySelectorAll(`#cx-nav-${winId} .cx-nav-item`);
+        const contentBox = document.getElementById(`cx-content-${winId}`);
 
         navItems.forEach(item => {
             item.addEventListener('click', (e) => {
