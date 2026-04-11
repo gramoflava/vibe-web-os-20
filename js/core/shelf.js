@@ -13,51 +13,77 @@ class Shelf {
     render() {
         this.container.innerHTML = '';
         
-        const appsToRender = Apps.getAll().filter(app => app.keepInDock || Apps.isRunning(app.id));
+        const allApps = Apps.getAll().filter(app => app.keepInDock || Apps.isRunning(app.id));
         
-        appsToRender.forEach(app => {
-            const el = document.createElement('div');
-            el.className = 'shelf-item';
-            if (Apps.isRunning(app.id)) el.classList.add('is-running');
+        // Logical Order & Grouping
+        const GROUPS = [
+            { id: 'utils', apps: ['codex', 'settings', 'calculator'] },
+            { id: 'games', apps: ['minesweeper', 'game2048', 'colorlines', 'wordl'] },
+            { id: 'stats', apps: ['scores'] }
+        ];
+
+        let renderedCount = 0;
+
+        GROUPS.forEach((group, groupIdx) => {
+            const groupApps = allApps.filter(app => group.apps.includes(app.id));
             
-            // For now, if no SVG logic yet, just text or placeholder
-            el.innerHTML = Icons.get(app.iconId) || `<svg><circle cx="12" cy="12" r="10"/></svg>`;
-            el.title = app.name;
-            
-            el.onclick = () => {
-                if (!Apps.isRunning(app.id)) {
-                    // Launch fresh
-                    Apps.launch(app.id);
-                } else {
-                    // Try to focus its highest window (would require window manager query, simplified here)
-                    const winArray = Array.from(WindowManager.windows.values());
-                    const appWindows = winArray.filter(w => w.appId === app.id);
-                    if (appWindows.length > 0) {
-                        const lastWin = appWindows[appWindows.length - 1];
-                        if (lastWin.el.dataset.minimized === 'true') {
-                            WindowManager.restore(lastWin.id);
-                        } else {
-                            WindowManager.focus(lastWin.id);
-                            const left = parseFloat(lastWin.el.dataset.x);
-                            const top = parseFloat(lastWin.el.dataset.y);
-                            const cx = left + lastWin.el.offsetWidth / 2;
-                            const cy = top + lastWin.el.offsetHeight / 2;
-                            const targetX = window.innerWidth / 2 - cx * WindowManager.cameraZ;
-                            const targetY = window.innerHeight / 2 - cy * WindowManager.cameraZ;
-                            WindowManager.animateCameraTo(targetX, targetY);
-                        }
-                    } else {
-                        // Recalculate
-                        Apps.launch(app.id);
-                    }
-                }
+            // Sort within group based on the order in GROUPS
+            groupApps.sort((a, b) => group.apps.indexOf(a.id) - group.apps.indexOf(b.id));
+
+            groupApps.forEach(app => {
+                const el = document.createElement('div');
+                el.className = 'shelf-item';
+                if (Apps.isRunning(app.id)) el.classList.add('is-running');
                 
-                // Visual pop
-                el.classList.add('is-active');
-                setTimeout(() => el.classList.remove('is-active'), 300);
-            };
-            
-            this.container.appendChild(el);
+                el.innerHTML = Icons.get(app.iconId) || `<svg><circle cx="12" cy="12" r="10"/></svg>`;
+                el.title = app.name;
+                
+                el.onclick = () => {
+                    if (!Apps.isRunning(app.id)) {
+                        Apps.launch(app.id);
+                    } else {
+                        const winArray = Array.from(WindowManager.windows.values());
+                        const appWindows = winArray.filter(w => w.appId === app.id);
+                        if (appWindows.length > 0) {
+                            const lastWin = appWindows[appWindows.length - 1];
+                            if (lastWin.el.dataset.minimized === 'true') {
+                                WindowManager.restore(lastWin.id);
+                            } else {
+                                WindowManager.focus(lastWin.id);
+                                const left = parseFloat(lastWin.el.dataset.x);
+                                const top = parseFloat(lastWin.el.dataset.y);
+                                const cx = left + lastWin.el.offsetWidth / 2;
+                                const cy = top + lastWin.el.offsetHeight / 2;
+                                const targetX = window.innerWidth / 2 - cx * WindowManager.cameraZ;
+                                const targetY = window.innerHeight / 2 - cy * WindowManager.cameraZ;
+                                WindowManager.animateCameraTo(targetX, targetY);
+                            }
+                        } else {
+                            Apps.launch(app.id);
+                        }
+                    }
+                    
+                    el.classList.add('is-active');
+                    setTimeout(() => el.classList.remove('is-active'), 300);
+                };
+                
+                this.container.appendChild(el);
+                renderedCount++;
+            });
+
+            // Add divider if not the last group and we actually rendered something in this group
+            if (groupIdx < GROUPS.length - 1 && groupApps.length > 0) {
+                // Peek if next groups have anything to render
+                const remainingApps = GROUPS.slice(groupIdx + 1).some(g => 
+                    allApps.some(a => g.apps.includes(a.id))
+                );
+                
+                if (remainingApps) {
+                    const divider = document.createElement('div');
+                    divider.className = 'shelf-divider';
+                    this.container.appendChild(divider);
+                }
+            }
         });
     }
 }

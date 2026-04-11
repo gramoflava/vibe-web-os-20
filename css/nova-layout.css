@@ -160,6 +160,14 @@
     box-shadow: 0 0 8px var(--accent-glow);
 }
 
+.shelf-divider {
+    width: 1px;
+    height: 32px;
+    background: var(--border-glass-strong);
+    margin: 0 4px;
+    opacity: 0.5;
+}
+
 /* ==========================================================================
    Spotlight Search
    ========================================================================== */
