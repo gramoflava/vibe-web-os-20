@@ -168,14 +168,24 @@ class WindowManagerClass {
 
         // Trackpad panning & pinch-to-zoom
         document.body.addEventListener('wheel', (e) => {
-            // Ignore if scrolling inside a window content area that has scrolling
-            const content = e.target.closest('.window-content');
-            if (content && (content.scrollHeight > content.clientHeight || content.scrollWidth > content.clientWidth) && !e.ctrlKey) {
-                return;
+            // Ignore and let native scroll take over if hovering any scrollable element
+            if (!e.ctrlKey) {
+                let domNode = e.target;
+                let isScrollable = false;
+                while (domNode && domNode !== document.body && domNode !== document) {
+                    if (domNode.scrollHeight > domNode.clientHeight || domNode.scrollWidth > domNode.clientWidth) {
+                        const style = window.getComputedStyle(domNode);
+                        if (style.overflowY === 'auto' || style.overflowY === 'scroll' || 
+                            style.overflowX === 'auto' || style.overflowX === 'scroll' ||
+                            style.overflow === 'auto' || style.overflow === 'scroll') {
+                            isScrollable = true;
+                            break;
+                        }
+                    }
+                    domNode = domNode.parentNode;
+                }
+                if (isScrollable) return;
             }
-            // Ignore if we are scrolling in spotlight results
-            const spotlight = e.target.closest('.spotlight-results');
-            if (spotlight && spotlight.scrollHeight > spotlight.clientHeight) return;
 
             e.preventDefault();
 
