@@ -73,7 +73,7 @@ class ScoreManager {
 
         const winId = 'score-' + Date.now();
         const html = `
-            <div id="${winId}-overlay" style="position: absolute; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.7); backdrop-filter: blur(4px); z-index: 1000; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center;">
+            <div id="${winId}-overlay" class="score-prompt-overlay" style="position: absolute; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.7); backdrop-filter: blur(4px); z-index: 1000; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; opacity: 0; pointer-events: none; animation: scoreFadeIn 0.5s ease forwards; transition: opacity 0.5s ease;">
                 <h2 style="color: ${isWin ? 'var(--accent-tertiary)' : 'var(--accent-secondary)'}; margin-bottom: 8px;">
                     ${isWin ? 'Board Cleared!' : 'Game Over'}
                 </h2>
@@ -82,7 +82,8 @@ class ScoreManager {
                 <input type="text" id="initials-${winId}" maxlength="3" style="width: 100px; text-align: center; font-size: 24px; letter-spacing: 4px; text-transform: uppercase; background: rgba(255,255,255,0.1); border: 1px solid var(--border-glass-strong); color: var(--text-primary); padding: 8px; border-radius: 8px; margin-bottom: 24px; outline: none; box-shadow: var(--shadow-inset);">
                 <button id="save-btn-${winId}" style="background: var(--accent-primary); color: #fff; border: none; padding: 12px 24px; border-radius: 8px; font-size: 16px; cursor: pointer; transition: all 0.2s; font-weight: 500;">Save Score</button>
             </div>
-            <style>
+            <style id="style-${winId}">
+                @keyframes scoreFadeIn { from { opacity: 0; transform: scale(1.1); } to { opacity: 1; transform: scale(1); pointer-events: auto; } }
                 #save-btn-${winId}:hover { filter: brightness(1.1); transform: translateY(-1px); }
                 #save-btn-${winId}:active { transform: translateY(1px); }
                 #initials-${winId}:focus { border-color: var(--accent-primary); box-shadow: 0 0 0 2px var(--accent-glow); }
@@ -104,14 +105,13 @@ class ScoreManager {
         container.appendChild(styleNode);
 
         // Global Celebration
-        if (isWin) {
+        if (isWin && window.NovaEffects) {
             let burstX = window.innerWidth / 2;
             let burstY = window.innerHeight / 2;
 
             if (targetWinId && window.WindowManager) {
                 const win = WindowManager.windows.get(targetWinId);
                 if (win) {
-                    // Calculate window center in global canvas space
                     const wx = parseFloat(win.el.dataset.x);
                     const wy = parseFloat(win.el.dataset.y);
                     const ww = parseFloat(win.el.dataset.w);
@@ -121,22 +121,20 @@ class ScoreManager {
                 }
             }
 
-            // Trigger global burst (moves with canvas)
-            if (window.NovaEffects) {
-                const gameColors = {
-                    'minesweeper': ['#EF4444', '#3B82F6', '#fff'],
-                    'game2048': ['#8B5CF6', '#EC4899', '#fff'],
-                    'colorlines': ['#10B981', '#F59E0B', '#fff'],
-                    'wordl': ['#22C55E', '#EAB308', '#fff']
-                };
-                const colors = gameColors[gameId.split('-')[0]] || ['var(--accent-primary)', '#fff'];
-                
-                NovaEffects.burst(burstX, burstY, {
-                    colors: colors,
-                    flash: true,
-                    flashColor: 'rgba(255, 255, 255, 0.15)'
-                });
-            }
+            const gameColors = {
+                'minesweeper': ['#EF4444', '#3B82F6', '#fff'],
+                'game2048': ['#8B5CF6', '#EC4899', '#fff'],
+                'colorlines': ['#10B981', '#F59E0B', '#fff'],
+                'wordl': ['#22C55E', '#EAB308', '#fff']
+            };
+            const colors = gameColors[gameId.split('-')[0]] || ['var(--accent-primary)', '#fff'];
+            
+            // Unified Celebration: Start persistent effect if winning
+            NovaEffects.startCelebration(burstX, burstY, {
+                colors: colors,
+                flash: true,
+                flashColor: 'rgba(255, 255, 255, 0.15)'
+            });
         }
 
         const btn = document.getElementById(`save-btn-${winId}`);
@@ -151,10 +149,25 @@ class ScoreManager {
         btn.onclick = () => {
             const initials = input.value || '???';
             this.addScore(gameId, initials, score);
+            
             const overlay = document.getElementById(`${winId}-overlay`);
-            if (overlay && overlay.parentNode) overlay.parentNode.removeChild(overlay);
-            const styleTag = document.getElementById(`style-${winId}`);
-            if (styleTag && styleTag.parentNode) styleTag.parentNode.removeChild(styleTag);
+            if (overlay) {
+                // Fade out overlay
+                overlay.style.opacity = '0';
+                overlay.style.pointerEvents = 'none';
+                
+                setTimeout(() => {
+                    if (overlay.parentNode) overlay.parentNode.removeChild(overlay);
+                    const styleTag = document.getElementById(`style-${winId}`);
+                    if (styleTag && styleTag.parentNode) styleTag.parentNode.removeChild(styleTag);
+                    
+                    // Stop celebration after overlay is gone + some delay
+                    setTimeout(() => {
+                        if (window.NovaEffects) NovaEffects.stopCelebration();
+                    }, 1000);
+                }, 500);
+            }
+            
             if (onComplete) onComplete();
         };
     }
