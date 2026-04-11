@@ -53,6 +53,7 @@ Apps.register({
                             <option value="6">6 Letters</option>
                             <option value="7">7 Letters</option>
                         </select>
+                        <button class="wl-btn" id="wl-reveal-${winId}" style="display:none; border-color: #EF4444; color: #EF4444;">Reveal</button>
                         <button class="wl-btn" id="wl-restart-${winId}">Restart</button>
                     </div>
                 </div>
@@ -155,7 +156,17 @@ Apps.register({
                 });
                 if (prog) prog.style.width = '60%';
 
-                // 2. Fetch Massive Word List (370k) for Validation
+                // 2. Add some "spicier" lexicon as requested
+                const spice = ['shite', 'fuck', 'damn', 'hell', 'piss', 'crap', 'bitch', 'ass', 'bastard', 'slut', 'whore', 'arse', 'wanker']; 
+                spice.forEach(w => {
+                    const word = w.toLowerCase();
+                    if (word.length >= 4 && word.length <= 7) {
+                        window.WordlDict[word.length].push(word);
+                        window.WordlValidSet.add(word);
+                    }
+                });
+
+                // 3. Fetch Massive Word List (370k) for Validation
                 const resHuge = await fetch('https://raw.githubusercontent.com/dwyl/english-words/master/words_alpha.txt');
                 const textHuge = await resHuge.text();
                 if (prog) prog.style.width = '90%';
@@ -184,6 +195,9 @@ Apps.register({
             isAnimating = false;
             startTime = Date.now();
             maxGuesses = wordLength + 1; // 5 -> 6 guesses, 6 -> 7 guesses
+            
+            const revealBtn = document.getElementById(`wl-reveal-${winId}`);
+            if (revealBtn) revealBtn.style.display = 'none';
             
             // Calculate optimal cell size
             const maxW = 400; // Window width padding
@@ -331,9 +345,11 @@ Apps.register({
                 handleWin();
             } else if (guesses.length >= maxGuesses) {
                 gameOver = true;
-                showMessage(target.toUpperCase());
+                showMessage('GAME OVER');
+                const revealBtn = document.getElementById(`wl-reveal-${winId}`);
+                if (revealBtn) revealBtn.style.display = 'inline-block';
                 if (window.AudioMng) AudioMng.play('lose');
-                setTimeout(() => Scores.showScorePrompt('wordl', 0, false, null, winId), 1500);
+                setTimeout(() => Scores.showScorePrompt('wordl', 0, false, null, winId), 3000);
             } else {
                 updateBoard();
             }
@@ -410,6 +426,10 @@ Apps.register({
         });
         document.getElementById(`wl-restart-${winId}`).addEventListener('click', () => {
             initGame();
+        });
+        document.getElementById(`wl-reveal-${winId}`).addEventListener('click', () => {
+            showMessage(targetWord.toUpperCase());
+            document.getElementById(`wl-reveal-${winId}`).style.display = 'none';
         });
         uiKeyboard.addEventListener('click', (e) => {
             if (e.target.matches('.wl-kb-key')) {

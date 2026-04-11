@@ -168,32 +168,90 @@ Apps.register({
             let empty = getEmpty();
             if(empty.length === 0) return false;
             
-            for(let k=0; k<num; k++) {
+            // Initialization spawn (typically 5 balls)
+            if (num !== 3) {
+                isAnimating = true;
+                for(let k=0; k<num; k++) {
+                    if(empty.length === 0) break;
+                    const rIdx = Math.floor(Math.random() * empty.length);
+                    const pos = empty.splice(rIdx, 1)[0];
+                    const col = Math.floor(Math.random() * colors);
+                    board[pos] = col;
+                    render();
+                    const cell = uiGrid.children[pos];
+                    if(cell && cell.firstChild) {
+                        cell.firstChild.animate([{transform:'scale(0)'}, {transform:'scale(1)'}], {duration: 250, easing:'ease-out'});
+                    }
+                }
+                while(nextBalls.length < 3) nextBalls.push(Math.floor(Math.random() * colors));
+                renderPreview();
+                isAnimating = false;
+                return await checkLines();
+            }
+
+            // Standard triple-spawn with synchronized teleportation sequence
+            const wrap = document.getElementById(`cl-preview-${winId}`);
+            isAnimating = true;
+
+            for(let k=0; k<3; k++) {
                 if(empty.length === 0) break;
                 const rIdx = Math.floor(Math.random() * empty.length);
                 const pos = empty.splice(rIdx, 1)[0];
-                
-                let col;
-                if (nextBalls.length > 0) {
-                    col = nextBalls.shift();
-                } else {
-                    col = Math.floor(Math.random() * colors);
+                const col = nextBalls[k];
+
+                // 1. Vanish from preview
+                if (wrap && wrap.children[k]) {
+                    const prevBall = wrap.children[k].querySelector('.cl-ball');
+                    if (prevBall) {
+                        prevBall.animate([
+                            { transform: 'scale(1)', opacity: 1 },
+                            { transform: 'scale(0)', opacity: 0 }
+                        ], { duration: 60, easing: 'ease-in-out', fill: 'forwards' });
+                    }
                 }
+
+                // 2. Synchronized appearance on board
                 board[pos] = col;
-                
-                // Entrance animation
                 render();
-                const cell = uiGrid.children[pos];
-                if(cell && cell.firstChild) {
-                    await cell.firstChild.animate([{transform:'scale(0)'}, {transform:'scale(1)'}], {duration: 300, easing:'ease-out'}).finished;
+                const boardCell = uiGrid.children[pos];
+                if (boardCell && boardCell.firstChild) {
+                    await boardCell.firstChild.animate([
+                        { transform: 'scale(0)', opacity: 0 },
+                        { transform: 'scale(1)', opacity: 1 }
+                    ], { duration: 60, easing: 'ease-in-out' }).finished;
+                }
+
+                if (k < 2) await new Promise(r => setTimeout(r, 10)); // 10ms gap between teleports
+            }
+
+            // Shift focus: Generate new nextBalls and reveal them
+            nextBalls = [];
+            while(nextBalls.length < 3) nextBalls.push(Math.floor(Math.random() * colors));
+            
+            // Sequential reveal in preview (40ms each, total ~120ms)
+            if (wrap) {
+                wrap.innerHTML = '';
+                for(let k=0; k<3; k++) {
+                    const col = nextBalls[k];
+                    const cell = document.createElement('div');
+                    cell.className = 'cl-preview-cell';
+                    const ball = document.createElement('div');
+                    ball.className = `cl-ball color-${col}`;
+                    ball.style.opacity = '0';
+                    ball.style.transform = 'scale(0)';
+                    cell.appendChild(ball);
+                    wrap.appendChild(cell);
+                    
+                    await ball.animate([
+                        { transform: 'scale(0)', opacity: 0 },
+                        { transform: 'scale(1)', opacity: 1 }
+                    ], { duration: 40, easing: 'ease-out', fill: 'forwards' }).finished;
+                    ball.style.opacity = '1';
+                    ball.style.transform = 'scale(1)';
                 }
             }
-            
-            while(nextBalls.length < 3) {
-                nextBalls.push(Math.floor(Math.random() * colors));
-            }
-            renderPreview();
-            
+
+            isAnimating = false;
             return await checkLines();
         };
 
@@ -344,10 +402,6 @@ Apps.register({
             isGameOver = false;
             isAnimating = false;
             nextBalls = [];
-            while(nextBalls.length < 3) {
-                nextBalls.push(Math.floor(Math.random() * colors));
-            }
-            renderPreview();
             render();
             await spawnBalls(5);
         };
