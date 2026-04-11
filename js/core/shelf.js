@@ -50,14 +50,16 @@ class Shelf {
                                 WindowManager.restore(lastWin.id);
                             } else {
                                 WindowManager.focus(lastWin.id);
-                                const left = parseFloat(lastWin.el.dataset.x);
-                                const top = parseFloat(lastWin.el.dataset.y);
-                                const cx = left + lastWin.el.offsetWidth / 2;
-                                const cy = top + lastWin.el.offsetHeight / 2;
-                                const targetX = window.innerWidth / 2 - cx * WindowManager.cameraZ;
-                                const targetY = window.innerHeight / 2 - cy * WindowManager.cameraZ;
-                                WindowManager.animateCameraTo(targetX, targetY);
                             }
+                            
+                            // Center camera on the window (whether just restored or already active)
+                            const left = parseFloat(lastWin.el.dataset.x);
+                            const top = parseFloat(lastWin.el.dataset.y);
+                            const cx = left + lastWin.el.offsetWidth / 2;
+                            const cy = top + lastWin.el.offsetHeight / 2;
+                            const targetX = window.innerWidth / 2 - cx * WindowManager.cameraZ;
+                            const targetY = window.innerHeight / 2 - cy * WindowManager.cameraZ;
+                            WindowManager.animateCameraTo(targetX, targetY);
                         } else {
                             Apps.launch(app.id);
                         }
