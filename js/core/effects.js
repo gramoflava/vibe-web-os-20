@@ -5,8 +5,11 @@
 class NovaEffectsClass {
     constructor() {
         this.container = null;
+        this.celebrationActive = false;
         this.celebrationInterval = null;
         this.celebrationTimeout = null;
+        this.rafId = null;
+        this.particles = new Set();
     }
 
     init() {
@@ -140,21 +143,40 @@ class NovaEffectsClass {
     }
 
     /**
-     * Starts a periodic celebration burst at the given position.
-     * Automatically stops after 30 seconds for safety.
+     * Starts a high-fidelity, continuous celebration at the given position.
+     * Implements "breathing" emission and distance-based velocity physics.
      */
     startCelebration(x, y, options = {}) {
         this.stopCelebration(); // Clear any existing
-        
-        // Immediate burst
-        this.burst(x, y, options);
+        if (!this.overlay) this.init();
 
-        // Loop for persistent feel
-        this.celebrationInterval = setInterval(() => {
-            // Lower particle count for loop to be lighter on performance
-            const loopOptions = { ...options, count: 12, flash: false, shake: false };
-            this.burst(x, y, loopOptions);
-        }, 1200);
+        this.celebrationActive = true;
+        this.celebrationOrigin = { x, y };
+        this.celebrationOptions = {
+            count: 30,
+            colors: ['var(--accent-primary)', 'var(--accent-secondary)', '#fff'],
+            spread: 0.2, // Conical spread in radians
+            angle: -Math.PI / 2, // Default: upwards
+            duration: 3500,
+            ...options
+        };
+
+        const tick = (now) => {
+            if (!this.celebrationActive) return;
+
+            // Breathing: modulate emission intensity
+            const breathing = (Math.sin(now / 400) + 1) / 2;
+            const emissionRate = 0.5 + breathing * 1.5;
+
+            if (Math.random() < emissionRate) {
+                this._spawnCelebrationParticle();
+            }
+
+            this._updateParticles(now);
+            this.rafId = requestAnimationFrame(tick);
+        };
+
+        this.rafId = requestAnimationFrame(tick);
 
         // Safety timeout (30s)
         this.celebrationTimeout = setTimeout(() => {
@@ -162,10 +184,99 @@ class NovaEffectsClass {
         }, 30000);
     }
 
+    _spawnCelebrationParticle() {
+        const { x, y } = this.celebrationOrigin;
+        const options = this.celebrationOptions;
+
+        // Origin conversion
+        const wm = window.WindowManager;
+        let screenX = x, screenY = y;
+        if (wm && !options.isScreenSpace) {
+            screenX = wm.cameraX + x * wm.cameraZ;
+            screenY = wm.cameraY + y * wm.cameraZ;
+        }
+
+        const el = document.createElement('div');
+        el.style.position = 'absolute';
+        el.style.left = screenX + 'px';
+        el.style.top = screenY + 'px';
+        const size = Math.random() * 6 + 2;
+        el.style.width = size + 'px';
+        el.style.height = size + 'px';
+        el.style.borderRadius = '50%';
+        const color = options.colors[Math.floor(Math.random() * options.colors.length)];
+        el.style.background = color;
+        el.style.boxShadow = `0 0 ${size * 2}px ${color}`;
+        el.style.pointerEvents = 'none';
+        el.style.zIndex = '7001';
+        el.style.opacity = '0';
+        el.style.transition = 'opacity 0.3s ease';
+
+        this.overlay.appendChild(el);
+
+        // Physics: "Collapsed Black Hole" inspired
+        // Closer to origin = faster, farther = slower
+        const spreadAngle = (Math.random() - 0.5) * options.spread;
+        const angle = options.angle + spreadAngle;
+        
+        const speedBase = 2 + Math.random() * 4;
+        const vx = Math.cos(angle) * speedBase;
+        const vy = Math.sin(angle) * speedBase;
+
+        const p = {
+            el,
+            x: screenX,
+            y: screenY,
+            vx,
+            vy,
+            life: 1.0,
+            decay: 0.005 + Math.random() * 0.015,
+            blinkFreq: 5 + Math.random() * 15,
+            born: performance.now()
+        };
+
+        // Fade in
+        requestAnimationFrame(() => el.style.opacity = '1');
+        
+        this.particles.add(p);
+    }
+
+    _updateParticles(now) {
+        for (const p of this.particles) {
+            p.life -= p.decay;
+
+            if (p.life <= 0) {
+                p.el.remove();
+                this.particles.delete(p);
+                continue;
+            }
+
+            // Physics logic: Distance-aware deceleration (simulating farther = slower)
+            const dist = Math.sqrt(Math.pow(p.x - this.celebrationOrigin.x, 2) + Math.pow(p.y - this.celebrationOrigin.y, 2));
+            const drag = 0.98; // Constant drag simulates the speed loss over distance
+            
+            p.vx *= drag;
+            p.vy *= drag;
+            p.x += p.vx;
+            p.y += p.vy;
+
+            // Gravity/Drift
+            p.vy += 0.02; 
+
+            // Blinking
+            const blink = (Math.sin(now / p.blinkFreq) + 1) / 2;
+            const finalOpacity = p.life * (0.4 + blink * 0.6);
+
+            p.el.style.transform = `translate3d(${p.x - p.el.offsetLeft}px, ${p.y - p.el.offsetTop}px, 0) scale(${p.life})`;
+            p.el.style.opacity = finalOpacity;
+        }
+    }
+
     /**
-     * Stops the periodic celebration.
+     * Stops the continuous celebration with a smooth fade-out.
      */
     stopCelebration() {
+        this.celebrationActive = false;
         if (this.celebrationInterval) {
             clearInterval(this.celebrationInterval);
             this.celebrationInterval = null;
@@ -174,6 +285,20 @@ class NovaEffectsClass {
             clearTimeout(this.celebrationTimeout);
             this.celebrationTimeout = null;
         }
+        if (this.rafId) {
+            cancelAnimationFrame(this.rafId);
+            this.rafId = null;
+        }
+
+        // Smoothly clear remaining particles
+        for (const p of this.particles) {
+            p.el.style.opacity = '0';
+            p.el.style.transform += ' scale(0)';
+            setTimeout(() => {
+                if (p.el.parentNode) p.el.remove();
+            }, 500);
+        }
+        this.particles.clear();
     }
 }
 
