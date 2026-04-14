@@ -74,12 +74,12 @@ class ScoreManager {
         const winId = 'score-' + Date.now();
         const html = `
             <div id="${winId}-overlay" class="score-prompt-overlay" style="position: absolute; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.7); backdrop-filter: blur(4px); z-index: 1000; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; opacity: 0; pointer-events: none; animation: scoreFadeIn 0.5s ease forwards; transition: opacity 0.5s ease;">
-                <h2 style="color: ${isWin ? 'var(--accent-tertiary)' : 'var(--accent-secondary)'}; margin-bottom: 8px;">
+                <h2 style="color: ${isWin ? '#4ADE80' : '#F472B6'}; margin-bottom: 8px;">
                     ${isWin ? 'Board Cleared!' : 'Game Over'}
                 </h2>
-                <div style="font-size: 48px; font-weight: 300; margin-bottom: 24px; color: var(--text-primary); text-shadow: 0 0 20px rgba(255,255,255,0.2);">${score}</div>
-                <div style="margin-bottom: 16px; font-size: 14px; color: var(--text-secondary);">Enter 3 initials for the leaderboard:</div>
-                <input type="text" id="initials-${winId}" maxlength="3" style="width: 100px; text-align: center; font-size: 24px; letter-spacing: 4px; text-transform: uppercase; background: rgba(255,255,255,0.1); border: 1px solid var(--border-glass-strong); color: var(--text-primary); padding: 8px; border-radius: 8px; margin-bottom: 24px; outline: none; box-shadow: var(--shadow-inset);">
+                <div style="font-size: 48px; font-weight: 300; margin-bottom: 24px; color: #FFFFFF; text-shadow: 0 0 20px rgba(255,255,255,0.2);">${score}</div>
+                <div style="margin-bottom: 16px; font-size: 14px; color: rgba(255,255,255,0.7);">Enter 3 initials for the leaderboard:</div>
+                <input type="text" id="initials-${winId}" maxlength="3" style="width: 100px; text-align: center; font-size: 24px; letter-spacing: 4px; text-transform: uppercase; background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.2); color: #FFFFFF; padding: 8px; border-radius: 8px; margin-bottom: 24px; outline: none; box-shadow: inset 0 1px 1px rgba(255, 255, 255, 0.1);">
                 <button id="save-btn-${winId}" style="background: var(--accent-primary); color: #fff; border: none; padding: 12px 24px; border-radius: 8px; font-size: 16px; cursor: pointer; transition: all 0.2s; font-weight: 500;">Save Score</button>
             </div>
             <style id="style-${winId}">

@@ -214,21 +214,19 @@ class NovaEffectsClass {
 
         this.overlay.appendChild(el);
 
-        // Physics: "Collapsed Black Hole" inspired
-        // Closer to origin = faster, farther = slower
+        // Physics: Orbital "Collapsed Black Hole" inspired
+        // Closer to origin = faster angular velocity, farther = slower
         const spreadAngle = (Math.random() - 0.5) * options.spread;
-        const angle = options.angle + spreadAngle;
+        const startAngle = options.angle + spreadAngle;
         
-        const speedBase = 2 + Math.random() * 4;
-        const vx = Math.cos(angle) * speedBase;
-        const vy = Math.sin(angle) * speedBase;
-
         const p = {
             el,
-            x: screenX,
-            y: screenY,
-            vx,
-            vy,
+            baseX: screenX,
+            baseY: screenY,
+            angle: startAngle,
+            radius: 5,
+            angularVelocity: 0.05 + Math.random() * 0.1,
+            radialVelocity: 1.5 + Math.random() * 2,
             life: 1.0,
             decay: 0.005 + Math.random() * 0.015,
             blinkFreq: 5 + Math.random() * 15,
@@ -251,23 +249,25 @@ class NovaEffectsClass {
                 continue;
             }
 
-            // Physics logic: Distance-aware deceleration (simulating farther = slower)
-            const dist = Math.sqrt(Math.pow(p.x - this.celebrationOrigin.x, 2) + Math.pow(p.y - this.celebrationOrigin.y, 2));
-            const drag = 0.98; // Constant drag simulates the speed loss over distance
+            // Physics logic: Orbital movement
+            // Angular velocity (spin) is faster when closer to the center
+            const orbitalSpeedFactor = 1 / (1 + p.radius * 0.01); 
+            p.angle += p.angularVelocity * orbitalSpeedFactor;
             
-            p.vx *= drag;
-            p.vy *= drag;
-            p.x += p.vx;
-            p.y += p.vy;
+            // Radial velocity (expansion)
+            const drag = 0.98;
+            p.radialVelocity *= drag;
+            p.radius += p.radialVelocity;
 
-            // Gravity/Drift
-            p.vy += 0.02; 
+            // Compute Cartesian coordinates
+            const currentX = p.baseX + Math.cos(p.angle) * p.radius;
+            const currentY = p.baseY + Math.sin(p.angle) * p.radius;
 
             // Blinking
             const blink = (Math.sin(now / p.blinkFreq) + 1) / 2;
             const finalOpacity = p.life * (0.4 + blink * 0.6);
 
-            p.el.style.transform = `translate3d(${p.x - p.el.offsetLeft}px, ${p.y - p.el.offsetTop}px, 0) scale(${p.life})`;
+            p.el.style.transform = `translate3d(${currentX - p.el.offsetLeft}px, ${currentY - p.el.offsetTop}px, 0) scale(${p.life})`;
             p.el.style.opacity = finalOpacity;
         }
     }
