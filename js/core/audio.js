@@ -1,18 +1,42 @@
 class AudioManager {
     constructor() {
         this.context = null;
-        this.muted = false;
+        this.limiter = null;
+        this.masterGain = null;
+        
+        // Load muted state from LocalStorage
+        try {
+            this.muted = localStorage.getItem('nova_muted') === 'true';
+        } catch(e) {
+            this.muted = false;
+        }
         
         // Listen for boot or user interaction to init context properly
-        document.body.addEventListener('click', () => this.init(), { once: true });
+        document.body.addEventListener('mousedown', () => this.init(), { once: true });
+        document.body.addEventListener('keydown', () => this.init(), { once: true });
     }
 
     init() {
         if (!this.context) {
             try {
                 this.context = new (window.AudioContext || window.webkitAudioContext)();
+                
+                // Create Limiter (Compressor with high ratio)
+                this.limiter = this.context.createDynamicsCompressor();
+                this.limiter.threshold.setValueAtTime(-12, this.context.currentTime);
+                this.limiter.knee.setValueAtTime(40, this.context.currentTime);
+                this.limiter.ratio.setValueAtTime(12, this.context.currentTime);
+                this.limiter.attack.setValueAtTime(0, this.context.currentTime);
+                this.limiter.release.setValueAtTime(0.25, this.context.currentTime);
+
+                // Master Gain
+                this.masterGain = this.context.createGain();
+                this.masterGain.gain.setValueAtTime(0.7, this.context.currentTime);
+
+                this.limiter.connect(this.masterGain);
+                this.masterGain.connect(this.context.destination);
             } catch(e) {
-                console.warn('Web Audio API not supported');
+                console.warn('Web Audio API not supported', e);
             }
         }
         if (this.context && this.context.state === 'suspended') {
@@ -22,17 +46,24 @@ class AudioManager {
 
     toggleMute() {
         this.muted = !this.muted;
+        try {
+            localStorage.setItem('nova_muted', this.muted);
+        } catch(e) {}
         return this.muted;
     }
 
     play(type) {
-        if (this.muted || !this.context) return;
+        if (this.muted) return;
+        this.init();
+        if (!this.context || !this.limiter) return;
+
         try {
-            this.init();
             const osc = this.context.createOscillator();
             const gain = this.context.createGain();
             osc.connect(gain);
-            gain.connect(this.context.destination);
+            
+            // Connect to the global limiter instead of destination
+            gain.connect(this.limiter);
 
             const now = this.context.currentTime;
             if (type === 'click') {
@@ -61,6 +92,14 @@ class AudioManager {
                 gain.gain.linearRampToValueAtTime(0, now + 0.8);
                 osc.start(now);
                 osc.stop(now + 0.8);
+            } else if (type === 'explode') {
+                osc.type = 'sawtooth';
+                osc.frequency.setValueAtTime(100, now);
+                osc.frequency.exponentialRampToValueAtTime(40, now + 0.2);
+                gain.gain.setValueAtTime(0.1, now);
+                gain.gain.linearRampToValueAtTime(0, now + 0.2);
+                osc.start(now);
+                osc.stop(now + 0.2);
             }
         } catch(e) { 
             console.warn('Audio play failed', e); 
