@@ -8,7 +8,7 @@ Apps.register({
         const winId = 'game2048-' + Date.now();
         
         const style = `
-            .game-container { padding: 24px; display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100%; font-family: var(--font-sans); color: var(--text-primary); }
+            .game-container { padding: 16px; display: flex; flex-direction: column; align-items: center; justify-content: flex-start; height: 100%; font-family: var(--font-sans); color: var(--text-primary); }
             .grid-2048 { position: relative; width: 316px; height: 316px; background: rgba(128,128,128,0.05); border-radius: 12px; border: 1px solid var(--border-glass-strong); box-shadow: var(--shadow-inset); overflow: hidden; }
             .grid-bg { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; padding: 12px; width: 100%; height: 100%; position: absolute; top:0; left:0; }
             .tile-bg { background: rgba(128,128,128,0.1); border-radius: 8px; width: 64px; height: 64px; }
@@ -32,7 +32,7 @@ Apps.register({
         
         const html = `
             <div class="game-container" id="game-container-${winId}">
-                <div class="app-header" style="align-items: center; width: 100%; margin-bottom: 24px;">
+                <div class="app-header" style="align-items: center; width: 100%; margin-bottom: 16px;">
                     <div class="app-controls" style="margin: 0; display: flex; gap: 8px;">
                         <button class="app-btn" id="btn-restart-${winId}">Restart</button>
                     </div>
@@ -57,7 +57,7 @@ Apps.register({
             appId: 'game2048',
             title: '2048',
             width: 380,
-            height: 520,
+            height: 440,
             content: html
         });
 

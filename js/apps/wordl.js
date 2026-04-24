@@ -38,7 +38,7 @@ Apps.register({
 
         const html = `
             <div class="wl-wrap" id="wl-wrap-${winId}">
-                <div class="app-header" style="align-items: center; padding: 16px; border-bottom: 1px solid var(--border-glass); margin-bottom: 0; width: 100%;">
+                <div class="app-header" style="align-items: center; padding: 12px 16px; border-bottom: 1px solid var(--border-glass); margin-bottom: 0; width: 100%;">
                     <div class="app-controls" style="margin: 0; display: flex; gap: 8px;">
                         <select id="wl-len-${winId}" class="app-btn">
                             <option value="4">4 Letters</option>
@@ -108,7 +108,7 @@ Apps.register({
             appId: 'wordl',
             title: 'Wordl',
             width: 480,
-            height: 720,
+            height: 660,
             content: html
         });
 

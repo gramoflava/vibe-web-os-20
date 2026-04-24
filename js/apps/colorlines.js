@@ -8,7 +8,7 @@ Apps.register({
         const winId = 'colorlines-' + Date.now();
         
         const style = `
-            .cl-container { padding: 24px; display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100%; font-family: var(--font-sans); color: var(--text-primary); }
+            .cl-container { padding: 16px; display: flex; flex-direction: column; align-items: center; justify-content: flex-start; height: 100%; font-family: var(--font-sans); color: var(--text-primary); }
             .cl-grid { display: grid; gap: 2px; padding: 8px; background: rgba(128,128,128,0.05); border-radius: 12px; border: 1px solid var(--border-glass-strong); box-shadow: var(--shadow-inset); user-select: none; position: relative; }
             .cl-cell { width: 32px; height: 32px; background: rgba(128,128,128,0.08); border-radius: 6px; position: relative; cursor: pointer; transition: background 0.2s; }
             .cl-cell:hover { background: rgba(128,128,128,0.15); }
@@ -35,8 +35,8 @@ Apps.register({
 
         const html = `
             <div class="cl-container" id="cl-container-${winId}">
-                <div class="app-header" style="flex-direction: column; align-items: stretch; gap: 16px; margin-bottom: 32px; width: 100%;">
-                    <div style="display: flex; justify-content: space-between; align-items: center;">
+                <div class="app-header" style="flex-direction: column; align-items: stretch; gap: 8px; margin-bottom: 16px; width: 100%;">
+                    <div style="display: flex; justify-content: center; gap: 32px; align-items: center;">
                         <div class="cl-preview-group" style="margin: 0; height: 32px;">
                             <button class="cl-preview-btn" id="cl-toggle-preview-${winId}" title="Toggle Preview" style="height: 100%;">
                                 <!-- SVG handled dynamically by JS -->
@@ -67,7 +67,7 @@ Apps.register({
             appId: 'colorlines',
             title: 'Color Lines',
             width: 380,
-            height: 520,
+            height: 500,
             content: html
         });
 

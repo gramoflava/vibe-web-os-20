@@ -8,7 +8,7 @@ Apps.register({
         const winId = 'minesweeper-' + Date.now();
         
         const style = `
-            .ms-container { padding: 24px; display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100%; font-family: var(--font-sans); color: var(--text-primary); }
+            .ms-container { padding: 16px; display: flex; flex-direction: column; align-items: center; justify-content: flex-start; height: 100%; font-family: var(--font-sans); color: var(--text-primary); }
             .ms-grid { display: grid; gap: 2px; padding: 12px; background: rgba(128,128,128,0.05); border-radius: 12px; border: 1px solid var(--border-glass-strong); box-shadow: var(--shadow-inset); user-select: none; }
             .ms-cell { width: 32px; height: 32px; background: rgba(128,128,128,0.1); border-radius: 4px; display: flex; align-items: center; justify-content: center; font-weight: bold; font-size: 16px; cursor: pointer; transition: background 0.1s; color: var(--text-primary); }
             .ms-cell:hover { background: rgba(128,128,128,0.2); }
@@ -22,7 +22,7 @@ Apps.register({
 
         const html = `
             <div class="ms-container" id="ms-container-${winId}">
-                <div class="app-header" style="align-items: center; margin-bottom: 24px; width: 100%;">
+                <div class="app-header" style="align-items: center; margin-bottom: 16px; width: 100%;">
                     <div class="app-controls" style="margin: 0; display: flex; gap: 8px;">
                         <select id="ms-level-${winId}" class="app-btn" style="text-align: center;">
                             <option value="easy">Beginner</option>
@@ -52,7 +52,7 @@ Apps.register({
             appId: 'minesweeper',
             title: 'Minesweeper',
             width: 440,
-            height: 520,
+            height: 440,
             content: html
         });
 
