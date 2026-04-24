@@ -265,8 +265,8 @@ Apps.register({
             toast.style.top = '100px';
             toast.style.left = '50%';
             toast.style.transform = 'translateX(-50%)';
-            toast.style.background = 'var(--text-primary)';
-            toast.style.color = 'var(--surface-base)';
+            toast.style.background = 'var(--fg-1)';
+            toast.style.color = 'var(--bg-base)';
             toast.style.padding = '8px 16px';
             toast.style.borderRadius = '8px';
             toast.style.fontWeight = '600';
@@ -279,7 +279,7 @@ Apps.register({
             setTimeout(() => {
                 toast.style.opacity = '0';
                 setTimeout(() => toast.remove(), 500);
-            }, 1000);
+            }, 2500);
         }
 
         async function submitGuess() {
