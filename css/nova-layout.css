@@ -26,24 +26,24 @@
 .nova-island {
     pointer-events: auto;
     height: 40px;
-    background: var(--surface-glass);
+    background: var(--bg-glass);
     backdrop-filter: blur(24px) saturate(200%);
     -webkit-backdrop-filter: blur(24px) saturate(200%);
-    border: 1px solid var(--border-glass-strong);
-    border-radius: 20px;
+    border: 1px solid var(--border-strong);
+    border-radius: var(--radius-xl);
     display: flex;
     align-items: center;
     padding: 0 16px;
     gap: 20px;
     box-shadow: var(--shadow-elevated), var(--shadow-inset);
-    transition: all 0.3s var(--curve-spring);
-    color: var(--text-primary);
+    transition: all var(--duration-base) var(--curve-smooth);
+    color: var(--fg-1);
     font-weight: 500;
-    font-size: 14px;
+    font-size: var(--text-base);
 }
 
 .nova-island:hover {
-    background: var(--surface-glass-hover);
+    background: var(--bg-glass-hover);
     transform: scale(1.02);
 }
 
@@ -55,7 +55,7 @@
 
 .island-app-name {
     font-weight: 700;
-    background: linear-gradient(90deg, var(--accent-primary), var(--accent-secondary));
+    background: linear-gradient(90deg, var(--accent), var(--accent-alt));
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     letter-spacing: 0.5px;
@@ -64,7 +64,7 @@
 .island-btn {
     background: none;
     border: none;
-    color: var(--text-secondary);
+    color: var(--fg-2);
     display: flex;
     align-items: center;
     justify-content: center;
@@ -75,7 +75,7 @@
 }
 
 .island-btn:hover {
-    color: var(--text-primary);
+    color: var(--fg-1);
     background: rgba(255,255,255,0.1);
 }
 
@@ -95,11 +95,11 @@
 .nova-shelf {
     pointer-events: auto;
     height: 64px;
-    background: var(--surface-glass);
+    background: var(--bg-glass);
     backdrop-filter: blur(30px) saturate(150%);
     -webkit-backdrop-filter: blur(30px) saturate(150%);
-    border: 1px solid var(--border-glass-strong);
-    border-radius: 32px;
+    border: 1px solid var(--border-strong);
+    border-radius: var(--radius-pill);
     display: flex;
     align-items: center;
     padding: 0 12px;
@@ -110,12 +110,12 @@
 .shelf-item {
     width: 48px;
     height: 48px;
-    border-radius: 16px;
+    border-radius: var(--radius-lg);
     display: flex;
     align-items: center;
     justify-content: center;
     cursor: pointer;
-    transition: all 0.3s var(--curve-spring);
+    transition: all var(--duration-base) var(--curve-spring);
     position: relative;
     background: transparent;
     border: 1px solid transparent;
@@ -124,13 +124,13 @@
 .shelf-item svg {
     width: 28px;
     height: 28px;
-    color: var(--text-primary);
+    color: var(--fg-1);
     transition: transform 0.2s var(--curve-spring);
 }
 
 .shelf-item:hover {
-    background: rgba(255,255,255,0.05);
-    border: 1px solid var(--border-glass);
+    background: rgba(255,255,255,0.07);
+    border: 1px solid var(--border-subtle);
     transform: translateY(-8px) scale(1.1);
 }
 
@@ -145,7 +145,7 @@
     width: 4px;
     height: 4px;
     border-radius: 50%;
-    background: var(--text-primary);
+    background: var(--fg-1);
     opacity: 0;
     transition: opacity 0.2s;
 }
@@ -156,14 +156,14 @@
 
 .shelf-item.is-active::after {
     opacity: 1;
-    background: var(--accent-primary);
-    box-shadow: 0 0 8px var(--accent-glow);
+    background: var(--accent);
+    box-shadow: 0 0 8px var(--shadow-glow);
 }
 
 .shelf-divider {
     width: 1px;
     height: 32px;
-    background: var(--border-glass-strong);
+    background: var(--border-strong);
     margin: 0 4px;
     opacity: 0.5;
 }
@@ -186,14 +186,14 @@
 .spotlight-modal {
     width: 600px;
     max-width: 90vw;
-    background: var(--surface-glass);
+    background: var(--bg-glass);
     backdrop-filter: blur(40px) saturate(200%);
     -webkit-backdrop-filter: blur(40px) saturate(200%);
-    border: 1px solid var(--border-glass-strong);
-    border-radius: 20px;
+    border: 1px solid var(--border-strong);
+    border-radius: var(--radius-xl);
     box-shadow: var(--shadow-elevated), var(--shadow-inset);
     overflow: hidden;
-    animation: slideDown 0.3s var(--curve-spring);
+    animation: slideDown var(--duration-base) var(--curve-spring);
 }
 
 .spotlight-input {
@@ -204,12 +204,12 @@
     font-family: var(--font-sans);
     font-size: 28px;
     font-weight: 300;
-    color: var(--text-primary);
+    color: var(--fg-1);
     outline: none;
 }
 
 .spotlight-input::placeholder {
-    color: var(--text-disabled);
+    color: var(--fg-3);
 }
 
 .spotlight-results {
@@ -223,7 +223,7 @@
     align-items: center;
     gap: 16px;
     cursor: pointer;
-    border-top: 1px solid var(--border-glass);
+    border-top: 1px solid var(--border-subtle);
     transition: background 0.2s;
 }
 
@@ -252,19 +252,19 @@
 }
 
 .notification {
-    background: var(--surface-glass);
+    background: var(--bg-glass);
     backdrop-filter: blur(24px) saturate(150%);
-    border: 1px solid var(--border-glass-strong);
-    border-radius: 16px;
+    border: 1px solid var(--border-strong);
+    border-radius: var(--radius-lg);
     padding: 16px;
     box-shadow: var(--shadow-elevated);
     pointer-events: auto;
-    color: var(--text-primary);
-    animation: slideInRight 0.4s var(--curve-spring);
+    color: var(--fg-1);
+    animation: slideInRight var(--duration-base) var(--curve-spring);
 }
 
-.notification-title { font-weight: 600; margin-bottom: 4px; font-size: 14px; }
-.notification-body { font-size: 13px; color: var(--text-secondary); line-height: 1.4; }
+.notification-title { font-weight: 600; margin-bottom: 4px; font-size: var(--text-base); }
+.notification-body { font-size: var(--text-sm); color: var(--fg-2); line-height: 1.4; }
 
 @keyframes slideInRight {
     from { opacity: 0; transform: translateX(50px); }
@@ -276,21 +276,21 @@
    ========================================================================== */
 .context-menu {
     position: absolute;
-    background: var(--surface-glass);
-    backdrop-filter: blur(30px) saturate(200%);
-    border: 1px solid var(--border-glass-strong);
-    border-radius: 12px;
+    background: rgba(20, 20, 25, 0.85); /* from handbook */
+    backdrop-filter: blur(30px);
+    border: 1px solid var(--border-strong);
+    border-radius: var(--radius-md);
     padding: 6px;
     min-width: 200px;
     box-shadow: var(--shadow-elevated), var(--shadow-inset);
     z-index: 3000;
-    font-size: 13px;
-    color: var(--text-primary);
+    font-size: var(--text-sm);
+    color: var(--fg-1);
 }
 
 .context-item {
     padding: 8px 12px;
-    border-radius: 6px;
+    border-radius: var(--radius-sm);
     cursor: pointer;
     transition: background 0.1s;
     display: flex;
@@ -299,43 +299,13 @@
 }
 
 .context-item:hover {
-    background: var(--accent-primary);
+    background: var(--accent);
 }
 
 .context-separator {
     height: 1px;
-    background: var(--border-glass);
+    background: var(--border-subtle);
     margin: 4px 0;
-}
-
-.bh-preview {
-    position: fixed;
-    pointer-events: none;
-    z-index: 9999;
-    width: 44px;
-    height: 44px;
-    background: var(--surface-glass);
-    backdrop-filter: blur(12px);
-    border: 1px solid var(--border-glass-strong);
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    box-shadow: var(--shadow-elevated), 0 0 20px rgba(0,0,0,0.3);
-    opacity: 0;
-    transition: opacity 0.25s, transform 0.25s var(--curve-spring);
-    transform: scale(0.5);
-    color: var(--text-primary);
-}
-
-.bh-preview.visible {
-    opacity: 1;
-    transform: scale(1);
-}
-
-.bh-preview svg {
-    width: 26px;
-    height: 26px;
 }
 
 /* ==========================================================================
@@ -353,9 +323,9 @@
     flex-direction: column;
 }
 .app-title {
-    font-size: 24px;
+    font-size: var(--text-xl);
     font-weight: 700;
-    color: var(--text-primary);
+    color: var(--fg-1);
 }
 .app-controls {
     display: flex;
@@ -363,41 +333,46 @@
     align-items: center;
     margin-top: 8px;
 }
+
+/* Secondary Button by default */
 .app-btn {
-    background: rgba(128,128,128,0.1);
-    border: 1px solid var(--border-glass);
-    color: var(--text-primary);
-    padding: 4px 12px;
-    border-radius: 6px;
-    cursor: pointer;
+    font-family: var(--font-sans);
     font-size: 12px;
     font-weight: 500;
-    transition: background 0.2s;
+    background: rgba(128,128,128,0.12);
+    border: 1px solid rgba(255,255,255,0.08); /* wait, handbook: rgba(255,255,255,0.08) is border-subtle */
+    color: var(--fg-1);
+    padding: 5px 14px;
+    border-radius: var(--radius-sm);
+    cursor: pointer;
+    transition: background 0.2s, border-color 0.2s;
     outline: none;
-    font-family: inherit;
 }
 .app-btn:hover {
     background: rgba(128,128,128,0.2);
 }
+
 .app-stats {
     display: flex;
     gap: 16px;
 }
 .app-stat-box {
     background: rgba(128,128,128,0.1);
-    padding: 4px 12px;
-    border-radius: 6px;
+    padding: 5px 12px;
+    border-radius: var(--radius-sm);
+    border: 1px solid rgba(255,255,255,0.06);
     font-variant-numeric: tabular-nums;
     text-align: right;
-    min-width: 60px;
+    min-width: 56px;
 }
 .app-stat-label {
     font-size: 10px;
-    color: var(--text-secondary);
+    font-weight: 400;
+    color: var(--fg-3);
     text-transform: uppercase;
 }
 .app-stat-val {
     font-weight: 600;
-    font-size: 16px;
-    color: var(--text-primary);
+    font-size: 18px;
+    color: var(--fg-1);
 }

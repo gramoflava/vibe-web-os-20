@@ -62,7 +62,7 @@ class NovaEffectsClass {
 
             const part = document.createElement('div');
             part.style.position = 'absolute';
-            const size = Math.random() * 8 + 4;
+            const size = Math.random() * 16 + 8;
             part.style.width = size + 'px';
             part.style.height = size + 'px';
             part.style.marginTop = (-size / 2) + 'px';
@@ -200,7 +200,7 @@ class NovaEffectsClass {
         el.style.position = 'absolute';
         el.style.left = screenX + 'px';
         el.style.top = screenY + 'px';
-        const size = Math.random() * 6 + 2;
+        const size = Math.random() * 12 + 4;
         el.style.width = size + 'px';
         el.style.height = size + 'px';
         el.style.borderRadius = '50%';

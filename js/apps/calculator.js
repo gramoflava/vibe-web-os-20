@@ -95,29 +95,23 @@ Apps.register({
             content: html
         });
 
-        const grid = document.getElementById(`calc-grid-${winId}`);
-        grid.addEventListener('click', (e) => {
-            const btn = e.target.closest('.calc-btn');
-            if(!btn) return;
-
-            if(btn.dataset.val !== undefined) {
-                const v = btn.dataset.val;
+        const handleInput = (val, action) => {
+            if(val !== undefined && val !== null) {
                 if(newNumber) {
-                    current = v === '.' ? '0.' : v;
+                    current = val === '.' ? '0.' : val;
                     newNumber = false;
                 } else {
-                    if(v === '.' && current.includes('.')) return;
-                    current = current === '0' && v !== '.' ? v : current + v;
+                    if(val === '.' && current.includes('.')) return;
+                    current = current === '0' && val !== '.' ? val : current + val;
                 }
-            } else if (btn.dataset.action) {
-                const a = btn.dataset.action;
-                if (a === 'clear') {
+            } else if (action) {
+                if (action === 'clear') {
                     current = '0'; previous = null; op = null; newNumber = true;
-                } else if (a === 'sign') {
+                } else if (action === 'sign') {
                     current = (parseFloat(current) * -1).toString();
-                } else if (a === 'percent') {
+                } else if (action === 'percent') {
                     current = (parseFloat(current) / 100).toString();
-                } else if (a === '=') {
+                } else if (action === '=') {
                     if (op && previous !== null) {
                         current = eval(`${previous} ${op} ${current}`).toString();
                         op = null;
@@ -130,11 +124,55 @@ Apps.register({
                         current = eval(`${previous} ${op} ${current}`).toString();
                     }
                     previous = current;
-                    op = a;
+                    op = action;
                     newNumber = true;
                 }
             }
             updateDisplay();
+        };
+
+        const grid = document.getElementById(`calc-grid-${winId}`);
+        grid.addEventListener('click', (e) => {
+            const btn = e.target.closest('.calc-btn');
+            if(!btn) return;
+            handleInput(btn.dataset.val, btn.dataset.action);
         });
+
+        const handleKeydown = (e) => {
+            if (WindowManager.activeWindowId !== winId) return;
+            let action = null;
+            let val = null;
+            
+            if (e.key >= '0' && e.key <= '9') val = e.key;
+            if (e.key === '.') val = '.';
+            if (e.key === 'Escape') action = 'clear';
+            if (e.key === 'Backspace') {
+                if (!newNumber && current.length > 0) {
+                    current = current.slice(0, -1);
+                    if (current === '' || current === '-') current = '0';
+                    updateDisplay();
+                }
+                return;
+            }
+            if (e.key === 'Enter' || e.key === '=') action = '=';
+            if (e.key === '+' || e.key === '-' || e.key === '*' || e.key === '/') action = e.key;
+            if (e.key === '%') action = 'percent';
+
+            if (val !== null || action !== null) {
+                e.preventDefault();
+                handleInput(val, action);
+            }
+        };
+
+        document.addEventListener('keydown', handleKeydown);
+
+        const winObj = WindowManager.windows.get(winId);
+        if(winObj) {
+            const originalCleanup = winObj.cleanup;
+            winObj.cleanup = () => {
+                if (originalCleanup) originalCleanup();
+                document.removeEventListener('keydown', handleKeydown);
+            };
+        }
     }
 });

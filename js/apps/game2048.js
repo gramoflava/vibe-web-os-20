@@ -32,12 +32,12 @@ Apps.register({
         
         const html = `
             <div class="game-container" id="game-container-${winId}">
-                <div class="app-header" style="max-width: 320px;">
-                    <div class="app-title-group">
-                        <div class="app-title">2048</div>
+                <div class="app-header" style="align-items: center; width: 100%; margin-bottom: 24px;">
+                    <div class="app-controls" style="margin: 0; display: flex; gap: 8px;">
+                        <button class="app-btn" id="btn-restart-${winId}">Restart</button>
                     </div>
-                    <div class="app-stats">
-                        <div class="app-stat-box">
+                    <div class="app-stats" style="margin: 0;">
+                        <div class="app-stat-box" style="margin: 0; padding: 4px 16px;">
                             <div class="app-stat-label">Score</div>
                             <div class="app-stat-val" id="score-${winId}">0</div>
                         </div>
@@ -46,6 +46,7 @@ Apps.register({
                 <div class="grid-2048" id="grid-${winId}">
                     <div class="grid-bg">${bgGrid}</div>
                     <div id="tiles-${winId}"></div>
+                    <div id="gameover-${winId}" style="position: absolute; top:0; left:0; width:100%; height:100%; background: rgba(0,0,0,0.5); color: white; display: none; align-items: center; justify-content: center; font-size: 32px; font-weight: bold; z-index: 20; backdrop-filter: blur(4px);">Game Over</div>
                 </div>
             </div>
             <style>${style}</style>
@@ -143,6 +144,7 @@ Apps.register({
  
              // Game over
              isGameOver = true;
+             document.getElementById(`gameover-${winId}`).style.display = 'flex';
              const isHighScore = Scores.isHighScore('game2048', score);
              if (window.AudioMng) AudioMng.play(isHighScore ? 'win' : 'lose');
              Scores.showScorePrompt('game2048', score, isHighScore, null, winId);
@@ -228,8 +230,21 @@ Apps.register({
             };
         }
 
-        addRandom();
-        addRandom();
-        render();
+        const initBoard = () => {
+            activeTiles = [];
+            nextId = 0;
+            score = 0;
+            isGameOver = false;
+            hasWon = false;
+            uiTiles.innerHTML = '';
+            document.getElementById(`gameover-${winId}`).style.display = 'none';
+            addRandom();
+            addRandom();
+            render();
+        };
+
+        document.getElementById(`btn-restart-${winId}`).onclick = initBoard;
+
+        initBoard();
     }
 });

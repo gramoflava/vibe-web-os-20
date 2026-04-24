@@ -8,6 +8,8 @@ We're thrilled you want to help map this digital space! Nova OS is an experiment
 - **Smoothness Above All:** Any changes to the `WindowManager` or structural CSS must maintain smooth 60fps animations. Use `translate3d` over positional absolute recalculations to preserve GPU power.
 - **Minimalist Aesthetic:** Stick to the established color tokens found in `css/nova-theme.css`. If extending icons in `js/utils/icons.js`, strive for geometric, ultra-clean SVG paths.
 - **Cosmic Positioning & Fluid Physics:** Nova is fundamentally visually engaging but tangibly swift. Treat interactive elements as having mass—windows pull toward collapsing black holes or forcefully push their neighbors aside when expanding. App spawning should be a rapid and chaotic spread to mimic celestial scattering, leaning into our physics-led approach for spatial navigation.
+- **Clear Game End States:** All games must provide obvious visual feedback upon conclusion (e.g., Game Over overlays or board resets) and ensure a clear, accessible path to Restart directly from the game's toolbar.
+- **Redundancy-Free UI:** Since app names are consistently provided in the window titlebars, avoid duplicating app titles within the app body or toolbars. Prioritize compact, single-row layouts for controls and stats.
 
 ## How to Submit Changes
 

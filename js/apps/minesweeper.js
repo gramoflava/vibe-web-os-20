@@ -22,24 +22,21 @@ Apps.register({
 
         const html = `
             <div class="ms-container" id="ms-container-${winId}">
-                <div class="app-header">
-                    <div class="app-title-group">
-                        <div class="app-title">Mines</div>
-                        <div class="app-controls">
-                            <select id="ms-level-${winId}" class="app-btn" style="outline: none;">
-                                <option value="easy">Beginner</option>
-                                <option value="medium">Intermed.</option>
-                                <option value="hard">Expert</option>
-                            </select>
-                            <button class="app-btn" id="ms-restart-${winId}">Restart</button>
-                        </div>
+                <div class="app-header" style="align-items: center; margin-bottom: 24px; width: 100%;">
+                    <div class="app-controls" style="margin: 0; display: flex; gap: 8px;">
+                        <select id="ms-level-${winId}" class="app-btn" style="text-align: center;">
+                            <option value="easy">Beginner</option>
+                            <option value="medium">Intermed.</option>
+                            <option value="hard">Expert</option>
+                        </select>
+                        <button class="app-btn" id="ms-restart-${winId}">Restart</button>
                     </div>
-                    <div class="app-stats">
-                        <div class="app-stat-box">
+                    <div class="app-stats" style="display: flex; gap: 8px;">
+                        <div class="app-stat-box" style="margin: 0; padding: 4px 12px;">
                             <div class="app-stat-label">Mines</div>
                             <div class="app-stat-val" id="ms-mines-${winId}">10</div>
                         </div>
-                        <div class="app-stat-box">
+                        <div class="app-stat-box" style="margin: 0; padding: 4px 12px;">
                             <div class="app-stat-label">Time</div>
                             <div class="app-stat-val" id="ms-time-${winId}">0</div>
                         </div>

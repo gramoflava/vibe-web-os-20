@@ -71,7 +71,7 @@ class AudioManager {
                 osc.frequency.setValueAtTime(600, now);
                 osc.frequency.exponentialRampToValueAtTime(300, now + 0.1);
                 gain.gain.setValueAtTime(0, now);
-                gain.gain.linearRampToValueAtTime(0.3, now + 0.01);
+                gain.gain.linearRampToValueAtTime(0.05, now + 0.01);
                 gain.gain.exponentialRampToValueAtTime(0.001, now + 0.1);
                 gain.gain.linearRampToValueAtTime(0, now + 0.15);
                 osc.start(now);
@@ -109,7 +109,7 @@ class AudioManager {
                 osc.type = 'sine';
                 osc.frequency.setValueAtTime(800, now);
                 gain.gain.setValueAtTime(0, now);
-                gain.gain.linearRampToValueAtTime(0.2, now + 0.01);
+                gain.gain.linearRampToValueAtTime(0.04, now + 0.01);
                 gain.gain.exponentialRampToValueAtTime(0.001, now + 0.08);
                 gain.gain.linearRampToValueAtTime(0, now + 0.1);
                 osc.start(now);
@@ -118,11 +118,31 @@ class AudioManager {
                 osc.type = 'sine';
                 osc.frequency.setValueAtTime(400, now);
                 gain.gain.setValueAtTime(0, now);
-                gain.gain.linearRampToValueAtTime(0.15, now + 0.01);
+                gain.gain.linearRampToValueAtTime(0.03, now + 0.01);
                 gain.gain.exponentialRampToValueAtTime(0.001, now + 0.08);
                 gain.gain.linearRampToValueAtTime(0, now + 0.1);
                 osc.start(now);
                 osc.stop(now + 0.1);
+            } else if (type === 'collapse') {
+                osc.type = 'sine';
+                osc.frequency.setValueAtTime(400, now);
+                osc.frequency.exponentialRampToValueAtTime(150, now + 0.2);
+                gain.gain.setValueAtTime(0, now);
+                gain.gain.linearRampToValueAtTime(0.15, now + 0.02);
+                gain.gain.exponentialRampToValueAtTime(0.001, now + 0.2);
+                gain.gain.linearRampToValueAtTime(0, now + 0.25);
+                osc.start(now);
+                osc.stop(now + 0.25);
+            } else if (type === 'expand') {
+                osc.type = 'sine';
+                osc.frequency.setValueAtTime(150, now);
+                osc.frequency.exponentialRampToValueAtTime(400, now + 0.2);
+                gain.gain.setValueAtTime(0, now);
+                gain.gain.linearRampToValueAtTime(0.15, now + 0.02);
+                gain.gain.exponentialRampToValueAtTime(0.001, now + 0.2);
+                gain.gain.linearRampToValueAtTime(0, now + 0.25);
+                osc.start(now);
+                osc.stop(now + 0.25);
             }
         } catch(e) { 
             console.warn('Audio play failed', e); 

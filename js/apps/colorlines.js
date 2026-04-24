@@ -13,7 +13,7 @@ Apps.register({
             .cl-cell { width: 32px; height: 32px; background: rgba(128,128,128,0.08); border-radius: 6px; position: relative; cursor: pointer; transition: background 0.2s; }
             .cl-cell:hover { background: rgba(128,128,128,0.15); }
             .cl-cell.selected { background: rgba(128,128,128,0.25); box-shadow: inset 0 0 10px rgba(128,128,128,0.5); }
-            .cl-cell.traced::after { content: ''; position: absolute; top: 12px; left: 12px; width: 8px; height: 8px; border-radius: 50%; background: var(--text-primary); opacity: 0.3; pointer-events: none; }
+            .cl-cell.traced::after { content: ''; position: absolute; top: 12px; left: 12px; width: 8px; height: 8px; border-radius: 50%; background: var(--fg-1); opacity: 0.3; pointer-events: none; }
             .cl-ball { position: absolute; top: 4px; left: 4px; width: 24px; height: 24px; border-radius: 50%; box-shadow: inset -4px -4px 8px rgba(0,0,0,0.5); pointer-events: none; transition: transform 0.2s; z-index: 10; }
             .cl-cell.selected .cl-ball { transform: scale(1.15); animation: pulseBall 1s infinite alternate; }
             .color-0 { color: #EF4444; background: #EF4444; }
@@ -35,23 +35,20 @@ Apps.register({
 
         const html = `
             <div class="cl-container" id="cl-container-${winId}">
-                <div class="app-header" style="flex-direction: column; align-items: stretch; gap: 16px; max-width: 340px; margin-bottom: 24px;">
+                <div class="app-header" style="flex-direction: column; align-items: stretch; gap: 16px; margin-bottom: 32px; width: 100%;">
                     <div style="display: flex; justify-content: space-between; align-items: center;">
-                        <div class="app-title" style="margin: 0;">Lines</div>
-                        <div style="display: flex; gap: 12px; align-items: center;">
-                            <div class="cl-preview-group" style="margin: 0; height: 32px;">
-                                <button class="cl-preview-btn" id="cl-toggle-preview-${winId}" title="Toggle Preview" style="height: 100%;">
-                                    <!-- SVG handled dynamically by JS -->
-                                </button>
-                                <div class="cl-preview-wrap ${localStorage.getItem('novaos_colorlines_preview') === 'false' ? 'collapsed' : ''}" id="cl-preview-${winId}"></div>
-                            </div>
-                            <div class="app-stat-box" style="margin: 0; padding: 4px 16px;">
-                                <div class="app-stat-label">Score</div>
-                                <div class="app-stat-val" id="cl-score-${winId}">0</div>
-                            </div>
+                        <div class="cl-preview-group" style="margin: 0; height: 32px;">
+                            <button class="cl-preview-btn" id="cl-toggle-preview-${winId}" title="Toggle Preview" style="height: 100%;">
+                                <!-- SVG handled dynamically by JS -->
+                            </button>
+                            <div class="cl-preview-wrap ${localStorage.getItem('novaos_colorlines_preview') === 'false' ? 'collapsed' : ''}" id="cl-preview-${winId}"></div>
+                        </div>
+                        <div class="app-stat-box" style="margin: 0; padding: 4px 16px;">
+                            <div class="app-stat-label">Score</div>
+                            <div class="app-stat-val" id="cl-score-${winId}">0</div>
                         </div>
                     </div>
-                    <div class="app-controls" style="margin: 0; display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 8px; width: 100%;">
+                    <div class="app-controls" style="margin: 0; display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 12px; width: 100%;">
                         <select id="cl-level-${winId}" class="app-btn" style="width: 100%; text-align: center;">
                             <option value="5" selected>Classic</option>
                             <option value="4">Quick</option>
@@ -70,7 +67,7 @@ Apps.register({
             appId: 'colorlines',
             title: 'Color Lines',
             width: 380,
-            height: 480,
+            height: 520,
             content: html
         });
 
@@ -418,7 +415,11 @@ Apps.register({
         document.getElementById(`cl-restart-${winId}`).onclick = initBoard;
         document.getElementById(`cl-level-${winId}`).onchange = initBoard;
         document.getElementById(`cl-forfeit-${winId}`).onclick = () => {
-            if (!isGameOver) gameOver();
+            if (!isGameOver) {
+                gameOver();
+                board = Array(size*size).fill(-1);
+                render();
+            }
         };
 
         initBoard();

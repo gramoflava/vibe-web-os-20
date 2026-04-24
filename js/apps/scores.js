@@ -11,7 +11,7 @@ Apps.register({
             .scores-sidebar { width: 120px; border-right: 1px solid var(--border-glass); padding: 12px; }
             .scores-menu-item { padding: 8px 12px; margin-bottom: 4px; border-radius: 6px; cursor: pointer; transition: background 0.2s; font-size: 14px; }
             .scores-menu-item:hover { background: rgba(128,128,128,0.1); }
-            .scores-menu-item.active { background: var(--accent-primary); color: white; }
+            .scores-menu-item.active { background: var(--accent); color: white; }
             .scores-content { flex: 1; padding: 24px; overflow-y: auto; }
             .score-row { display: flex; justify-content: space-between; padding: 8px 0; border-bottom: 1px solid var(--border-glass); }
         `;
@@ -19,9 +19,9 @@ Apps.register({
         const html = `
             <div class="scores-container" id="scores-container-${winId}">
                 <div class="scores-sidebar" id="scores-sidebar-${winId}">
-                    <div class="scores-menu-item active" data-game="minesweeper-easy">Mines</div>
+                    <div class="scores-menu-item active" data-game="minesweeper-easy">Minesweeper</div>
                     <div class="scores-menu-item" data-game="game2048">2048</div>
-                    <div class="scores-menu-item" data-game="colorlines-5">Lines</div>
+                    <div class="scores-menu-item" data-game="colorlines-5">Color Lines</div>
                     <div class="scores-menu-item" data-game="wordl-5">Wordl</div>
                 </div>
                 <div class="scores-content" id="scores-content-${winId}">
@@ -61,7 +61,7 @@ Apps.register({
                         <div class="score-row">
                             <span style="font-weight: 600; color: var(--text-secondary); width: 30px;">#${i+1}</span>
                             <span style="font-weight: bold; color: var(--text-primary); flex: 1; text-align: left;">${s.initials}</span>
-                            <span style="color: var(--accent-primary); font-variant-numeric: tabular-nums;">${s.score}</span>
+                            <span style="color: var(--accent); font-variant-numeric: tabular-nums;">${s.score}</span>
                         </div>
                     `;
                 });
@@ -98,10 +98,9 @@ Apps.register({
                 <style>
                     .lb-level-opt { flex: 1; text-align: center; font-size: 11px; padding: 6px; border-radius: 6px; cursor: pointer; transition: all 0.2s; color: var(--text-secondary); }
                     .lb-level-opt:hover { background: rgba(128,128,128,0.1); color: var(--text-primary); }
-                    .lb-level-opt.active { background: var(--accent-primary); color: #fff; box-shadow: 0 4px 12px var(--accent-glow); }
+                    .lb-level-opt.active { background: var(--accent); color: #fff; box-shadow: var(--shadow-glow); }
                 </style>
-                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px;">
-                    <h3 style="margin: 0;">${games[baseGame]} Leaderboard</h3>
+                <div style="display: flex; justify-content: flex-end; align-items: center; margin-bottom: 16px;">
                     <button class="scores-reset-btn" style="background: rgba(239,68,68,0.1); border: 1px solid rgba(239,68,68,0.3); color: #EF4444; padding: 4px 10px; border-radius: 6px; cursor: pointer; font-size: 12px; transition: all 0.2s;">Reset</button>
                 </div>
                 ${selectorHtml}

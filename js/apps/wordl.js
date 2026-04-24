@@ -38,23 +38,19 @@ Apps.register({
 
         const html = `
             <div class="wl-wrap" id="wl-wrap-${winId}">
-                <div class="app-header" style="padding: 16px; border-bottom: 1px solid var(--border-glass); margin-bottom: 0;">
-                    <div class="app-title-group">
-                        <div class="app-title" style="letter-spacing: 2px; text-transform: uppercase;">Wordl</div>
-                        <div class="app-controls">
-                            <select id="wl-len-${winId}" class="app-btn">
-                                <option value="4">4 Letters</option>
-                                <option value="5" selected>5 Letters</option>
-                                <option value="6">6 Letters</option>
-                                <option value="7">7 Letters</option>
-                            </select>
-                            <button class="app-btn" id="wl-reveal-${winId}" style="display:none; border-color: #EF4444; color: #EF4444;">Reveal</button>
-                            <button class="app-btn" id="wl-restart-${winId}">Restart</button>
-                        </div>
+                <div class="app-header" style="align-items: center; padding: 16px; border-bottom: 1px solid var(--border-glass); margin-bottom: 0; width: 100%;">
+                    <div class="app-controls" style="margin: 0; display: flex; gap: 8px;">
+                        <select id="wl-len-${winId}" class="app-btn">
+                            <option value="4">4 Letters</option>
+                            <option value="5" selected>5 Letters</option>
+                            <option value="6">6 Letters</option>
+                            <option value="7">7 Letters</option>
+                        </select>
+                        <button class="app-btn" id="wl-reveal-${winId}" style="display:none; border-color: #EF4444; color: #EF4444;">Reveal</button>
+                        <button class="app-btn" id="wl-restart-${winId}">Restart</button>
                     </div>
-                    
-                    <div class="app-stats">
-                        <div class="app-stat-box">
+                    <div class="app-stats" style="margin: 0;">
+                        <div class="app-stat-box" style="margin: 0; padding: 4px 12px;">
                             <div class="app-stat-label">Time</div>
                             <div class="app-stat-val" id="wl-time-${winId}">0</div>
                         </div>

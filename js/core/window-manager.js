@@ -167,28 +167,43 @@ class WindowManagerClass {
         });
 
         // Trackpad panning & pinch-to-zoom
+        let wheelGestureMode = null;
+        let wheelTimeout = null;
+
         document.body.addEventListener('wheel', (e) => {
+            clearTimeout(wheelTimeout);
+            wheelTimeout = setTimeout(() => { wheelGestureMode = null; }, 150);
+
             // Ignore and let native scroll take over if hovering any scrollable element
             if (!e.ctrlKey) {
-                const hoveredWin = e.target.closest('.nova-window');
-                if (!hoveredWin || hoveredWin.classList.contains('is-active')) {
-                    let domNode = e.target;
-                    let isScrollable = false;
-                    while (domNode && domNode !== document.body && domNode !== document) {
-                        if (domNode.scrollHeight > domNode.clientHeight || domNode.scrollWidth > domNode.clientWidth) {
-                            const style = window.getComputedStyle(domNode);
-                            if (style.overflowY === 'auto' || style.overflowY === 'scroll' || 
-                                style.overflowX === 'auto' || style.overflowX === 'scroll' ||
-                                style.overflow === 'auto' || style.overflow === 'scroll') {
-                                isScrollable = true;
-                                break;
+                if (wheelGestureMode === 'scroll') return;
+
+                let isScrollable = false;
+                if (wheelGestureMode !== 'pan') {
+                    const hoveredWin = e.target.closest('.nova-window');
+                    if (!hoveredWin || hoveredWin.classList.contains('is-active')) {
+                        let domNode = e.target;
+                        while (domNode && domNode !== document.body && domNode !== document) {
+                            if (domNode.scrollHeight > domNode.clientHeight || domNode.scrollWidth > domNode.clientWidth) {
+                                const style = window.getComputedStyle(domNode);
+                                if (style.overflowY === 'auto' || style.overflowY === 'scroll' || 
+                                    style.overflowX === 'auto' || style.overflowX === 'scroll' ||
+                                    style.overflow === 'auto' || style.overflow === 'scroll') {
+                                    isScrollable = true;
+                                    break;
+                                }
                             }
+                            if (hoveredWin && domNode === hoveredWin) break;
+                            domNode = domNode.parentNode;
                         }
-                        if (hoveredWin && domNode === hoveredWin) break;
-                        domNode = domNode.parentNode;
                     }
-                    if (isScrollable) return;
                 }
+
+                if (wheelGestureMode === null) {
+                    wheelGestureMode = isScrollable ? 'scroll' : 'pan';
+                }
+
+                if (wheelGestureMode === 'scroll') return;
             }
 
             e.preventDefault();
@@ -372,16 +387,8 @@ class WindowManagerClass {
         content.className = 'window-content';
         content.innerHTML = options.content || '';
 
-        // Add resize handles
-        const resizeE = document.createElement('div'); resizeE.className = 'resize-handle resize-e';
-        const resizeS = document.createElement('div'); resizeS.className = 'resize-handle resize-s';
-        const resizeSE = document.createElement('div'); resizeSE.className = 'resize-handle resize-se';
-
         winEl.appendChild(titlebar);
         winEl.appendChild(content);
-        winEl.appendChild(resizeE);
-        winEl.appendChild(resizeS);
-        winEl.appendChild(resizeSE);
 
         this.container.appendChild(winEl);
 
@@ -395,7 +402,6 @@ class WindowManagerClass {
 
         this.windows.set(id, winObj);
         this.setupInteractions(winObj);
-        this.setupResize(winObj);
         
         // Wait for next frame so animation plays
         requestAnimationFrame(() => {
@@ -635,6 +641,8 @@ class WindowManagerClass {
         const win = this.windows.get(id);
         if (!win) return;
         
+        if (window.AudioMng) AudioMng.play('collapse');
+        
         // Capture current state to avoid snapping back to hidden styles when animation is removed
         const computed = window.getComputedStyle(win.el);
         const transform = computed.transform;
@@ -720,6 +728,8 @@ class WindowManagerClass {
     restore(id) {
         const win = this.windows.get(id);
         if (!win) return;
+        
+        if (window.AudioMng) AudioMng.play('expand');
         
         // Dismiss hover preview immediately
         if (this.bhPreview) this.bhPreview.classList.remove('visible');
@@ -807,76 +817,6 @@ class WindowManagerClass {
                 win.el.style.transition = '';
             }, 400);
         }
-    }
-
-    setupResize(win) {
-        let isResizing = false;
-        let startClientX, startClientY;
-        let startWinW, startWinH;
-        let resizeDir = '';
-
-        const eResize = win.el.querySelector('.resize-e');
-        const sResize = win.el.querySelector('.resize-s');
-        const seResize = win.el.querySelector('.resize-se');
-        if (!eResize) return; // safety
-
-        const startResize = (e, dir) => {
-            isResizing = true;
-            resizeDir = dir;
-            this.focus(win.id);
-            startClientX = e.clientX;
-            startClientY = e.clientY;
-            startWinW = parseFloat(win.el.dataset.w);
-            startWinH = parseFloat(win.el.dataset.h);
-            document.body.style.cursor = dir + '-resize';
-            e.stopPropagation();
-            e.preventDefault();
-        };
-
-        eResize.addEventListener('mousedown', (e) => startResize(e, 'e'));
-        sResize.addEventListener('mousedown', (e) => startResize(e, 's'));
-        seResize.addEventListener('mousedown', (e) => startResize(e, 'se'));
-
-        const onMouseMove = (e) => {
-            if (!isResizing) return;
-            const deltaX = (e.clientX - startClientX) / this.cameraZ;
-            const deltaY = (e.clientY - startClientY) / this.cameraZ;
-            
-            let newW = startWinW;
-            let newH = startWinH;
-            
-            if (resizeDir === 'e' || resizeDir === 'se') newW = Math.max(200, startWinW + deltaX);
-            if (resizeDir === 's' || resizeDir === 'se') newH = Math.max(100, startWinH + deltaY);
-
-            win.el.style.width = newW + 'px';
-            win.el.style.height = newH + 'px';
-            win.el.dataset.w = newW;
-            win.el.dataset.h = newH;
-        };
-
-        const onMouseUp = () => {
-            if (isResizing) {
-                isResizing = false;
-                document.body.style.cursor = 'default';
-                // Trigger bounds recalculation logic on release
-                this.pushWindowsOut(win.id, {
-                    x: parseFloat(win.el.dataset.x),
-                    y: parseFloat(win.el.dataset.y),
-                    w: parseFloat(win.el.dataset.w),
-                    h: parseFloat(win.el.dataset.h)
-                });
-            }
-        };
-
-        document.addEventListener('mousemove', onMouseMove);
-        document.addEventListener('mouseup', onMouseUp);
-
-        const oldCleanup = win.cleanup;
-        win.cleanup = () => {
-            if (oldCleanup) oldCleanup();
-            document.removeEventListener('mousemove', onMouseMove);
-            document.removeEventListener('mouseup', onMouseUp);
-        };
     }
 }
 

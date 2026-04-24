@@ -19,7 +19,7 @@
     position: absolute;
     transform: translate(-50%, -50%);
     z-index: 50;
-    transition: opacity 0.5s ease;
+    transition: opacity var(--duration-slow) var(--curve-smooth);
     width: 120px;
     height: 120px;
 }
@@ -34,7 +34,7 @@
     /* Dash array simulates clumpy matter, dash offset simulates flow */
     stroke-dasharray: 15 45;
     stroke-dashoffset: 0;
-    animation: flowInward 12s linear infinite;
+    animation: flowInward 10s linear infinite;
 }
 
 /* Animate flow inward along the spiral paths */
@@ -46,7 +46,7 @@
 /* Slow overall rotation of the system */
 .rotating-disc {
     transform-origin: center;
-    animation: rotateDisc 180s linear infinite;
+    animation: rotateDisc 60s linear infinite;
 }
 
 @keyframes rotateDisc {
@@ -81,7 +81,7 @@
     pointer-events: none;
     z-index: 5;
     transform: translate(-50%, -50%);
-    animation: fadePulseRemnant 15s infinite alternate ease-in-out;
+    animation: fadePulseRemnant 8s infinite alternate ease-in-out;
 }
 
 .nova-remnant::before {
@@ -103,7 +103,7 @@
     border-radius: 50%;
     transform: translate(-50%, -50%);
     box-shadow: 0 0 15px 3px rgba(255,255,255,0.9), 0 0 30px 10px rgba(150,200,255,0.5);
-    animation: twinkleStar 4s infinite alternate ease-in-out;
+    animation: twinkleStar 3s infinite alternate ease-in-out;
 }
 
 @keyframes twinkleStar {
