@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600&family=JetBrains+Mono:wght@400&display=swap" rel="stylesheet">
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: 'Outfit', sans-serif; background: #0E0E11; padding: 20px; color: #fff; }
+  .section-label { font-size: 10px; font-weight: 600; color: rgba(255,255,255,0.3); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 10px; margin-top: 16px; }
+  .section-label:first-child { margin-top: 0; }
+  .row { display: flex; gap: 10px; flex-wrap: wrap; margin-bottom: 4px; }
+  .curve-card { flex: 1; min-width: 130px; background: rgba(255,255,255,0.04); border-radius: 10px; padding: 12px; border: 1px solid rgba(255,255,255,0.06); }
+  .curve-name { font-size: 12px; font-weight: 600; margin-bottom: 4px; }
+  .curve-val  { font-size: 10px; color: rgba(255,255,255,0.35); font-family: 'JetBrains Mono', monospace; margin-bottom: 10px; line-height: 1.4; }
+  .curve-use  { font-size: 11px; color: rgba(255,255,255,0.5); }
+  .demo-box { width: 28px; height: 28px; background: linear-gradient(135deg, #6366F1, #EC4899); border-radius: 6px; margin-bottom: 8px; animation-fill-mode: both; animation-iteration-count: infinite; animation-direction: alternate; animation-duration: 1.2s; }
+  .spring { animation-name: spring; animation-timing-function: cubic-bezier(0.175, 0.885, 0.32, 1.275); }
+  .smooth { animation-name: smooth; animation-timing-function: cubic-bezier(0.4, 0, 0.2, 1); }
+  @keyframes spring { from { transform: translateX(0) scale(0.8); } to { transform: translateX(40px) scale(1.1); } }
+  @keyframes smooth { from { transform: translateX(0); opacity: 0.4; } to { transform: translateX(40px); opacity: 1; } }
+  .dur-row { display: flex; gap: 10px; flex-wrap: wrap; }
+  .dur-card { flex: 1; min-width: 80px; background: rgba(255,255,255,0.04); border-radius: 8px; padding: 10px; border: 1px solid rgba(255,255,255,0.06); }
+  .dur-bar { height: 4px; background: linear-gradient(90deg,#6366F1,#EC4899); border-radius: 2px; margin-bottom: 8px; }
+  .dur-name { font-size: 11px; font-weight: 500; }
+  .dur-val  { font-size: 10px; color: rgba(255,255,255,0.35); font-family: monospace; }
+</style>
+</head>
+<body>
+  <div class="section-label">Easing Curves</div>
+  <div class="row">
+    <div class="curve-card">
+      <div class="demo-box spring"></div>
+      <div class="curve-name">Spring</div>
+      <div class="curve-val">cubic-bezier(<br>0.175, 0.885,<br>0.32, 1.275)</div>
+      <div class="curve-use">Shelf hover lift · Window open · Spotlight</div>
+    </div>
+    <div class="curve-card">
+      <div class="demo-box smooth"></div>
+      <div class="curve-name">Smooth</div>
+      <div class="curve-val">cubic-bezier(<br>0.4, 0, 0.2, 1)</div>
+      <div class="curve-use">Blob drift · Transitions · Fades</div>
+    </div>
+  </div>
+
+  <div class="section-label">Durations</div>
+  <div class="dur-row">
+    <div class="dur-card"><div class="dur-bar" style="width:30%"></div><div class="dur-name">Fast</div><div class="dur-val">150ms</div></div>
+    <div class="dur-card"><div class="dur-bar" style="width:60%"></div><div class="dur-name">Base</div><div class="dur-val">300ms</div></div>
+    <div class="dur-card"><div class="dur-bar" style="width:100%"></div><div class="dur-name">Slow</div><div class="dur-val">500ms</div></div>
+  </div>
+</body>
+</html>

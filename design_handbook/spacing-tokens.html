@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: 'Outfit', sans-serif; background: #0E0E11; padding: 20px; color: #fff; }
+  .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(120px,1fr)); gap: 10px; margin-bottom: 16px; }
+  .token { background: rgba(255,255,255,0.04); border-radius: 8px; padding: 10px; border: 1px solid rgba(255,255,255,0.06); }
+  .bar { background: linear-gradient(90deg, #6366F1, #EC4899); border-radius: 4px; margin-bottom: 8px; }
+  .name { font-size: 11px; color: rgba(255,255,255,0.9); font-weight: 500; }
+  .val  { font-size: 10px; color: rgba(255,255,255,0.35); font-family: monospace; margin-top: 2px; }
+  .section-label { font-size: 10px; font-weight: 600; color: rgba(255,255,255,0.3); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 8px; margin-top: 14px; }
+  .section-label:first-child { margin-top: 0; }
+  .radius-row { display: flex; gap: 10px; flex-wrap: wrap; margin-bottom: 16px; }
+  .radius-chip { width: 60px; height: 60px; background: rgba(99,102,241,0.2); border: 1px solid rgba(99,102,241,0.4); display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 4px; }
+  .radius-label { font-size: 10px; color: rgba(255,255,255,0.5); }
+  .shadow-row { display: flex; gap: 12px; flex-wrap: wrap; }
+  .shadow-chip { flex: 1; min-width: 120px; height: 60px; background: rgba(20,20,25,0.8); border-radius: 10px; border: 1px solid rgba(255,255,255,0.1); display: flex; align-items: flex-end; padding: 8px 10px; }
+  .shadow-name { font-size: 11px; color: rgba(255,255,255,0.6); }
+</style>
+</head>
+<body>
+  <div class="section-label">Spacing Scale</div>
+  <div class="grid">
+    <div class="token"><div class="bar" style="height:4px; width:4px"></div><div class="name">space-1</div><div class="val">4px</div></div>
+    <div class="token"><div class="bar" style="height:4px; width:8px"></div><div class="name">space-2</div><div class="val">8px</div></div>
+    <div class="token"><div class="bar" style="height:4px; width:12px"></div><div class="name">space-3</div><div class="val">12px</div></div>
+    <div class="token"><div class="bar" style="height:4px; width:16px"></div><div class="name">space-4</div><div class="val">16px</div></div>
+    <div class="token"><div class="bar" style="height:4px; width:20px"></div><div class="name">space-5</div><div class="val">20px</div></div>
+    <div class="token"><div class="bar" style="height:4px; width:24px"></div><div class="name">space-6</div><div class="val">24px</div></div>
+    <div class="token"><div class="bar" style="height:4px; width:32px"></div><div class="name">space-8</div><div class="val">32px</div></div>
+    <div class="token"><div class="bar" style="height:4px; width:40px"></div><div class="name">space-10</div><div class="val">40px</div></div>
+    <div class="token"><div class="bar" style="height:4px; width:48px"></div><div class="name">space-12</div><div class="val">48px</div></div>
+    <div class="token"><div class="bar" style="height:4px; width:64px"></div><div class="name">space-16</div><div class="val">64px</div></div>
+  </div>
+
+  <div class="section-label">Border Radius</div>
+  <div class="radius-row">
+    <div class="radius-chip" style="border-radius:6px"><div class="radius-label">sm</div><div class="radius-label">6px</div></div>
+    <div class="radius-chip" style="border-radius:12px"><div class="radius-label">md</div><div class="radius-label">12px</div></div>
+    <div class="radius-chip" style="border-radius:16px"><div class="radius-label">lg</div><div class="radius-label">16px</div></div>
+    <div class="radius-chip" style="border-radius:20px"><div class="radius-label">xl</div><div class="radius-label">20px</div></div>
+    <div class="radius-chip" style="border-radius:9999px"><div class="radius-label">pill</div><div class="radius-label">full</div></div>
+  </div>
+
+  <div class="section-label">Shadows</div>
+  <div class="shadow-row">
+    <div class="shadow-chip" style="box-shadow: 0 0 40px rgba(0,0,0,0.5)"><div class="shadow-name">ambient</div></div>
+    <div class="shadow-chip" style="box-shadow: 0 20px 60px rgba(0,0,0,0.7)"><div class="shadow-name">elevated</div></div>
+    <div class="shadow-chip" style="box-shadow: inset 0 1px 1px rgba(255,255,255,0.1)"><div class="shadow-name">inset</div></div>
+    <div class="shadow-chip" style="box-shadow: 0 0 20px rgba(99,102,241,0.5)"><div class="shadow-name">glow</div></div>
+  </div>
+</body>
+</html>

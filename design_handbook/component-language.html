@@ -1,0 +1,322 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: 'Outfit', sans-serif; background: #0E0E11; color: #fff; padding: 24px; -webkit-font-smoothing: antialiased; }
+
+  /* ── Section labels ── */
+  .sl { font-size: 10px; font-weight: 600; color: rgba(255,255,255,0.28); text-transform: uppercase; letter-spacing: 1.2px; margin-bottom: 10px; margin-top: 22px; }
+  .sl:first-child { margin-top: 0; }
+
+  /* ── Rule desc ── */
+  .rule { font-size: 11px; color: rgba(255,255,255,0.35); margin-bottom: 10px; font-style: italic; line-height: 1.5; }
+
+  /* ── Glass card wrapper ── */
+  .glass { background: rgba(20,20,25,0.55); backdrop-filter: blur(40px); border: 1px solid rgba(255,255,255,0.1); border-radius: 16px; overflow: hidden; box-shadow: 0 20px 60px rgba(0,0,0,0.7), inset 0 1px 1px rgba(255,255,255,0.07); }
+
+  /* ── Titlebar ── */
+  .titlebar { height: 48px; display: flex; align-items: center; justify-content: space-between; padding: 0 16px; border-bottom: 1px solid rgba(255,255,255,0.07); flex-shrink: 0; }
+  .wc { display: flex; gap: 8px; }
+  .wc-dot { width: 14px; height: 14px; border-radius: 50%; border: none; cursor: pointer; }
+  .wc-close { background: #EF4444; }
+  .wc-min   { background: #F59E0B; }
+  .wc-max   { background: #10B981; }
+  .win-title { font-size: 14px; font-weight: 600; flex: 1; text-align: center; }
+
+  /* ── App toolbar (inside window content) ── */
+  .app-toolbar { display: flex; align-items: flex-end; justify-content: space-between; padding: 16px 20px 0; }
+  .app-toolbar-left { display: flex; flex-direction: column; gap: 6px; }
+  .app-h1 { font-size: 24px; font-weight: 700; line-height: 1; }
+  .app-controls { display: flex; gap: 6px; align-items: center; }
+  .app-toolbar-right { display: flex; gap: 10px; align-items: flex-end; }
+
+  /* ── Buttons ── */
+  .btn { font-family: 'Outfit', sans-serif; font-size: 12px; font-weight: 500; border-radius: 6px; cursor: pointer; border: 1px solid transparent; padding: 5px 14px; line-height: 1; transition: background 0.15s, opacity 0.15s; }
+  .btn-secondary { background: rgba(128,128,128,0.12); border-color: rgba(255,255,255,0.08); color: rgba(255,255,255,0.8); }
+  .btn-secondary:hover { background: rgba(128,128,128,0.22); }
+  .btn-primary { background: linear-gradient(135deg,#6366F1,#5B5BD6); border-color: rgba(99,102,241,0.4); color: #fff; box-shadow: 0 0 12px rgba(99,102,241,0.3); }
+  .btn-primary:hover { opacity: 0.88; }
+  .btn-danger { background: rgba(249,115,22,0.18); border-color: rgba(249,115,22,0.4); color: #F97316; }
+  .btn-danger:hover { background: rgba(249,115,22,0.28); }
+
+  /* ── Select / Dropdown ── */
+  .nova-select { font-family: 'Outfit', sans-serif; font-size: 12px; font-weight: 500; background: rgba(128,128,128,0.1); border: 1px solid rgba(255,255,255,0.08); color: rgba(255,255,255,0.8); border-radius: 6px; padding: 5px 10px; cursor: pointer; outline: none; appearance: none; -webkit-appearance: none; background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 10 6' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M1 1L5 5L9 1' stroke='rgba(255,255,255,0.4)' stroke-width='1.5' stroke-linecap='round'/%3E%3C/svg%3E"); background-repeat: no-repeat; background-position: right 8px center; background-size: 8px; padding-right: 24px; }
+
+  /* ── Stat box ── */
+  .stat { background: rgba(128,128,128,0.1); border: 1px solid rgba(255,255,255,0.06); padding: 5px 12px; border-radius: 6px; text-align: right; min-width: 56px; }
+  .stat-label { font-size: 10px; color: rgba(255,255,255,0.35); text-transform: uppercase; letter-spacing: 0.5px; }
+  .stat-val { font-size: 18px; font-weight: 600; line-height: 1.2; }
+
+  /* ── Content area ── */
+  .content { background: rgba(0,0,0,0.15); padding: 16px 20px; color: rgba(255,255,255,0.75); font-size: 13px; line-height: 1.6; }
+
+  /* ── Grid board ── */
+  .board { display: grid; gap: 4px; padding: 12px; border-radius: 10px; background: rgba(0,0,0,0.2); }
+  .cell { border-radius: 4px; background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.06); display: flex; align-items: center; justify-content: center; font-size: 12px; font-weight: 600; aspect-ratio: 1; }
+
+  /* ── System island ── */
+  .island { display: inline-flex; align-items: center; height: 40px; background: rgba(20,20,25,0.4); backdrop-filter: blur(24px) saturate(200%); border: 1px solid rgba(255,255,255,0.15); border-radius: 20px; padding: 0 16px; gap: 20px; box-shadow: 0 20px 60px rgba(0,0,0,0.7), inset 0 1px 1px rgba(255,255,255,0.1); font-size: 14px; font-weight: 500; }
+  .island-name { font-weight: 700; background: linear-gradient(90deg,#6366F1,#EC4899); -webkit-background-clip: text; -webkit-text-fill-color: transparent; letter-spacing: 0.5px; }
+  .island-icon { background: none; border: none; color: rgba(255,255,255,0.55); cursor: pointer; display: flex; align-items: center; padding: 4px; border-radius: 50%; }
+
+  /* ── Shelf ── */
+  .shelf { display: inline-flex; align-items: center; height: 64px; background: rgba(20,20,25,0.4); backdrop-filter: blur(30px); border: 1px solid rgba(255,255,255,0.15); border-radius: 32px; padding: 0 12px; gap: 8px; box-shadow: 0 20px 60px rgba(0,0,0,0.7), inset 0 1px 1px rgba(255,255,255,0.1); }
+  .shelf-item { width: 48px; height: 48px; border-radius: 16px; display: flex; align-items: center; justify-content: center; cursor: pointer; border: 1px solid transparent; transition: all 0.3s cubic-bezier(0.175,0.885,0.32,1.275); position: relative; }
+  .shelf-item.active { background: rgba(255,255,255,0.06); border-color: rgba(255,255,255,0.08); transform: translateY(-8px) scale(1.1); }
+  .shelf-item.has-dot::after { content:''; position:absolute; bottom:-5px; width:4px; height:4px; border-radius:50%; background:#6366F1; box-shadow:0 0 8px rgba(99,102,241,0.5); }
+  .shelf-div { width:1px; height:32px; background:rgba(255,255,255,0.12); margin:0 4px; }
+
+  /* ── Input ── */
+  .nova-input { font-family: 'Outfit', sans-serif; font-size: 14px; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.12); color: #fff; border-radius: 8px; padding: 9px 14px; outline: none; width: 100%; transition: border-color 0.2s; }
+  .nova-input:focus { border-color: rgba(99,102,241,0.6); box-shadow: 0 0 0 3px rgba(99,102,241,0.15); }
+  .nova-input::placeholder { color: rgba(255,255,255,0.25); }
+
+  /* ── Text input large (spotlight-style) ── */
+  .nova-input-xl { font-family: 'Outfit', sans-serif; font-size: 24px; font-weight: 300; background: transparent; border: none; border-bottom: 1px solid rgba(255,255,255,0.1); color: #fff; padding: 12px 0; outline: none; width: 100%; }
+  .nova-input-xl::placeholder { color: rgba(255,255,255,0.2); }
+
+  /* ── Settings row ── */
+  .settings-row { display: flex; justify-content: space-between; align-items: center; padding: 12px 0; border-bottom: 1px solid rgba(255,255,255,0.05); font-size: 14px; color: rgba(255,255,255,0.8); }
+  .toggle { width:40px; height:22px; border-radius:11px; cursor:pointer; position:relative; transition:background 0.3s; }
+  .toggle.on { background: linear-gradient(90deg,#6366F1,#EC4899); }
+  .toggle.off { background: rgba(255,255,255,0.15); }
+  .toggle-knob { position:absolute; top:3px; width:16px; height:16px; border-radius:50%; background:#fff; transition:left 0.3s cubic-bezier(0.175,0.885,0.32,1.275); box-shadow:0 1px 4px rgba(0,0,0,0.4); }
+  .toggle.on .toggle-knob { left:21px; }
+  .toggle.off .toggle-knob { left:3px; }
+
+  /* ── Context menu ── */
+  .ctx { background:rgba(20,20,25,0.85); backdrop-filter:blur(30px); border:1px solid rgba(255,255,255,0.15); border-radius:12px; padding:6px; min-width:200px; font-size:13px; }
+  .ctx-item { padding:8px 12px; border-radius:6px; cursor:pointer; display:flex; justify-content:space-between; align-items:center; color:#fff; }
+  .ctx-item:hover, .ctx-item.hov { background:#6366F1; }
+  .ctx-sep { height:1px; background:rgba(255,255,255,0.07); margin:4px 0; }
+  .ctx-shortcut { font-size:11px; color:rgba(255,255,255,0.35); }
+
+  /* ── Black hole remnant ── */
+  @keyframes rotateDisc { to { transform: rotate(360deg); } }
+  @keyframes flowIn { 0%{stroke-dashoffset:0;opacity:0.8} 100%{stroke-dashoffset:200;opacity:0} }
+  @keyframes twinkle { 0%{transform:translate(-50%,-50%) scale(0.8);opacity:0.6} 100%{transform:translate(-50%,-50%) scale(1.2);opacity:1} }
+  @keyframes fadePulse { 0%{transform:translate(-50%,-50%) scale(0.9) rotate(0deg);opacity:0.5} 100%{transform:translate(-50%,-50%) scale(1.1) rotate(20deg);opacity:0.9} }
+
+  /* ── Two-column layout ── */
+  .cols2 { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+  .cols3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 10px; }
+</style>
+</head>
+<body>
+
+<!-- ═══════════════════════════════════════════════════
+     1. SYSTEM CHROME
+     ═══════════════════════════════════════════════════ -->
+<div class="sl">System Island</div>
+<div class="rule">Fixed top-center · pill · height 40px · radius 20px · blur(24px) · app name = gradient text</div>
+<div class="island">
+  <span class="island-name">Wordl</span>
+  <span style="color:rgba(255,255,255,0.8)">10:19 AM</span>
+  <div style="display:flex;gap:2px">
+    <button class="island-icon"><svg viewBox="0 0 24 24" width="16" height="16" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg></button>
+    <button class="island-icon"><svg viewBox="0 0 24 24" width="16" height="16" stroke="currentColor" stroke-width="2" fill="none"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14"/><path d="M15.54 8.46a5 5 0 0 1 0 7.07"/></svg></button>
+    <button class="island-icon"><svg viewBox="0 0 24 24" width="16" height="16" stroke="currentColor" stroke-width="2" fill="none"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg></button>
+  </div>
+</div>
+
+<div class="sl" style="margin-top:24px">Command Shelf</div>
+<div class="rule">Fixed bottom-center · pill · height 64px · radius 32px · blur(30px) · items 48×48px · radius 16px · running dot bottom</div>
+<div class="shelf">
+  <div class="shelf-item has-dot active">
+    <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linejoin="round" width="28" height="28"><defs><linearGradient id="ig2" x1="0" y1="0" x2="24" y2="24"><stop stop-color="#4F46E5"/><stop offset="1" stop-color="#EC4899"/></linearGradient></defs><path stroke="url(#ig2)" d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/></svg>
+  </div>
+  <div class="shelf-item">
+    <svg viewBox="0 0 24 24" fill="none" stroke="rgba(255,255,255,0.6)" stroke-width="1.5" width="28" height="28"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-2.82 1.18V21a2 2 0 0 1-4 0v-.09a1.65 1.65 0 0 0-2.82-1.18l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09a1.65 1.65 0 0 0 1.51-1 1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
+  </div>
+  <div class="shelf-div"></div>
+  <div class="shelf-item">
+    <svg viewBox="0 0 24 24" fill="none" stroke="#10B981" stroke-width="2" width="28" height="28"><rect x="4" y="2" width="16" height="20" rx="4"/><path d="M8 6h8"/><path d="M12 10v8"/><path d="M8 14h8"/></svg>
+  </div>
+  <div class="shelf-item">
+    <svg viewBox="0 0 24 24" fill="none" stroke="#8B5CF6" stroke-width="2" width="28" height="28"><rect x="3" y="3" width="18" height="18" rx="2"/><line x1="3" y1="9" x2="21" y2="9"/><line x1="3" y1="15" x2="21" y2="15"/><line x1="9" y1="3" x2="9" y2="21"/><line x1="15" y1="3" x2="15" y2="21"/></svg>
+  </div>
+  <div class="shelf-item">
+    <svg viewBox="0 0 24 24" fill="none" stroke-width="2" width="28" height="28"><circle cx="6" cy="12" r="3" fill="#3B82F6" stroke="none"/><circle cx="12" cy="12" r="3" fill="#10B981" stroke="none"/><circle cx="18" cy="12" r="3" fill="#EC4899" stroke="none"/><path d="M3 12h18" stroke="rgba(255,255,255,0.2)" stroke-dasharray="2 4"/></svg>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════
+     2. WINDOW ANATOMY
+     ═══════════════════════════════════════════════════ -->
+<div class="sl">Window Anatomy</div>
+<div class="rule">radius 16px · titlebar 48px · traffic lights 14px dots · blur(40px) · content bg rgba(0,0,0,0.15)</div>
+<div class="glass" style="width:100%;max-width:480px">
+  <div class="titlebar">
+    <div class="wc">
+      <div class="wc-dot wc-close"></div>
+      <div class="wc-dot wc-min"></div>
+      <div class="wc-dot wc-max"></div>
+    </div>
+    <div class="win-title">Minesweeper</div>
+    <div style="width:60px"></div>
+  </div>
+  <!-- App Toolbar inside window -->
+  <div style="background:rgba(0,0,0,0.15)">
+    <div class="app-toolbar">
+      <div class="app-toolbar-left">
+        <div class="app-h1">Mines</div>
+        <div class="app-controls">
+          <select class="nova-select"><option>Intermed.</option><option>Easy</option><option>Hard</option></select>
+          <button class="btn btn-secondary">Restart</button>
+        </div>
+      </div>
+      <div class="app-toolbar-right">
+        <div class="stat"><div class="stat-label">Mines</div><div class="stat-val">40</div></div>
+        <div class="stat"><div class="stat-label">Time</div><div class="stat-val">1</div></div>
+      </div>
+    </div>
+    <!-- Grid sample -->
+    <div style="padding:12px 16px">
+      <div class="board" style="grid-template-columns:repeat(8,1fr);max-width:260px">
+        <div class="cell"></div><div class="cell" style="color:#6366F1">1</div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell" style="color:#6366F1">1</div><div class="cell"></div><div class="cell"></div>
+        <div class="cell" style="color:#6366F1">1</div><div class="cell" style="color:#10B981">2</div><div class="cell" style="color:#6366F1">1</div><div class="cell" style="color:#6366F1">1</div><div class="cell"></div><div class="cell" style="color:#6366F1">1</div><div class="cell"></div><div class="cell"></div>
+        <div class="cell"></div><div class="cell" style="color:#EF4444">3</div><div class="cell" style="color:#6366F1">1</div><div class="cell"></div><div class="cell"></div><div class="cell" style="color:#10B981">2</div><div class="cell"></div><div class="cell"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════
+     3. APP TOOLBAR VARIANTS
+     ═══════════════════════════════════════════════════ -->
+<div class="sl">App Toolbar Pattern</div>
+<div class="rule">Always: title (h1, 24px/700) top-left · controls row below · stats top-right. Danger actions (Forfeit) use btn-danger.</div>
+<div class="cols2">
+  <!-- Variant A: title + select + restart + forfeit + score -->
+  <div class="glass">
+    <div class="titlebar"><div class="wc"><div class="wc-dot wc-close"></div><div class="wc-dot wc-min"></div><div class="wc-dot wc-max"></div></div><div class="win-title">Color Lines</div><div style="width:60px"></div></div>
+    <div class="content" style="padding-top:14px">
+      <div class="app-toolbar" style="padding:0 0 12px">
+        <div class="app-toolbar-left">
+          <div class="app-h1">Lines</div>
+          <div class="app-controls" style="margin-top:6px">
+            <select class="nova-select"><option>Classic</option><option>Timed</option></select>
+            <button class="btn btn-secondary">Restart</button>
+            <button class="btn btn-danger">Forfeit</button>
+          </div>
+        </div>
+        <div class="app-toolbar-right">
+          <div class="stat"><div class="stat-label">Score</div><div class="stat-val">0</div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- Variant B: simple title + restart + two stats -->
+  <div class="glass">
+    <div class="titlebar"><div class="wc"><div class="wc-dot wc-close"></div><div class="wc-dot wc-min"></div><div class="wc-dot wc-max"></div></div><div class="win-title">2048</div><div style="width:60px"></div></div>
+    <div class="content" style="padding-top:14px">
+      <div class="app-toolbar" style="padding:0 0 12px">
+        <div class="app-toolbar-left">
+          <div class="app-h1">2048</div>
+          <div class="app-controls" style="margin-top:6px">
+            <button class="btn btn-secondary">New Game</button>
+          </div>
+        </div>
+        <div class="app-toolbar-right">
+          <div class="stat"><div class="stat-label">Score</div><div class="stat-val">512</div></div>
+          <div class="stat"><div class="stat-label">Best</div><div class="stat-val">2048</div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════
+     4. BUTTONS
+     ═══════════════════════════════════════════════════ -->
+<div class="sl">Buttons</div>
+<div class="rule">font-size 12px / 500 · radius 6px · three semantic variants only</div>
+<div style="display:flex;gap:10px;flex-wrap:wrap;align-items:center">
+  <button class="btn btn-secondary">Secondary</button>
+  <button class="btn btn-primary">Save Score</button>
+  <button class="btn btn-danger">Forfeit</button>
+  <div style="width:1px;height:24px;background:rgba(255,255,255,0.1)"></div>
+  <button class="btn btn-secondary" style="opacity:0.4;cursor:not-allowed">Disabled</button>
+</div>
+
+<!-- ═══════════════════════════════════════════════════
+     5. INPUTS & SELECTS
+     ═══════════════════════════════════════════════════ -->
+<div class="sl">Inputs & Selects</div>
+<div class="cols3" style="max-width:480px">
+  <div style="display:flex;flex-direction:column;gap:4px">
+    <div class="rule" style="margin:0 0 4px">Text input</div>
+    <input class="nova-input" placeholder="Enter initials…">
+  </div>
+  <div style="display:flex;flex-direction:column;gap:4px">
+    <div class="rule" style="margin:0 0 4px">Dropdown</div>
+    <select class="nova-select" style="width:100%"><option>Classic</option><option>Timed</option><option>Blitz</option></select>
+  </div>
+  <div style="display:flex;flex-direction:column;gap:4px">
+    <div class="rule" style="margin:0 0 4px">Range</div>
+    <input type="range" min="0" max="100" value="60" style="accent-color:#6366F1;width:100%;margin-top:8px">
+  </div>
+</div>
+<div style="margin-top:12px;max-width:320px">
+  <div class="rule" style="margin-bottom:6px">XL search input (spotlight)</div>
+  <input class="nova-input-xl" placeholder="Search Nova…">
+</div>
+
+<!-- ═══════════════════════════════════════════════════
+     6. SETTINGS ROWS
+     ═══════════════════════════════════════════════════ -->
+<div class="sl">Settings Rows</div>
+<div class="rule">Label left · control right · 1px separator · section label in caption style above groups</div>
+<div class="glass" style="max-width:340px">
+  <div class="content" style="padding:16px 20px">
+    <div style="font-size:10px;font-weight:600;color:rgba(255,255,255,0.28);text-transform:uppercase;letter-spacing:1px;margin-bottom:10px">Appearance</div>
+    <div class="settings-row">Dark Mode <div class="toggle on"><div class="toggle-knob"></div></div></div>
+    <div class="settings-row">Sound Effects <div class="toggle off"><div class="toggle-knob"></div></div></div>
+    <div class="settings-row">Animations <div class="toggle on"><div class="toggle-knob"></div></div></div>
+    <div class="settings-row" style="border:none">Glass Blur
+      <input type="range" min="10" max="80" value="40" style="accent-color:#6366F1;width:80px">
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════
+     7. CONTEXT MENU
+     ═══════════════════════════════════════════════════ -->
+<div class="sl">Context Menu</div>
+<div class="rule">blur(30px) · radius 12px · items 8px/12px padding · hover fills accent-primary · shortcut label right-aligned in muted</div>
+<div class="ctx" style="max-width:220px">
+  <div class="ctx-item hov">New Folder <span class="ctx-shortcut">⌘N</span></div>
+  <div class="ctx-item">Open <span class="ctx-shortcut">⌘O</span></div>
+  <div class="ctx-sep"></div>
+  <div class="ctx-item">Rename</div>
+  <div class="ctx-item" style="color:rgba(239,68,68,0.9)">Delete</div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════
+     8. BLACK HOLE REMNANT
+     ═══════════════════════════════════════════════════ -->
+<div class="sl">Black Hole Remnant</div>
+<div class="rule">Spawns on window close · orbits freely on the canvas · rotating accretion disc + inflow particles + neutron star twinkle</div>
+<div style="position:relative;width:140px;height:140px">
+  <!-- Remnant nebula -->
+  <div style="position:absolute;top:50%;left:50%;width:90px;height:90px;border-radius:50%;transform:translate(-50%,-50%);background:radial-gradient(circle,rgba(99,102,241,0.35),rgba(236,72,153,0.2) 60%,transparent 80%);animation:fadePulse 8s infinite alternate ease-in-out;filter:blur(6px)"></div>
+  <!-- Rotating disc SVG -->
+  <svg viewBox="0 0 120 120" width="140" height="140" style="position:absolute;top:0;left:0">
+    <g style="transform-origin:60px 60px;animation:rotateDisc 60s linear infinite">
+      <!-- Accretion streams -->
+      <path d="M60,60 Q30,20 10,50" fill="none" stroke="rgba(99,102,241,0.6)" stroke-width="2" stroke-linecap="round" stroke-dasharray="12 36" style="animation:flowIn 8s linear infinite"/>
+      <path d="M60,60 Q90,100 110,70" fill="none" stroke="rgba(236,72,153,0.6)" stroke-width="2" stroke-linecap="round" stroke-dasharray="12 36" stroke-dashoffset="24" style="animation:flowIn 8s linear infinite"/>
+      <path d="M60,60 Q100,30 80,10" fill="none" stroke="rgba(16,185,129,0.5)" stroke-width="1.5" stroke-linecap="round" stroke-dasharray="8 40" stroke-dashoffset="12" style="animation:flowIn 10s linear infinite"/>
+    </g>
+    <!-- Event horizon -->
+    <circle cx="60" cy="60" r="12" fill="#000"/>
+    <!-- Neutron star -->
+    <circle cx="60" cy="60" r="3" fill="#fff" style="animation:twinkle 3s infinite alternate ease-in-out;transform-origin:60px 60px;transform:translate(0,0)"/>
+  </svg>
+</div>
+
+</body>
+</html>
